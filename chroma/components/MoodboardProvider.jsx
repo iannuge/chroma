@@ -58,7 +58,7 @@ export default function MoodboardProvider({ children }) {
       const [cl, csc, prog, ord, mcv] = await Promise.all([
         supabase
           .from('clusters')
-          .select('id,name,created_at,created_by,profiles(display_name)')
+          .select('id,name,created_at,created_by,profiles!created_by(display_name)')
           .eq('drop_id', drop.id),
         supabase.from('cluster_scores').select('cluster_id,score').eq('drop_id', drop.id),
         supabase.from('drop_progress').select('claimed,goal').eq('drop_id', drop.id).maybeSingle(),
@@ -80,7 +80,7 @@ export default function MoodboardProvider({ children }) {
         const [it, isc, miv] = await Promise.all([
           supabase
             .from('items')
-            .select('id,cluster_id,caption,image_path,color,created_at,created_by,profiles(display_name)')
+            .select('id,cluster_id,caption,image_path,color,created_at,created_by,profiles!created_by(display_name)')
             .in('cluster_id', ids),
           supabase.from('item_scores').select('item_id,score').in('cluster_id', ids),
           uid ? supabase.from('item_votes').select('item_id,value').eq('user_id', uid) : none,
