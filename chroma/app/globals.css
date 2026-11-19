@@ -131,3 +131,13 @@ h2.sh{font-size:clamp(24px,3vw,36px);margin:48px auto 18px;max-width:none}
 .pgi{cursor:pointer}
 .pg .it{aspect-ratio:1;min-height:0}
 .nc .pill:disabled{background:var(--ink);opacity:.4}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:56px 20px 20px;background:rgba(10,10,12,.62);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);cursor:zoom-out;animation:lbin .18s ease-out}
+.lbx{position:absolute;top:16px;right:16px;cursor:pointer}
+.lbc{display:flex;flex-direction:column;align-items:center;gap:12px;max-width:min(92vw,1100px);max-height:100%;cursor:default}
+.lbc img{display:block;max-width:100%;max-height:78vh;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.lbt{width:min(80vw,560px);aspect-ratio:4/3;border-radius:20px;display:flex;align-items:flex-end;padding:22px;font-size:28px;line-height:1.05;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.lbm{display:flex;gap:16px;align-items:center;padding:10px 18px;border-radius:99px;color:#fff;font-size:14px}
+.lbm a{color:inherit}
+@keyframes lbin{from{opacity:0}to{opacity:1}}

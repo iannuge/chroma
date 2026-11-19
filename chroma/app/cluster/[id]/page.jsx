@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import Tile from '../../../components/Tile'
 import VoteBox from '../../../components/VoteBox'
 import Notice from '../../../components/Notice'
+import Lightbox from '../../../components/Lightbox'
 import { useMoodboard } from '../../../components/MoodboardProvider'
 
 function AddItem({ clusterId }) {
@@ -45,6 +46,7 @@ export default function ClusterPage() {
 
   const stage = useRef(null)
   const [dim, setDim] = useState({ w: 0, h: 0 })
+  const [openId, setOpenId] = useState(null)
 
   useEffect(() => {
     const el = stage.current
@@ -108,14 +110,15 @@ export default function ClusterPage() {
                   animationDelay: '-' + k + 's',
                 }}
               >
-                <Tile item={it} size={fs} onVote={(d) => vote('item', it.id, d)} />
+                <Tile item={it} size={fs} onOpen={(x) => setOpenId(x.id)} onVote={(d) => vote('item', it.id, d)} />
               </div>
             </div>
           )
         })}
       </div>
       <AddItem clusterId={cluster.id} />
-      <p className="mu">Higher scores float higher and grow larger.</p>
+      <p className="mu">Higher scores float higher and grow larger. Click an image to expand it.</p>
+      <Lightbox item={items.find((i) => i.id === openId) || null} onClose={() => setOpenId(null)} />
     </main>
   )
 }

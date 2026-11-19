@@ -150,6 +150,9 @@ export default function Home() {
         <div className="w">
           <div className="hd">
             <h2 style={{ margin: 0 }}>The moodboard</h2>
+            <p className="mu" style={{ margin: 0 }}>
+              these are just placeholder images right now. but its all functional! try uploading something
+            </p>
             <NewCluster />
           </div>
           <Notice />
