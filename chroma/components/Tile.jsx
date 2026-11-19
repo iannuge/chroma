@@ -1,12 +1,13 @@
 'use client'
 
+import Link from 'next/link'
 import VoteBox from './VoteBox'
 import { lum } from '../lib/util'
 
-export default function Tile({ item, onVote, size }) {
+export default function Tile({ item, onVote, size, hideBy }) {
   const style = item.img
     ? {
-        backgroundImage: 'linear-gradient(transparent 40%,rgba(0,0,0,.65)),url("' + item.img + '")',
+        backgroundImage: 'linear-gradient(transparent 55%,rgba(0,0,0,.6)),url("' + item.img + '")',
         color: '#fff',
       }
     : { backgroundColor: item.color, color: lum(item.color) > 0.55 ? '#000' : '#fff' }
@@ -16,7 +17,11 @@ export default function Tile({ item, onVote, size }) {
     <div className="it" style={style}>
       <span>
         {item.caption}
-        <small className="by">{item.by}</small>
+        {!hideBy && item.byId ? (
+          <Link className="by" href={'/u/' + item.byId}>
+            {item.by}
+          </Link>
+        ) : null}
       </span>
       {onVote && <VoteBox score={item.score} mine={item.mine} onVote={onVote} />}
     </div>

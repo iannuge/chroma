@@ -34,7 +34,7 @@ create table public.clusters (
 create table public.items (
   id uuid primary key default gen_random_uuid(),
   cluster_id uuid not null references public.clusters(id) on delete cascade,
-  caption text not null check (char_length(caption) between 1 and 120),
+  caption text check (caption is null or char_length(caption) between 1 and 120),  -- optional: items are image-only now
   image_path text,                       -- path inside the "moodboard" storage bucket
   color text,                            -- fallback tile color when there is no image
   created_by uuid not null references public.profiles(id) on delete cascade,
@@ -225,3 +225,19 @@ alter publication supabase_realtime add table public.clusters, public.items;
 
 insert into public.drops (number, theme, status, goal, price_cents, next_iteration_at)
 values (3, 'static', 'moodboard', 100, 4200, now() + interval '7 days');
+
+-- ---------- Table permissions (needed on newer Supabase projects) ----------
+-- Row level security above decides WHICH rows; these grants let the website touch the tables at all.
+
+grant usage on schema public to anon, authenticated, service_role;
+
+grant select on public.drops, public.clusters, public.items, public.profiles to anon, authenticated;
+grant select on public.cluster_scores, public.item_scores, public.drop_progress, public.approval_progress to anon, authenticated;
+
+grant insert, delete on public.clusters, public.items to authenticated;
+grant update on public.profiles to authenticated;
+grant select, insert, update, delete on public.cluster_votes, public.item_votes to authenticated;
+grant select on public.orders to authenticated;
+grant select, insert, update on public.approvals to authenticated;
+
+grant all on all tables in schema public to service_role;

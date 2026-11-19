@@ -8,9 +8,8 @@ import VoteBox from '../../../components/VoteBox'
 import Notice from '../../../components/Notice'
 import { useMoodboard } from '../../../components/MoodboardProvider'
 
-function AddItem({ clusterId, name }) {
+function AddItem({ clusterId }) {
   const { addItem } = useMoodboard()
-  const [caption, setCaption] = useState('')
   const [file, setFile] = useState(null)
   const [busy, setBusy] = useState(false)
 
@@ -18,10 +17,9 @@ function AddItem({ clusterId, name }) {
     e.preventDefault()
     const form = e.currentTarget
     setBusy(true)
-    const ok = await addItem(clusterId, caption.trim(), file)
+    const ok = await addItem(clusterId, file)
     setBusy(false)
     if (ok) {
-      setCaption('')
       setFile(null)
       form.reset()
     }
@@ -29,20 +27,11 @@ function AddItem({ clusterId, name }) {
 
   return (
     <form className="add g" onSubmit={submit}>
-      <input
-        type="text"
-        placeholder={'Add to “' + name + '”'}
-        required
-        aria-label="Add an item to this cluster"
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        maxLength={120}
-      />
       <label className="im">
-        {file ? 'Image ✓' : 'Image'}
+        {file ? 'Image ✓' : 'Choose an image'}
         <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
       </label>
-      <button disabled={busy}>{busy ? 'Adding…' : 'Add item'}</button>
+      <button disabled={busy || !file}>{busy ? 'Adding…' : 'Add image'}</button>
     </form>
   )
 }
@@ -91,7 +80,9 @@ export default function ClusterPage() {
       </Link>
       <div className="cvh">
         <h1>{cluster.name}</h1>
-        <span className="mu">started by {cluster.by}</span>
+        <span className="mu">
+          started by <Link href={'/u/' + cluster.byId}>{cluster.by}</Link>
+        </span>
         <VoteBox score={cluster.score} mine={cluster.mine} onVote={(d) => vote('cluster', cluster.id, d)} />
       </div>
       <Notice />
@@ -123,7 +114,7 @@ export default function ClusterPage() {
           )
         })}
       </div>
-      <AddItem clusterId={cluster.id} name={cluster.name} />
+      <AddItem clusterId={cluster.id} />
       <p className="mu">Higher scores float higher and grow larger.</p>
     </main>
   )

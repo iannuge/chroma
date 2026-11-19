@@ -15,7 +15,7 @@ Next.js site for the CHROMA crowd-sourced tee brand. Data, login and image stora
 - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: only to override the defaults in `lib/supabase.js`
 
 ## Database
-`sql/schema.sql` creates the tables (already run). `sql/seed.sql` is an optional starter moodboard.
+`sql/schema.sql` creates the tables (already run). If your database was set up before the images-only change, run `sql/migrate-images-only.sql` once. `sql/seed.sql` is an optional starter moodboard.
 
 ## Run locally (optional, needs Node.js)
 `npm install` then `npm run dev`, then open http://localhost:3000

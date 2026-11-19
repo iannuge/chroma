@@ -22,6 +22,7 @@ export default function Nav() {
         <span className="nl">
           <Link href="/archive">Past drops</Link>
           <Link href="/#board">Moodboard</Link>
+          {user && <Link href="/profile">Profile</Link>}
           {ready &&
             (user ? (
               <button className="pill" onClick={signOut} title={who}>

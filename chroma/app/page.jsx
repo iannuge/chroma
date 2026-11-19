@@ -19,7 +19,6 @@ const PREORDER_URL = process.env.NEXT_PUBLIC_PREORDER_URL || ''
 function NewCluster() {
   const { addCluster } = useMoodboard()
   const [name, setName] = useState('')
-  const [caption, setCaption] = useState('')
   const [file, setFile] = useState(null)
   const [busy, setBusy] = useState(false)
 
@@ -27,11 +26,10 @@ function NewCluster() {
     e.preventDefault()
     const form = e.currentTarget
     setBusy(true)
-    const ok = await addCluster(name.trim(), caption.trim(), file)
+    const ok = await addCluster(name.trim(), file)
     setBusy(false)
     if (ok) {
       setName('')
-      setCaption('')
       setFile(null)
       form.reset()
     }
@@ -48,20 +46,11 @@ function NewCluster() {
         onChange={(e) => setName(e.target.value)}
         maxLength={60}
       />
-      <input
-        type="text"
-        placeholder="First item"
-        required
-        aria-label="First item"
-        value={caption}
-        onChange={(e) => setCaption(e.target.value)}
-        maxLength={120}
-      />
       <label className="im">
-        {file ? 'Image ✓' : 'Image'}
+        {file ? 'Image ✓' : 'First image'}
         <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
       </label>
-      <button className="pill" disabled={busy}>
+      <button className="pill" disabled={busy || !file}>
         {busy ? 'Adding…' : 'Start cluster'}
       </button>
     </form>
@@ -186,7 +175,9 @@ export default function Home() {
                       <h3>
                         <Link href={'/cluster/' + c.id}>{c.name}</Link>
                       </h3>
-                      <span className="by2">by {c.by}</span>
+                      <span className="by2">
+                        by <Link href={'/u/' + c.byId}>{c.by}</Link>
+                      </span>
                     </div>
                     <VoteBox score={c.score} mine={c.mine} onVote={(d) => vote('cluster', c.id, d)} />
                   </div>

@@ -140,7 +140,8 @@ export default function MoodboardProvider({ children }) {
         .map((i) => ({
           id: i.id,
           clusterId: i.cluster_id,
-          caption: i.caption,
+          caption: i.caption || '',
+          byId: i.created_by,
           img: imgUrl(i.image_path),
           color: i.color || '#d9d9d6',
           by: (i.profiles && i.profiles.display_name) || 'Someone',
@@ -153,6 +154,7 @@ export default function MoodboardProvider({ children }) {
         id: c.id,
         name: c.name,
         by: (c.profiles && c.profiles.display_name) || 'Someone',
+        byId: c.created_by,
         score: data.clusterScores[c.id] || 0,
         mine: data.myClusterVotes[c.id] || 0,
         at: c.created_at,
@@ -201,10 +203,10 @@ export default function MoodboardProvider({ children }) {
     await load()
   }
 
-  const addCluster = async (name, caption, file) => {
+  const addCluster = async (name, file) => {
     if (!need() || !data.drop) return false
-    if (!name || !caption) {
-      setMsg('Give the cluster a name and a first item.')
+    if (!name || !file) {
+      setMsg('Give the cluster a name and a first image.')
       return false
     }
     try {
@@ -217,7 +219,7 @@ export default function MoodboardProvider({ children }) {
       if (c.error) throw c.error
       const i = await supabase
         .from('items')
-        .insert({ cluster_id: c.data.id, caption, image_path: img, color: tone(), created_by: uid })
+        .insert({ cluster_id: c.data.id, image_path: img, color: tone(), created_by: uid })
       if (i.error) throw i.error
       await load()
       return true
@@ -227,17 +229,17 @@ export default function MoodboardProvider({ children }) {
     }
   }
 
-  const addItem = async (clusterId, caption, file) => {
+  const addItem = async (clusterId, file) => {
     if (!need()) return false
-    if (!caption) {
-      setMsg('Add a short caption for your item.')
+    if (!file) {
+      setMsg('Choose an image to add.')
       return false
     }
     try {
       const img = await upload(file)
       const i = await supabase
         .from('items')
-        .insert({ cluster_id: clusterId, caption, image_path: img, color: tone(), created_by: uid })
+        .insert({ cluster_id: clusterId, image_path: img, color: tone(), created_by: uid })
       if (i.error) throw i.error
       await load()
       return true
@@ -258,6 +260,7 @@ export default function MoodboardProvider({ children }) {
     vote,
     addCluster,
     addItem,
+    reload: load,
   }
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
