@@ -488,3 +488,11 @@ input::placeholder,textarea::placeholder{color:var(--mu)}
 .pxt canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .tee .pxt img{filter:drop-shadow(0 30px 34px rgba(0,0,0,.6))}
 .tee .pxt canvas{filter:drop-shadow(0 30px 34px rgba(0,0,0,.6))}
+
+/* big TO BE DETERMINED stretching past the shirt edges; white + difference reads black on the tee, white on the dark page */
+.cens{left:-6%;top:23%;width:112%;height:42%;color:#fff;mix-blend-mode:difference;transform-origin:center}
+.hero3 .cens span,.cens span{font-size:19.5cqw;line-height:.88;letter-spacing:-.07em;color:#fff;font-weight:800}
+.byu{position:absolute;left:61%;top:66%;display:block;font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;font-weight:500;font-size:2.8cqw;letter-spacing:-.02em;text-transform:none;white-space:nowrap;color:#fff;mix-blend-mode:difference;line-height:1;pointer-events:none;will-change:transform}
+.tb{left:-6%;top:24%;width:112%;height:42%;color:#fff;mix-blend-mode:difference}
+.tb span{font-size:19.5cqw;line-height:.88;letter-spacing:-.07em;color:#fff;font-weight:800}
+.tb small{position:absolute;left:61%;top:78%;font-size:2.8cqw;color:#fff;opacity:1}
