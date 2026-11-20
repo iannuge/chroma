@@ -21,6 +21,17 @@ export default function RootLayout({ children }) {
       <body>
         <AuthProvider>
           <MoodboardProvider>
+            <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true" focusable="false">
+              <filter id="ca" x="-3%" y="-3%" width="106%" height="106%" colorInterpolationFilters="sRGB">
+                <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r" />
+                <feOffset in="r" dx="-2" dy="0" result="ro" />
+                <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g" />
+                <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b" />
+                <feOffset in="b" dx="2" dy="0" result="bo" />
+                <feBlend in="ro" in2="g" mode="screen" result="rg" />
+                <feBlend in="rg" in2="bo" mode="screen" />
+              </filter>
+            </svg>
             <Nav />
             <AuthPrompt />
             {children}

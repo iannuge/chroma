@@ -250,3 +250,26 @@ nav button.sq{background:none;border:0;padding:10px 10px 10px 0;cursor:pointer}
   .it .v button{width:32px;height:32px}
   .it .v b{min-width:26px}
 }
+
+/* ---- archival pass: square edges, mono captions, grain, chromatic fringe ---- */
+/* fix: the desktop nav was showing both square sets (specificity) */
+nav .sqm{display:none}
+@media(max-width:760px){nav .sqd{display:none}nav .sqm{display:flex}}
+
+/* square everything, keep the glass */
+*,*::before,*::after{border-radius:0!important}
+
+/* archival caption type for small utility text */
+.mu,dt,.by,.by2,footer,.badge,.note,.lbm,.cdw span,.ph div span,.chip{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;font-weight:500;letter-spacing:-.03em}
+.mu.sub,.mu.lede{font-family:inherit;font-weight:500;letter-spacing:-.04em}
+
+/* paper grain */
+body:after{content:"";position:fixed;inset:0;z-index:2000;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* chromatic aberration: red and cyan fringes on display type */
+h1,h2,h3,.brand b,.cdw b{text-shadow:-.018em 0 rgba(255,45,70,.55),.018em 0 rgba(30,200,255,.55)}
+.hl h1,.hl p{text-shadow:-.014em 0 rgba(255,45,70,.9),.014em 0 rgba(30,200,255,.9)}
+.badge,.pill{text-shadow:none}
+/* and a split-channel fringe on photos */
+.tee img{filter:url(#ca) drop-shadow(0 30px 34px rgba(20,25,40,.22))}
+.pdd img,.lbc img{filter:url(#ca)}
