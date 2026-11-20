@@ -4,20 +4,52 @@ import Link from 'next/link'
 import { useState } from 'react'
 import TeeHero from '../../components/TeeHero'
 import { useMoodboard } from '../../components/MoodboardProvider'
-import { SIZES, shopOpen, needsSize, checkoutUrl } from '../../lib/shop'
+import { SIZES, shopOpen, needsSize } from '../../lib/shop'
 
 const pad = (n) => String(n).padStart(2, '0')
 
 export default function PreOrder() {
   const { drop, progress, hasOrder } = useMoodboard()
   const [size, setSize] = useState('')
+  const [pw, setPw] = useState('')
+  const [unlocked, setUnlocked] = useState(false)
+  const [msg, setMsg] = useState('')
+  const [busy, setBusy] = useState(false)
+
+  const call = async (extra) => {
+    const r = await fetch('/api/preorder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw, ...extra }),
+    })
+    return r.json().catch(() => ({ ok: false, error: 'Something went wrong.' }))
+  }
+  const unlock = async (e) => {
+    e.preventDefault()
+    setBusy(true)
+    setMsg('')
+    const r = await call({})
+    setBusy(false)
+    if (r.ok) setUnlocked(true)
+    else setMsg(r.error || 'Wrong password.')
+  }
+  const checkout = async () => {
+    setBusy(true)
+    setMsg('')
+    const r = await call({ size })
+    if (r.ok && r.url) window.location.href = r.url
+    else {
+      setBusy(false)
+      setMsg(r.error || 'Something went wrong.')
+    }
+  }
 
   const goal = progress.goal || (drop && drop.goal) || 20
   const claimed = progress.claimed || 0
   const soldOut = claimed >= goal
   const pct = Math.min(100, (claimed / goal) * 100)
   const price = drop && drop.price_cents ? '$' + Math.round(drop.price_cents / 100) : ''
-  const chosen = !!drop && drop.status !== 'moodboard'
+  const chosen = unlocked
 
   let action
   if (hasOrder) {
@@ -35,7 +67,7 @@ export default function PreOrder() {
   } else if (!chosen) {
     action = (
       <button className="pill" disabled>
-        opens once a cluster is chosen
+        early access only
       </button>
     )
   } else if (!shopOpen) {
@@ -52,9 +84,9 @@ export default function PreOrder() {
     )
   } else {
     action = (
-      <a className="pill" href={checkoutUrl(size)} target="_blank" rel="noopener noreferrer">
-        pre-order{size ? ' size ' + size : ''}, {price}
-      </a>
+      <button className="pill" onClick={checkout} disabled={busy}>
+        {busy ? 'opening checkout…' : 'pre-order size ' + size + ', ' + price}
+      </button>
     )
   }
 
@@ -107,6 +139,22 @@ export default function PreOrder() {
           </div>
 
           {action}
+          {msg && <p className="mu">{msg}</p>}
+          {!unlocked && (
+            <form onSubmit={unlock} className="pwf">
+              <input
+                type="password"
+                value={pw}
+                onChange={(e) => setPw(e.target.value)}
+                placeholder="early access password"
+                aria-label="Early access password"
+                autoComplete="off"
+              />
+              <button className="pill" type="submit" disabled={busy || !pw}>
+                unlock
+              </button>
+            </form>
+          )}
 
           <ul className="facts mu">
             <li>ships to the united states only</li>

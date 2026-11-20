@@ -590,3 +590,7 @@ footer{padding-bottom:48px}
 /* ---- squares live inside the about frame ---- */
 .bio .sqf{display:flex;justify-content:center;gap:6px;margin:0 0 18px;text-decoration:none;border:0}
 .bio .sqf i{display:block;width:11px;height:11px;background:var(--ink)}
+
+/* ---- early access password ---- */
+.pwf{display:flex;gap:8px;margin-top:12px;justify-content:center;flex-wrap:wrap}
+.pwf input{flex:1 1 160px;min-width:0;background:transparent;border:1px solid var(--gb);padding:10px 12px;color:var(--ink);font:inherit;border-radius:0}
