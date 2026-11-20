@@ -102,8 +102,8 @@ export default function Archive() {
         <div className="cvh">
           <h1>You&apos;re early!</h1>
           <p className="mu sub">
-            in the future, this page will showcase each previous drop&apos;s design. in the meantime, heres
-            some of my own shirt designs i&apos;m proud of.
+            in the future, this page will showcase each previous drop. in the meantime, heres some of my own
+            shirt designs.
           </p>
         </div>
       )}

@@ -468,3 +468,4 @@ h2{margin-bottom:22px}
 .wk img,.wkt img,.wvi img{mix-blend-mode:normal}
 input[type=text],.cform input[type=email],.cform textarea,.lbr select{color:var(--ink)}
 input::placeholder,textarea::placeholder{color:var(--mu)}
+.szb:disabled{opacity:.45;cursor:not-allowed}.szb:disabled:hover{border-color:var(--gb)}

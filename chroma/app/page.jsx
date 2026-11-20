@@ -138,9 +138,11 @@ export default function Home() {
   const pct = Math.min(100, (claimed / goal) * 100)
   const price = drop ? '$' + Math.round(drop.price_cents / 100) : ''
 
+  const chosen = !!drop && drop.status !== 'moodboard'
+
   const pre = (
     <Link className="pill" href="/preorder">
-      {hasOrder ? 'Pre-ordered' : shopOpen ? 'Pre-order for ' + price : 'Pre-order details'}
+      {hasOrder ? 'Pre-ordered' : shopOpen && chosen ? 'Pre-order for ' + price : 'Pre-order details'}
     </Link>
   )
 
@@ -229,7 +231,13 @@ export default function Home() {
             </div>
             <div className="row mu">
               <span>Phase 0</span>
-              <span>{hasOrder ? 'Pre-order bonus on your votes' : 'Pre-order to boost your votes'}</span>
+              <span>
+                {hasOrder
+                  ? 'Pre-order bonus on your votes'
+                  : chosen
+                    ? 'Pre-order to boost your votes'
+                    : 'Pre-orders open once a cluster is chosen'}
+              </span>
             </div>
           </div>
         </div>
