@@ -492,3 +492,26 @@ nav .nb:hover i{background:var(--bg)}
 }
 nav .sqm{display:none}
 @media(max-width:760px){nav .sqd{display:none}nav .sqm{display:flex}nav .nl .dl{display:none}}
+
+/* ---- nav v3: plain CHROMA on the left, one attached strip of boxes on the right ---- */
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 8px 8px 22px;border-radius:0}
+nav .brand{flex:none;white-space:nowrap;font-size:18px;letter-spacing:-.06em;text-decoration:none;color:var(--ink)}
+nav .nl{display:flex;align-items:stretch;gap:0;flex:none}
+nav .nl .dl{display:flex;align-items:stretch;gap:0}
+nav .nl .dl a,nav .nbx,nav .nl .pill{display:flex;align-items:center;justify-content:center;white-space:nowrap;padding:12px 16px;border:1px solid var(--gb);background:rgba(255,255,255,.04);font:inherit;font-size:15px;letter-spacing:-.03em;text-decoration:none;color:var(--ink);border-radius:0;cursor:pointer}
+nav .nl > *+*,nav .nl .dl > *+*,nav .nl .dl + *{margin-left:-1px}
+nav .nl .pill{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+nav .nl .dl a:hover,nav .nbx:hover{background:var(--ink);color:var(--bg);border-color:var(--ink);position:relative;z-index:1}
+nav .nbx{display:none}
+nav .mm{display:flex;flex-direction:column;position:absolute;z-index:50;top:calc(100% + 8px);left:0;right:0;padding:10px;border-radius:0}
+nav .mm a{padding:14px 16px;text-decoration:none;font-size:20px;letter-spacing:-.05em;border-radius:0;white-space:nowrap}
+@media(max-width:900px){
+  nav .nl .dl{display:none}
+  nav .nbx{display:flex}
+}
+@media(min-width:901px){nav .mm{display:none}}
+@media(max-width:560px){nav{padding:6px 6px 6px 14px}nav .brand{font-size:16px}nav .nbx,nav .nl .pill{padding:10px 12px;font-size:14px}}
+
+/* three squares live at the very bottom of the page */
+footer .sqf{display:flex;justify-content:center;gap:6px;margin-top:22px;text-decoration:none;border:0}
+footer .sqf i{display:block;width:11px;height:11px;background:var(--ink)}

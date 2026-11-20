@@ -38,26 +38,19 @@ export default function Nav() {
   return (
     <div className="w">
       <nav className="g">
-        <Link href="/" className="brand nb">
+        <Link href="/" className="brand">
           <b>CHROMA</b>
         </Link>
-        <Link href="/" className="sq sqd nb" aria-label="home">
-          <i />
-          <i />
-          <i />
-        </Link>
-        <button
-          className="sq sqm nb"
-          aria-label="menu"
-          aria-expanded={open}
-          onClick={() => setOpen((o) => !o)}
-        >
-          <i />
-          <i />
-          <i />
-        </button>
         <span className="nl">
           <span className="dl">{links}</span>
+          <button
+            className="nbx"
+            aria-label="menu"
+            aria-expanded={open}
+            onClick={() => setOpen((o) => !o)}
+          >
+            Menu
+          </button>
           {ready &&
             (user ? (
               <button className="pill" onClick={signOut} title={who}>
