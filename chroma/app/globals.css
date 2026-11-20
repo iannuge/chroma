@@ -469,3 +469,26 @@ h2{margin-bottom:22px}
 input[type=text],.cform input[type=email],.cform textarea,.lbr select{color:var(--ink)}
 input::placeholder,textarea::placeholder{color:var(--mu)}
 .szb:disabled{opacity:.45;cursor:not-allowed}.szb:disabled:hover{border-color:var(--gb)}
+
+/* ---- nav: segmented boxes inside the bar. chroma left, squares centered, links and sign in right ---- */
+nav{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:stretch;padding:8px;border-radius:0}
+nav .nb{display:flex;align-items:center;justify-content:center;gap:5px;padding:12px 18px;border:1px solid var(--gb);background:rgba(255,255,255,.04);text-decoration:none;color:var(--ink);cursor:pointer}
+nav .brand{justify-self:start;font-size:18px;letter-spacing:-.06em}
+nav .sq{justify-self:center}
+nav button.sq{padding:12px 18px}
+nav .nl{display:flex;justify-self:end;align-items:stretch;gap:8px}
+nav .nl .dl{display:flex;align-items:stretch;gap:8px}
+nav .nl .dl a,nav .nl .pill{display:flex;align-items:center;padding:12px 16px;border:1px solid var(--gb);background:rgba(255,255,255,.04);text-decoration:none;font-size:15px;color:var(--ink);border-radius:0}
+nav .nl .pill{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+nav .nb:hover,nav .nl .dl a:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+nav .nb:hover i{background:var(--bg)}
+@media(max-width:760px){
+  nav{padding:6px;margin-top:10px;gap:6px}
+  nav .nb{padding:10px 12px}
+  nav button.sq{padding:10px 14px}
+  nav .brand{font-size:16px}
+  nav .nl .pill{padding:10px 12px;font-size:14px}
+  .mm{left:0;right:0}
+}
+nav .sqm{display:none}
+@media(max-width:760px){nav .sqd{display:none}nav .sqm{display:flex}nav .nl .dl{display:none}}

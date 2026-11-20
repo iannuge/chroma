@@ -30,30 +30,23 @@ export default function HowItWorks() {
             <h3>how it works</h3>
             <ol className="hiw">
               <li>
-                <b>Submit.</b> Start a cluster of images, colors and ideas around a theme, or add images to
-                someone else&apos;s. The moodboard is open to everyone with an account.
+                <b>Submit.</b> Start a cluster of images and ideas around a theme, or add to someone
+                else&apos;s.
               </li>
               <li>
-                <b>Vote.</b> Upvote or downvote clusters and the images inside them. The most upvoted
-                clusters and images float higher and grow larger.
+                <b>Vote.</b> Upvote the clusters and images you like. The top ones float higher and grow.
               </li>
               <li>
-                <b>The winner becomes the tee.</b> After two weeks, the top cluster is locked in as the next
-                shirt. Its theme and its most upvoted images shape the design. Every other cluster stays on
-                the board for the next drop.
+                <b>One becomes the tee.</b> When the countdown ends, the top cluster is locked in as the next
+                shirt. The rest stay on the board for the next drop.
               </li>
               <li>
-                <b>Revise and iterate.</b> Choosing a cluster isn&apos;t the end. Once it wins, I post a
-                draft of the design and the community can weigh in with feedback. The design gets revised
-                and iterated on before it&apos;s finalized and sent to print.
+                <b>Revise.</b> I post a draft, you give feedback, and the design is revised before it goes to
+                print.
               </li>
               <li>
-                <b>Pre-order early.</b> You can pre-order before the design is final, and pre-orderers&apos;
-                votes carry more weight.
-              </li>
-              <li>
-                <b>A limited run.</b> Each drop is a set number of pieces. Once they&apos;re claimed, buyers
-                get a final vote to approve the design before it goes to print.
+                <b>Pre-order.</b> Pre-orders open once a cluster is chosen, and pre-orderers&apos; votes count
+                more. Each drop is limited, and once it&apos;s claimed, buyers approve the final design.
               </li>
             </ol>
             <p className="gift">
