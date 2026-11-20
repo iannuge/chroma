@@ -4,6 +4,7 @@ import MoodboardProvider from '../components/MoodboardProvider'
 import Nav from '../components/Nav'
 import AuthPrompt from '../components/AuthPrompt'
 import Aberration from '../components/Aberration'
+import Link from 'next/link'
 
 export const metadata = {
   title: "chroma: crowdsourced art direction on a graphic tee",
@@ -26,7 +27,9 @@ export default function RootLayout({ children }) {
             <Nav />
             <AuthPrompt />
             {children}
-            <footer className="w mu">chroma. crowdsourced art direction on a graphic tee.</footer>
+            <footer className="w mu">
+              chroma. crowdsourced art direction on a graphic tee. <Link href="/terms">terms</Link> <Link href="/privacy">privacy</Link>
+            </footer>
           </MoodboardProvider>
         </AuthProvider>
       </body>
