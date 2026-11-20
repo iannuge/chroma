@@ -5,7 +5,7 @@ import Nav from '../components/Nav'
 import AuthPrompt from '../components/AuthPrompt'
 
 export const metadata = {
-  title: 'chroma: designed by those who'll wear it',
+  title: "chroma: designed by those who'll wear it",
   description: 'a crowd-sourced graphic tee. vote for the cluster that becomes the shirt, then wear what the community designs.',
 }
 
@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
             <Nav />
             <AuthPrompt />
             {children}
-            <footer className="w mu">chroma. designed by those who'll wear it.</footer>
+            <footer className="w mu">chroma. designed by those who&apos;ll wear it.</footer>
           </MoodboardProvider>
         </AuthProvider>
       </body>
