@@ -33,7 +33,7 @@ function PastDrop({ drop, cluster, onOpen }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={drop.design_image} alt={'Drop ' + pad(drop.number) + ' design'} />
         ) : (
-          <TeeMock art="#000" label="CENSORED" />
+          <TeeMock blur label="CENSORED" />
         )}
       </div>
 
