@@ -578,3 +578,11 @@ footer .sqf i{display:block;width:11px;height:11px;background:var(--ink)}
 .lbr button:hover{opacity:1;color:var(--ink)}
 .lbr button:disabled{opacity:.4;cursor:default}
 .lbr select{background:transparent;border:0;border-bottom:1px solid var(--gb);padding:2px 4px;font:inherit;color:var(--mu)}
+
+/* ---- footer: squares above the links, a little room below ---- */
+footer .sqf{margin:0 0 22px}
+footer{padding-bottom:48px}
+
+/* ---- how it works: bold white title, gray body ---- */
+.hiw{color:var(--mu);font-weight:400}
+.hiw b{color:#fff;font-weight:700}
