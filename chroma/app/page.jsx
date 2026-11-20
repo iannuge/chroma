@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import HeroClock from '../components/HeroClock'
 import TeeHero from '../components/TeeHero'
 import Tile from '../components/Tile'
@@ -14,7 +14,6 @@ import { useAuth } from '../components/AuthProvider'
 import { hash } from '../lib/util'
 import { shopOpen } from '../lib/shop'
 import useFlip from '../lib/useFlip'
-import { HAS_ITERATIONS } from '../lib/data'
 
 const PHASES = ['Moodboard open', 'Design in progress', 'Sold out', 'Approval vote', 'Printing']
 const ORDER = ['moodboard', 'design', 'sold_out', 'approval', 'printing']
@@ -25,6 +24,7 @@ function NewCluster() {
   const [name, setName] = useState('')
   const [file, setFile] = useState(null)
   const [busy, setBusy] = useState(false)
+  const preview = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file])
 
   const submit = async (e) => {
     e.preventDefault()
@@ -41,7 +41,7 @@ function NewCluster() {
 
   return (
     <form
-      className="nc"
+      className="nc g"
       onSubmit={submit}
       onClickCapture={(e) => {
         if (!user) {
@@ -51,20 +51,26 @@ function NewCluster() {
         }
       }}
     >
+      <span className="ncl mu">make a cluster</span>
       <input
         type="text"
-        placeholder="New cluster name"
+        placeholder="Cluster title"
         required
-        aria-label="New cluster name"
+        aria-label="Cluster title"
         value={name}
         onChange={(e) => setName(e.target.value)}
         maxLength={60}
       />
-      <label className="im">
-        {file ? 'Image ✓' : 'First image'}
+      <label
+        className="ncp"
+        style={preview ? { backgroundImage: 'url("' + preview + '")' } : undefined}
+        aria-label="Add a first image"
+      >
+        {!preview && <span className="plus">+</span>}
+        {!preview && <span className="mu">first image</span>}
         <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
       </label>
-      <button className="pill" disabled={busy || (!!user && !file)}>
+      <button className="pill" disabled={busy || (!!user && (!file || !name.trim()))}>
         {busy ? 'Adding…' : 'Start cluster'}
       </button>
     </form>
@@ -102,15 +108,6 @@ export default function Home() {
         </div>
         <div className="hteewrap">
           <TeeHero />
-          {HAS_ITERATIONS ? (
-            <Link className="pill pv2" href="/iterations">
-              Previous iterations
-            </Link>
-          ) : (
-            <button className="pill pv2 off" disabled title="No previous iterations yet">
-              Previous iterations
-            </button>
-          )}
         </div>
         <div className="w">
           <div className="cta g one">{pre}</div>
@@ -119,7 +116,11 @@ export default function Home() {
 
       <section>
         <div className="w">
-          <h2 style={{ maxWidth: '20ch' }}>CROWDSOURCED ART DIRECTION ON A GRAPHIC TEE.</h2>
+          <h2>
+            crowdsourced art direction
+            <br />
+            on a graphic tee.
+          </h2>
           <HowItWorks />
           <div className="trk g">
             <div className="ph">
@@ -160,10 +161,13 @@ export default function Home() {
             <p className="mu" style={{ margin: 0 }}>
               these are just placeholder images right now. but its all functional! try uploading something
             </p>
-            <NewCluster />
           </div>
           <Notice />
-          <div className="board" ref={boardRef}>
+          <div className="mb">
+            <aside className="mba">
+              <NewCluster />
+            </aside>
+            <div className="board" ref={boardRef}>
             {clusters.map((c, r) => {
               const h = hash(c.id)
               return (
@@ -193,7 +197,7 @@ export default function Home() {
                     <VoteBox score={c.score} mine={c.mine} onVote={(d) => vote('cluster', c.id, d)} />
                   </div>
                   <div className="pv">
-                    {c.items.slice(0, 3).map((it) => (
+                    {c.items.slice(0, 4).map((it) => (
                       <Tile key={it.id} item={it} />
                     ))}
                   </div>
@@ -206,10 +210,11 @@ export default function Home() {
                 </article>
               )
             })}
+            </div>
           </div>
           {status === 'loading' && <p className="mu">Loading the moodboard…</p>}
           {status === 'ready' && clusters.length === 0 && (
-            <p className="mu">No clusters yet. Sign in and start the first one above.</p>
+            <p className="mu">No clusters yet. Sign in and start the first one on the left.</p>
           )}
         </div>
       </section>
