@@ -11,7 +11,7 @@ Next.js site for the CHROMA crowd-sourced tee brand. Data, login and image stora
 4. Add the same address under "Authorized JavaScript origins" in your Google OAuth client.
 
 ## Optional settings (Vercel > Settings > Environment Variables)
-- `NEXT_PUBLIC_PREORDER_URL`: link for the Pre-order button (for example a Shopify product page)
+- Shopify checkout is set in `lib/shop.js` (store + single variant ID). Optional overrides: `NEXT_PUBLIC_SHOP_DOMAIN`, `NEXT_PUBLIC_VARIANT_ID`. Size is sent as a line item property named "Size".
 - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: only to override the defaults in `lib/supabase.js`
 
 ## Database
