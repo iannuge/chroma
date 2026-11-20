@@ -17,7 +17,7 @@ export default function PreOrder() {
   const soldOut = claimed >= goal
   const pct = Math.min(100, (claimed / goal) * 100)
   const price = drop && drop.price_cents ? '$' + Math.round(drop.price_cents / 100) : ''
-  const ready = shopOpen && !soldOut && (!needsSize || !!size)
+  const chosen = !!drop && drop.status !== 'moodboard'
 
   let action
   if (hasOrder) {
@@ -30,6 +30,12 @@ export default function PreOrder() {
     action = (
       <button className="pill" disabled>
         sold out
+      </button>
+    )
+  } else if (!chosen) {
+    action = (
+      <button className="pill" disabled>
+        opens once a cluster is chosen
       </button>
     )
   } else if (!shopOpen) {
@@ -93,6 +99,7 @@ export default function PreOrder() {
                 aria-checked={size === s}
                 className={'szb' + (size === s ? ' on' : '')}
                 onClick={() => setSize(s)}
+                disabled={!chosen}
               >
                 {s}
               </button>
@@ -113,8 +120,8 @@ export default function PreOrder() {
         <section className="g poc">
           <h2>what you&apos;re pre-ordering</h2>
           <p>
-            A shirt before its design is final. The community picks the idea: when the countdown ends, the
-            top cluster on the moodboard becomes the tee, and I design from it. You&apos;ll see a draft and
+            A shirt before its design is final. The community picks the idea: once a cluster is chosen on the
+            moodboard, pre-orders open and I design the tee from it. You&apos;ll see a draft and
             can give feedback before it&apos;s finalized. Once all {goal} pieces are claimed, buyers vote to
             approve the final design before it goes to print.
           </p>
@@ -127,8 +134,8 @@ export default function PreOrder() {
         <section className="g poc">
           <h2>what happens next</h2>
           <ol className="hiw">
+            <li>The community votes and a cluster is chosen. Pre-orders open.</li>
             <li>You pre-order and get a confirmation email.</li>
-            <li>The countdown ends and the top cluster is chosen.</li>
             <li>A draft is posted, and the design is revised with feedback.</li>
             <li>When all {goal} are claimed, buyers vote to approve the design.</li>
             <li>The shirts are printed and shipped.</li>
