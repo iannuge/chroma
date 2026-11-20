@@ -147,7 +147,7 @@ export default function Home() {
               <i style={{ width: pct + '%' }} />
             </div>
             <div className="row mu">
-              <span>Week 2 of 4</span>
+              <span>Phase 0</span>
               <span>{hasOrder ? 'Pre-order bonus on your votes' : 'Pre-order to boost your votes'}</span>
             </div>
           </div>
