@@ -457,3 +457,4 @@ h2{margin-bottom:22px}
   .hero3 .tw{width:min(92vw,56svh)}
   .h3m h1{font-size:clamp(30px,10vw,56px)}
 }
+.szb:disabled{opacity:.45;cursor:not-allowed}.szb:disabled:hover{border-color:var(--gb)}
