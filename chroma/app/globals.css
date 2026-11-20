@@ -515,3 +515,15 @@ nav .mm a{padding:14px 16px;text-decoration:none;font-size:20px;letter-spacing:-
 /* three squares live at the very bottom of the page */
 footer .sqf{display:flex;justify-content:center;gap:6px;margin-top:22px;text-decoration:none;border:0}
 footer .sqf i{display:block;width:11px;height:11px;background:var(--ink)}
+/* podium: #1 in the center and subtly bigger in both directions, #2 left, #3 right */
+.top3{grid-template-columns:minmax(0,1fr) minmax(0,1.06fr) minmax(0,1fr);align-items:center}
+.top3 .r2{order:1}.top3 .r1{order:2}.top3 .r3{order:3}
+.top3 .r1{padding:clamp(15px,1.7vw,23px);box-shadow:0 22px 60px var(--sh),inset 0 1px 0 var(--gb)}
+.top3 .r1 .ch h3{font-size:clamp(25px,2.8vw,38px)}
+.top3.n1{grid-template-columns:minmax(0,420px);justify-content:center}
+.top3.n2{grid-template-columns:minmax(0,1.06fr) minmax(0,1fr)}
+.top3.n2 .r1{order:1}.top3.n2 .r2{order:2}
+@media(max-width:860px){
+  .top3,.top3.n1,.top3.n2{grid-template-columns:1fr;align-items:start}
+  .top3 .r1,.top3 .r2,.top3 .r3,.top3.n2 .r1,.top3.n2 .r2{order:0}
+}

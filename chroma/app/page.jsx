@@ -84,7 +84,7 @@ function ClusterCard({ c, rank, big }) {
   return (
     <article
       data-flip={c.id}
-      className={'cl g' + (big ? ' big' : '')}
+      className={'cl g' + (big ? ' big' : '') + (rank ? ' r' + rank : '')}
       style={{
         '--r': (h % 2 ? 0.6 : -0.6) + 'deg',
         '--dur': 11 + (h % 3) * 2.5 + 's',
@@ -173,7 +173,7 @@ export default function Home() {
           </div>
           <Notice />
           {top.length > 0 && (
-            <div className="top3" ref={topRef}>
+            <div className={'top3 n' + top.length} ref={topRef}>
               {top.map((c, i) => (
                 <ClusterCard key={c.id} c={c} rank={i + 1} big />
               ))}
