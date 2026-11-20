@@ -66,8 +66,29 @@ export const HAS_ITERATIONS = false
 // Your own design work, shown on the past drops page.
 // Put image files in /public/work and list them here, e.g. { src: '/work/tee1.jpg', label: 'tee 01' }
 export const WORK = [
-  { src: '/work/becoming.webp', label: 'becoming' },
-  { src: '/work/fall-rush.webp', label: 'fall rush' },
-  { src: '/work/student-government.webp', label: 'student government' },
-  { src: '/work/this-way-up.webp', label: 'this way up' },
+  {
+    src: '/work/becoming.webp',
+    title: 'becoming',
+    year: '2026',
+    desc: "a back print. a blackletter 'becoming' sits over a red halftone eye, with a line about making art to experience it, not for money or fame.",
+  },
+  {
+    src: '/work/fall-rush.webp',
+    title: 'fall rush',
+    year: '2025',
+    desc: 'a back print for fall rush, styled like the packaging of a game or blu-ray release: a grainy countach on a red grid, with ratings and barcode details.',
+  },
+  {
+    src: '/work/student-government.webp',
+    title: 'student government',
+    year: '2026',
+    desc: 'a front print. heavy black type struck through with a red marker scrawl, three halftone panels, and coordinates with registration marks.',
+  },
+  {
+    src: '/work/this-way-up.webp',
+    title: 'this way up',
+    year: '2025',
+    desc: "a front print in plain helvetica. shipping-label arrows, a date, and care symbols treat the shirt like a package that is 'intended for wear.'",
+  },
 ]
+

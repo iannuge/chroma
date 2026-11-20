@@ -7,7 +7,7 @@ export default function TeeMock({ art, label, blur }) {
           {label || ''}
         </div>
       )}
-      {blur && <div className="tb" />}
+      {blur && <div className="tb">{label || ''}</div>}
     </div>
   )
 }

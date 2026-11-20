@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
-import Countdown from '../components/Countdown'
+import HeroClock from '../components/HeroClock'
 import TeeHero from '../components/TeeHero'
 import Tile from '../components/Tile'
 import VoteBox from '../components/VoteBox'
@@ -80,7 +80,7 @@ export default function Home() {
   useFlip(boardRef)
 
   const idx = !drop ? 0 : drop.status === 'shipped' ? PHASES.length : Math.max(0, ORDER.indexOf(drop.status))
-  const goal = progress.goal || 100
+  const goal = progress.goal || 20
   const claimed = progress.claimed || 0
   const pct = Math.min(100, (claimed / goal) * 100)
   const price = drop ? '$' + Math.round(drop.price_cents / 100) : ''
@@ -109,15 +109,14 @@ export default function Home() {
   return (
     <>
       <div className="hero2">
-        <div className="hl" aria-hidden="true">
-          <h1>
-            {'drop ' + String(drop ? drop.number : 0).padStart(2, '0')}
-            <span className="cur">|</span>
-          </h1>
-          <p>[{drop ? drop.theme : 'genesis'}]</p>
+        <div className="hl">
+          <p>
+            [drop {String(drop ? drop.number : 0).padStart(2, '0')}: {drop ? drop.theme : 'genesis'}]
+          </p>
+          <HeroClock target={drop ? drop.next_iteration_at : null} />
+          <p className="sub2">until clusters are chosen</p>
         </div>
         <div className="hteewrap">
-          <Countdown target={drop ? drop.next_iteration_at : null} />
           <TeeHero />
           {HAS_ITERATIONS ? (
             <Link className="pill pv2" href="/iterations">
@@ -130,12 +129,7 @@ export default function Home() {
           )}
         </div>
         <div className="w">
-          <div className="cta g">
-            <span className="mu">
-              {drop ? drop.goal : 100} pieces, 280 gsm cotton
-            </span>
-            {pre}
-          </div>
+          <div className="cta g one">{pre}</div>
         </div>
       </div>
 
@@ -248,7 +242,7 @@ export default function Home() {
               </a>
             </p>
             <p className="ai">
-              i used ai to make the site but <b>NOT</b> the t-shirt. i do not support generative artwork!
+              i used ai to make the site but <b>NEVER</b> the t-shirt. i do not support generative artwork!
             </p>
           </div>
         </div>

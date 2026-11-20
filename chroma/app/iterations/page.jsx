@@ -27,7 +27,7 @@ export default function Iterations() {
           </article>
         ))}
         <article className="g pc">
-          <TeeMock art="#000" label="CENSORED" />
+          <TeeMock blur label="CENSORED" />
           <div>
             <h3>Iteration 3</h3>
             <p>Lands at the next countdown</p>

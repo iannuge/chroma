@@ -6,7 +6,7 @@ import Tile from '../../components/Tile'
 import Lightbox from '../../components/Lightbox'
 import TeeMock from '../../components/TeeMock'
 import { useMoodboard } from '../../components/MoodboardProvider'
-import { WORK } from '../../lib/data'
+import WorkGallery from '../../components/WorkGallery'
 
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -33,7 +33,7 @@ function PastDrop({ drop, cluster, onOpen }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={drop.design_image} alt={'Drop ' + pad(drop.number) + ' design'} />
         ) : (
-          <TeeMock art="#000" label="CENSORED" />
+          <TeeMock blur label="CENSORED" />
         )}
       </div>
 
@@ -109,21 +109,7 @@ export default function Archive() {
       )}
 
       {past.length > 0 && <h2 className="sh">more of my own work</h2>}
-      <div className="wk">
-        {WORK.map((x, i) => (
-          <figure className={'g' + (x.src ? ' has' : '')} key={x.src || x.label || i}>
-            {x.src ? (
-              <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={x.src} alt={x.label || 'Design work'} />
-                {x.label && <figcaption>{x.label}</figcaption>}
-              </>
-            ) : (
-              <figcaption>{x.label}</figcaption>
-            )}
-          </figure>
-        ))}
-      </div>
+      <WorkGallery />
       {status === 'loading' && <p className="mu">Loading…</p>}
       <Lightbox item={allItems.find((i) => i.id === open) || null} onClose={() => setOpen(null)} />
     </main>
