@@ -77,11 +77,59 @@ function NewCluster() {
   )
 }
 
-export default function Home() {
-  const { drop, clusters: all, progress, hasOrder, status, vote } = useMoodboard()
-  const clusters = all.filter((c) => !c.won)
+function ClusterCard({ c, rank, big }) {
   const router = useRouter()
+  const { vote } = useMoodboard()
+  const h = hash(c.id)
+  return (
+    <article
+      data-flip={c.id}
+      className={'cl g' + (big ? ' big' : '')}
+      style={{
+        '--r': (h % 2 ? 0.6 : -0.6) + 'deg',
+        '--dur': 11 + (h % 3) * 2.5 + 's',
+        animationDelay: '-' + (h % 7) + 's',
+      }}
+      onClick={(e) => {
+        if (e.target.closest('button,a')) return
+        router.push('/cluster/' + c.id)
+      }}
+    >
+      <div className="ch">
+        <div>
+          {rank ? <span className="rk">#{rank}</span> : null}
+          <h3>
+            <Link href={'/cluster/' + c.id}>{c.name}</Link>
+          </h3>
+          <span className="by2">
+            by <Link href={'/u/' + c.byId}>{c.by}</Link>
+          </span>
+        </div>
+        <VoteBox score={c.score} mine={c.mine} onVote={(d) => vote('cluster', c.id, d)} />
+      </div>
+      <div className="pv">
+        {c.items.slice(0, 4).map((it) => (
+          <Tile key={it.id} item={it} />
+        ))}
+      </div>
+      <div className="open">
+        <span className="mu">
+          {c.items.length} {c.items.length === 1 ? 'item' : 'items'}
+        </span>
+        <b>Open</b>
+      </div>
+    </article>
+  )
+}
+
+export default function Home() {
+  const { drop, clusters: all, progress, hasOrder, status } = useMoodboard()
+  const clusters = all.filter((c) => !c.won)
+  const top = clusters.slice(0, 3)
+  const rest = clusters.slice(3)
+  const topRef = useRef(null)
   const boardRef = useRef(null)
+  useFlip(topRef)
   useFlip(boardRef)
 
   const idx = !drop ? 0 : drop.status === 'shipped' ? PHASES.length : Math.max(0, ORDER.indexOf(drop.status))
@@ -98,21 +146,55 @@ export default function Home() {
 
   return (
     <>
-      <div className="hero2">
-        <div className="hl">
-          <p>
+      <div className="hero3">
+        <TeeHero />
+        <div className="h3m">
+          <p className="mu">
             [drop {String(drop ? drop.number : 0).padStart(2, '0')}: {drop ? drop.theme : 'genesis'}]
           </p>
           <HeroClock target={drop ? drop.next_iteration_at : null} />
-          <p className="sub2">until clusters are chosen</p>
-        </div>
-        <div className="hteewrap">
-          <TeeHero />
-        </div>
-        <div className="w">
+          <p className="mu">until clusters are chosen</p>
           <div className="cta g one">{pre}</div>
         </div>
+        <a className="dn mu" href="#board" aria-label="Jump to the moodboard">
+          choose a direction ↓
+        </a>
       </div>
+
+      <section id="board">
+        <div className="w">
+          <div className="hd">
+            <h2 style={{ margin: 0 }}>choose a direction</h2>
+            <p className="mu" style={{ margin: 0 }}>
+              the top three clusters move on to the next phase. start a cluster or add to one, then vote on your
+              favorites.
+            </p>
+          </div>
+          <Notice />
+          {top.length > 0 && (
+            <div className="top3" ref={topRef}>
+              {top.map((c, i) => (
+                <ClusterCard key={c.id} c={c} rank={i + 1} big />
+              ))}
+            </div>
+          )}
+          {status === 'loading' && <p className="mu">Loading the moodboard…</p>}
+          {status === 'ready' && clusters.length === 0 && (
+            <p className="mu">No clusters yet. Sign in and start the first one below.</p>
+          )}
+          <div className="restlabel mu">the rest</div>
+          <div className="mb">
+            <aside className="mba">
+              <NewCluster />
+            </aside>
+            <div className="board" ref={boardRef}>
+              {rest.map((c) => (
+                <ClusterCard key={c.id} c={c} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section>
         <div className="w">
@@ -151,71 +233,6 @@ export default function Home() {
               <span>{hasOrder ? 'Pre-order bonus on your votes' : 'Pre-order to boost your votes'}</span>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section id="board">
-        <div className="w">
-          <div className="hd">
-            <h2 style={{ margin: 0 }}>The moodboard</h2>
-            <p className="mu" style={{ margin: 0 }}>
-              start a cluster or add to one, then vote on your favorites. when the countdown ends, the top cluster becomes the shirt.
-            </p>
-          </div>
-          <Notice />
-          <div className="mb">
-            <aside className="mba">
-              <NewCluster />
-            </aside>
-            <div className="board" ref={boardRef}>
-            {clusters.map((c, r) => {
-              const h = hash(c.id)
-              return (
-                <article
-                  key={c.id}
-                  data-flip={c.id}
-                  className={'cl g' + (r < 5 ? ' k' + r : '')}
-                  style={{
-                    '--r': (h % 2 ? 0.6 : -0.6) + 'deg',
-                    '--dur': 11 + (h % 3) * 2.5 + 's',
-                    animationDelay: '-' + (h % 7) + 's',
-                  }}
-                  onClick={(e) => {
-                    if (e.target.closest('button,a')) return
-                    router.push('/cluster/' + c.id)
-                  }}
-                >
-                  <div className="ch">
-                    <div>
-                      <h3>
-                        <Link href={'/cluster/' + c.id}>{c.name}</Link>
-                      </h3>
-                      <span className="by2">
-                        by <Link href={'/u/' + c.byId}>{c.by}</Link>
-                      </span>
-                    </div>
-                    <VoteBox score={c.score} mine={c.mine} onVote={(d) => vote('cluster', c.id, d)} />
-                  </div>
-                  <div className="pv">
-                    {c.items.slice(0, 4).map((it) => (
-                      <Tile key={it.id} item={it} />
-                    ))}
-                  </div>
-                  <div className="open">
-                    <span className="mu">
-                      {c.items.length} {c.items.length === 1 ? 'item' : 'items'}
-                    </span>
-                    <b>Open</b>
-                  </div>
-                </article>
-              )
-            })}
-            </div>
-          </div>
-          {status === 'loading' && <p className="mu">Loading the moodboard…</p>}
-          {status === 'ready' && clusters.length === 0 && (
-            <p className="mu">No clusters yet. Sign in and start the first one on the left.</p>
-          )}
         </div>
       </section>
 
