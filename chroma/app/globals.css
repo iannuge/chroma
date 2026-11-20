@@ -496,3 +496,9 @@ input::placeholder,textarea::placeholder{color:var(--mu)}
 .tb{left:-6%;top:24%;width:112%;height:42%;color:#fff;mix-blend-mode:difference}
 .tb span{font-size:19.5cqw;line-height:.88;letter-spacing:-.07em;color:#fff;font-weight:800}
 .tb small{position:absolute;left:61%;top:78%;font-size:2.8cqw;color:#fff;opacity:1}
+
+/* a little smaller; and the live tee on the pre-order page */
+.cens{top:24%}
+.hero3 .cens span,.cens span{font-size:17cqw}
+.pot .tw{width:100%}
+.pot .cens{top:24%}

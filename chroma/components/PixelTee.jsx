@@ -18,8 +18,8 @@ const FS = [
   '  vec4 px=texture2D(t,(c+.5)/g);',
   '  vec3 col=px.a>.01?px.rgb/px.a:vec3(1.);',
   '  float a=step(.45,px.a);',
-  '  a*=1.-dis*h(c+floor(time*1.5));',
-  '  float f=(h(c+floor(time*2.))-.5)*.08;',
+  '  a*=1.-dis*h(c+floor(time*.7));',
+  '  float f=(h(c+floor(time*.7))-.5)*.025;',
   '  return vec4(clamp(col+f,0.,1.)*a,a);',
   '}',
   'void main(){',
@@ -76,7 +76,7 @@ export default function PixelTee({ src, alt }) {
     let lastMove = -1e9
     let tx = 0.5, ty = 0.5, mx = 0.5, my = 0.5, r = 0.2
     let asp = 1
-    let py = window.scrollY, vel = 0, cellsNow = 46, disNow = 0.3, caNow = 0.012
+    let py = window.scrollY, vel = 0, cellsNow = 62, disNow = 0.12, caNow = 0.008
 
     const el = new Image()
     el.onload = () => {
@@ -150,9 +150,9 @@ export default function PixelTee({ src, alt }) {
       py = y
       const av = Math.min(1, Math.abs(vel) / 36)
       const prog = Math.min(1, y / (window.innerHeight * 0.9))
-      const cellsGoal = Math.max(14, 44 - prog * 22 - av * 16 + Math.sin(t * 0.6) * 4)
-      const disGoal = Math.min(0.9, 0.3 + av * 0.4 + prog * 0.2 + Math.sin(t * 0.9) * 0.05)
-      const caGoal = 0.012 + av * 0.03 + prog * 0.01
+      const cellsGoal = Math.max(34, 64 - prog * 12 - av * 12 + Math.sin(t * 0.6) * 3)
+      const disGoal = Math.min(0.4, 0.12 + av * 0.2 + prog * 0.08 + Math.sin(t * 0.9) * 0.02)
+      const caGoal = 0.008 + av * 0.018 + prog * 0.006
       cellsNow += (cellsGoal - cellsNow) * 0.12
       disNow += (disGoal - disNow) * 0.1
       caNow += (caGoal - caNow) * 0.12
