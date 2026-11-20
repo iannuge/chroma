@@ -559,3 +559,22 @@ footer .sqf i{display:block;width:11px;height:11px;background:var(--ink)}
 .hero3 .cens span,.cens span{font-size:17cqw}
 .pot .tw{width:100%}
 .pot .cens{top:24%}
+
+/* ---- smaller clusters under the top three ---- */
+.mb .cl{grid-column:span 4;padding:11px}
+.mb .cl .ch h3{font-size:20px}
+.mb .cl .pv{gap:6px}
+@media(max-width:1100px) and (min-width:861px){.mb .cl{grid-column:span 6}}
+
+/* ---- past drops: the shirts in one row ---- */
+.early .wk{grid-template-columns:repeat(4,minmax(0,1fr));max-width:1100px;margin-inline:auto;justify-content:stretch}
+.early .cvh .pill{margin-top:18px;display:inline-block}
+@media(max-width:760px){.early .wk{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.wk img[src$="/becoming.webp"],.wkt img[src$="/becoming.webp"],.wvi img[src$="/becoming.webp"]{filter:drop-shadow(0 0 1px rgba(255,255,255,.4)) drop-shadow(0 18px 24px rgba(0,0,0,.5))}
+
+/* ---- report / delete: quiet text, no frame ---- */
+.lbr{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:10px;padding:0;background:none;border:0;box-shadow:none;font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;letter-spacing:-.02em}
+.lbr button{background:none;border:0;padding:2px 4px;font:inherit;color:var(--mu);opacity:.65;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.lbr button:hover{opacity:1;color:var(--ink)}
+.lbr button:disabled{opacity:.4;cursor:default}
+.lbr select{background:transparent;border:0;border-bottom:1px solid var(--gb);padding:2px 4px;font:inherit;color:var(--mu)}

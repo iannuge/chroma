@@ -265,6 +265,23 @@ export default function MoodboardProvider({ children }) {
     return { ok: true }
   }
 
+  const deleteItem = async (itemId) => {
+    if (!need()) return { ok: false, error: 'Sign in first.' }
+    const it = data.rawItems.find((i) => i.id === itemId)
+    if (!it) return { ok: false, error: 'Image not found.' }
+    const del = await supabase.from('items').delete().eq('id', itemId).eq('created_by', uid).select('id')
+    if (del.error) return { ok: false, error: del.error.message }
+    if (!del.data || !del.data.length) return { ok: false, error: 'You can only delete your own images.' }
+    if (it.image_path) await supabase.storage.from('moodboard').remove([it.image_path])
+    const left = data.rawItems.filter((i) => i.cluster_id === it.cluster_id && i.id !== itemId).length
+    const cl = data.rawClusters.find((c) => c.id === it.cluster_id)
+    if (!left && cl && cl.created_by === uid) {
+      await supabase.from('clusters').delete().eq('id', cl.id).eq('created_by', uid)
+    }
+    await load()
+    return { ok: true }
+  }
+
   const value = {
     drop: data.drop,
     drops: data.drops,
@@ -280,6 +297,7 @@ export default function MoodboardProvider({ children }) {
     addCluster,
     addItem,
     reportItem,
+    deleteItem,
     reload: load,
   }
 

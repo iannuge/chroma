@@ -9,16 +9,18 @@ import { lum } from '../lib/util'
 const REASONS = ['copyright', 'inappropriate', 'ai-generated', 'spam', 'other']
 
 export default function Lightbox({ item, onClose }) {
-  const { reportItem } = useMoodboard()
+  const { reportItem, deleteItem, clusters } = useMoodboard()
   const { user } = useAuth()
   const [asking, setAsking] = useState(false)
   const [reason, setReason] = useState(REASONS[0])
   const [note, setNote] = useState('')
   const [busy, setBusy] = useState(false)
+  const [confirming, setConfirming] = useState(false)
 
   const id = item ? item.id : null
   useEffect(() => {
     setAsking(false)
+    setConfirming(false)
     setNote('')
     setReason(REASONS[0])
   }, [id])
@@ -33,6 +35,17 @@ export default function Lightbox({ item, onClose }) {
       setTimeout(onClose, 1400)
     } else {
       setNote(r.error)
+    }
+  }
+
+  const remove = async () => {
+    setBusy(true)
+    const r = await deleteItem(item.id)
+    setBusy(false)
+    if (r.ok) onClose()
+    else {
+      setNote(r.error)
+      setConfirming(false)
     }
   }
 
@@ -83,28 +96,38 @@ export default function Lightbox({ item, onClose }) {
           </span>
           <b>{item.score > 0 ? '+' + item.score : item.score}</b>
         </div>
-        {!(user && item.byId === user.id) && (
-          <div className="lbr g">
-            {asking ? (
+        <div className="lbr">
+          {user && item.byId === user.id ? (
+            (clusters.find((c) => c.id === item.clusterId) || {}).won ? null : confirming ? (
               <>
-                <select value={reason} onChange={(e) => setReason(e.target.value)} aria-label="Reason">
-                  {REASONS.map((r) => (
-                    <option key={r} value={r}>
-                      {r}
-                    </option>
-                  ))}
-                </select>
-                <button className="pill" onClick={send} disabled={busy}>
-                  {busy ? 'Sending…' : 'Send report'}
+                <span className="mu">delete this image?</span>
+                <button onClick={remove} disabled={busy}>
+                  {busy ? 'Deleting…' : 'Yes, delete'}
                 </button>
-                <button onClick={() => setAsking(false)}>Cancel</button>
+                <button onClick={() => setConfirming(false)}>Cancel</button>
               </>
             ) : (
-              <button onClick={() => (user ? setAsking(true) : reportItem(item.id, null))}>Report</button>
-            )}
-            {note && <span className="mu">{note}</span>}
-          </div>
-        )}
+              <button onClick={() => setConfirming(true)}>Delete</button>
+            )
+          ) : asking ? (
+            <>
+              <select value={reason} onChange={(e) => setReason(e.target.value)} aria-label="Reason">
+                {REASONS.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </select>
+              <button onClick={send} disabled={busy}>
+                {busy ? 'Sending…' : 'Send report'}
+              </button>
+              <button onClick={() => setAsking(false)}>Cancel</button>
+            </>
+          ) : (
+            <button onClick={() => (user ? setAsking(true) : reportItem(item.id, null))}>Report</button>
+          )}
+          {note && <span className="mu">{note}</span>}
+        </div>
       </div>
     </div>
   )
