@@ -4,23 +4,31 @@ import { useEffect, useRef } from 'react'
 
 const VS = 'attribute vec2 p;varying vec2 v;void main(){v=vec2(p.x*.5+.5,1.-(p.y*.5+.5));gl_Position=vec4(p,0.,1.);}'
 
-// The tee as chunky pixels, with a soft lens around the pointer that resolves into the sharp photo.
+// The tee as chunky, partly see-through pixels. A soft lens around the pointer resolves into the sharp photo.
+// Pixel size, dropout and the colour split all react to scroll.
 const FS = [
   'precision mediump float;',
   'varying vec2 v;',
   'uniform sampler2D t;',
   'uniform vec2 m;',
-  'uniform float r,cells,time,asp;',
+  'uniform float r,cells,time,asp,dis,ca;',
   'float h(vec2 c){return fract(sin(dot(c,vec2(12.9898,78.233)))*43758.5453);}',
-  'void main(){',
-  '  vec2 g=vec2(cells,cells/asp);',
-  '  vec2 c=floor(v*g);',
+  'vec4 pix(vec2 uv,vec2 g){',
+  '  vec2 c=floor(uv*g);',
   '  vec4 px=texture2D(t,(c+.5)/g);',
-  '  float f=(h(c+floor(time*2.))-.5)*.06;',
   '  vec3 col=px.a>.01?px.rgb/px.a:vec3(1.);',
   '  float a=step(.45,px.a);',
-  '  px=vec4(clamp(col+f,0.,1.)*a,a);',
-  '  vec4 sharp=texture2D(t,v);',
+  '  a*=1.-dis*h(c+floor(time*1.5));',
+  '  float f=(h(c+floor(time*2.))-.5)*.08;',
+  '  return vec4(clamp(col+f,0.,1.)*a,a);',
+  '}',
+  'void main(){',
+  '  vec2 g=vec2(cells,cells/asp);',
+  '  vec2 o=(v-.5)*ca;',
+  '  vec4 pr=pix(v+o,g),pg=pix(v,g),pb=pix(v-o,g);',
+  '  vec4 px=vec4(pr.r,pg.g,pb.b,max(pr.a,max(pg.a,pb.a)));',
+  '  vec4 sr=texture2D(t,v+o*.5),sg=texture2D(t,v),sb=texture2D(t,v-o*.5);',
+  '  vec4 sharp=vec4(sr.r,sg.g,sb.b,max(sr.a,max(sg.a,sb.a)));',
   '  float k=1.-smoothstep(r*.5,r,length((v-m)*vec2(asp,1.)));',
   '  gl_FragColor=mix(px,sharp,k);',
   '}',
@@ -59,7 +67,7 @@ export default function PixelTee({ src, alt }) {
     gl.enableVertexAttribArray(loc)
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
     const U = (n) => gl.getUniformLocation(prog, n)
-    const uM = U('m'), uR = U('r'), uC = U('cells'), uT = U('time'), uA = U('asp')
+    const uM = U('m'), uR = U('r'), uC = U('cells'), uT = U('time'), uA = U('asp'), uD = U('dis'), uCA = U('ca')
 
     let raf = 0
     let alive = true
@@ -68,6 +76,7 @@ export default function PixelTee({ src, alt }) {
     let lastMove = -1e9
     let tx = 0.5, ty = 0.5, mx = 0.5, my = 0.5, r = 0.2
     let asp = 1
+    let py = window.scrollY, vel = 0, cellsNow = 46, disNow = 0.3, caNow = 0.012
 
     const el = new Image()
     el.onload = () => {
@@ -135,7 +144,21 @@ export default function PixelTee({ src, alt }) {
       gl.clear(gl.COLOR_BUFFER_BIT)
       gl.uniform2f(uM, mx, my)
       gl.uniform1f(uR, r)
-      gl.uniform1f(uC, 46 + Math.sin(t * 0.6) * 2)
+      // scroll drives the look: coarser and more broken up while moving, and as you leave the top
+      const y = window.scrollY
+      vel += (y - py - vel) * 0.15
+      py = y
+      const av = Math.min(1, Math.abs(vel) / 36)
+      const prog = Math.min(1, y / (window.innerHeight * 0.9))
+      const cellsGoal = Math.max(14, 44 - prog * 22 - av * 16 + Math.sin(t * 0.6) * 4)
+      const disGoal = Math.min(0.9, 0.3 + av * 0.4 + prog * 0.2 + Math.sin(t * 0.9) * 0.05)
+      const caGoal = 0.012 + av * 0.03 + prog * 0.01
+      cellsNow += (cellsGoal - cellsNow) * 0.12
+      disNow += (disGoal - disNow) * 0.1
+      caNow += (caGoal - caNow) * 0.12
+      gl.uniform1f(uC, cellsNow)
+      gl.uniform1f(uD, disNow)
+      gl.uniform1f(uCA, caNow)
       gl.uniform1f(uT, t)
       gl.uniform1f(uA, asp)
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
