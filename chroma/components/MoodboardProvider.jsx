@@ -252,6 +252,19 @@ export default function MoodboardProvider({ children }) {
     }
   }
 
+  const reportItem = async (itemId, reason) => {
+    if (!need()) return { ok: false, error: 'Sign in to report an image.' }
+    const { error } = await supabase
+      .from('reports')
+      .insert({ item_id: itemId, reporter_id: uid, reason: reason || null })
+    if (error) {
+      if (error.code === '23505') return { ok: false, error: 'You already reported this image.' }
+      return { ok: false, error: error.message }
+    }
+    await load()
+    return { ok: true }
+  }
+
   const value = {
     drop: data.drop,
     drops: data.drops,
@@ -266,6 +279,7 @@ export default function MoodboardProvider({ children }) {
     vote,
     addCluster,
     addItem,
+    reportItem,
     reload: load,
   }
 

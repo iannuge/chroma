@@ -417,3 +417,9 @@ h2{margin-bottom:22px}
   .mb .board{grid-template-columns:1fr}
   .mb .cl,.mb .k0,.mb .k1{grid-column:auto;margin-top:0}
 }
+
+/* report an image */
+.lbr{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;padding:8px 12px;font-size:14px}
+.lbr select{background:var(--gl);border:1px solid var(--gb);padding:8px 10px;font:inherit;color:inherit}
+.lbr button:not(.pill){text-decoration:underline;text-underline-offset:3px;background:none;border:0;padding:4px 6px;color:inherit;font:inherit}
+.lbr .pill{padding:8px 14px}
