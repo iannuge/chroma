@@ -73,7 +73,7 @@ export default function PreOrder() {
 
       <div className="pob">
         <div className="pot">
-          <TeeMock blur label="TO BE DETERMINED" />
+          <TeeMock blur label="TO BE DETERMINED" sub="(by you)" />
         </div>
 
         <div className="g pop">

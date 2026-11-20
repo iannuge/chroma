@@ -49,9 +49,10 @@ export default function TeeHero() {
   return (
     <div className="tw">
       <div className="tee" ref={tee}>
-        <img src="/tee.webp" alt="White t-shirt with its graphic hidden behind a TO BE DETERMINED box" />
+        <img src="/tee.webp" alt="White t-shirt with its graphic reading TO BE DETERMINED, by you" />
         <div className="cens" ref={box}>
           <span>TO BE<br />DETERMINED</span>
+          <small>(by you)</small>
         </div>
       </div>
     </div>

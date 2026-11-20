@@ -1,4 +1,4 @@
-export default function TeeMock({ art, label, blur }) {
+export default function TeeMock({ art, label, sub, blur }) {
   return (
     <div className="tm">
       <img src="/tee.webp" alt="" />
@@ -7,7 +7,12 @@ export default function TeeMock({ art, label, blur }) {
           {label || ''}
         </div>
       )}
-      {blur && <div className="tb">{label || ''}</div>}
+      {blur && (
+        <div className="tb">
+          <span>{label || ''}</span>
+          {sub ? <small>{sub}</small> : null}
+        </div>
+      )}
     </div>
   )
 }
