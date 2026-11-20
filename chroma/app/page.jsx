@@ -147,7 +147,7 @@ export default function Home() {
               <i style={{ width: pct + '%' }} />
             </div>
             <div className="row mu">
-              <span>Week 2 of 4</span>
+              <span>Phase 0</span>
               <span>{hasOrder ? 'Pre-order bonus on your votes' : 'Pre-order to boost your votes'}</span>
             </div>
           </div>
@@ -159,7 +159,7 @@ export default function Home() {
           <div className="hd">
             <h2 style={{ margin: 0 }}>The moodboard</h2>
             <p className="mu" style={{ margin: 0 }}>
-              these are just placeholder images right now. but its all functional! try uploading something
+              start a cluster or add to one, then vote on your favorites. when the countdown ends, the top cluster becomes the shirt.
             </p>
           </div>
           <Notice />
