@@ -12,13 +12,12 @@ import HowItWorks from '../components/HowItWorks'
 import { useMoodboard } from '../components/MoodboardProvider'
 import { useAuth } from '../components/AuthProvider'
 import { hash } from '../lib/util'
+import { shopOpen } from '../lib/shop'
 import useFlip from '../lib/useFlip'
 import { HAS_ITERATIONS } from '../lib/data'
 
 const PHASES = ['Moodboard open', 'Design in progress', 'Sold out', 'Approval vote', 'Printing']
 const ORDER = ['moodboard', 'design', 'sold_out', 'approval', 'printing']
-// Set this in Vercel (Environment Variables) to your Shopify product or checkout link.
-const PREORDER_URL = process.env.NEXT_PUBLIC_PREORDER_URL || ''
 
 function NewCluster() {
   const { addCluster, setPrompt } = useMoodboard()
@@ -85,26 +84,11 @@ export default function Home() {
   const pct = Math.min(100, (claimed / goal) * 100)
   const price = drop ? '$' + Math.round(drop.price_cents / 100) : ''
 
-  let pre
-  if (hasOrder) {
-    pre = (
-      <button className="pill" disabled>
-        Pre-ordered
-      </button>
-    )
-  } else if (PREORDER_URL) {
-    pre = (
-      <a className="pill" href={PREORDER_URL} target="_blank" rel="noopener noreferrer">
-        Pre-order for {price}
-      </a>
-    )
-  } else {
-    pre = (
-      <button className="pill" disabled>
-        Pre-orders open soon
-      </button>
-    )
-  }
+  const pre = (
+    <Link className="pill" href="/preorder">
+      {hasOrder ? 'Pre-ordered' : shopOpen ? 'Pre-order for ' + price : 'Pre-order details'}
+    </Link>
+  )
 
   return (
     <>

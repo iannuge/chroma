@@ -24,6 +24,9 @@ export default function Nav() {
       <Link href="/#board" onClick={close}>
         Moodboard
       </Link>
+      <Link href="/preorder" onClick={close}>
+        Pre-order
+      </Link>
       {user && (
         <Link href="/profile" onClick={close}>
           Profile
