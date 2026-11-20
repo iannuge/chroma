@@ -4,3 +4,4 @@ export const SIZES = ['S', 'M', 'L', 'XL']
 export const shopOpen = true
 // A size is always required before checkout.
 export const needsSize = true
+export const MAX_QTY = 10
