@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { HIDDEN_ART } from '../lib/util'
 
 export default function TeeHero() {
   const tee = useRef(null)
@@ -49,10 +50,9 @@ export default function TeeHero() {
   return (
     <div className="tw">
       <div className="tee" ref={tee}>
-        <img src="/tee.webp" alt="Plain white t-shirt, blank front" />
-        <div className="cens" ref={box}>
-          <span>CENSORED</span>
-        </div>
+        <img src="/tee.webp" alt="White t-shirt with its graphic hidden behind a blur" />
+        <div className="hid" style={{ background: HIDDEN_ART }} />
+        <div className="cens" ref={box} />
       </div>
     </div>
   )
