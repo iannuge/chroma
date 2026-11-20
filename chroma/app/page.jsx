@@ -166,8 +166,8 @@ export default function Home() {
           <div className="hd">
             <h2 style={{ margin: 0 }}>choose a direction</h2>
             <p className="mu" style={{ margin: 0 }}>
-              the top three clusters move on to the next phase. start a cluster or add to one, then vote on your
-              favorites.
+              one of these clusters will guide the tee. the top three move on, and the community votes to pick the
+              one that becomes the shirt. start a cluster or add to one, then vote for your favorites.
             </p>
           </div>
           <Notice />
