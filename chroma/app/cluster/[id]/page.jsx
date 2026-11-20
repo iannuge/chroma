@@ -85,7 +85,14 @@ export default function ClusterPage() {
   const scores = items.map((i) => i.score)
   const mx = scores.length ? Math.max(...scores) : 0
   const mn = scores.length ? Math.min(...scores) : 0
-  const big = Math.min(300, dim.w * 0.52)
+  // Staggered grid: big enough to read at 0-1 votes, with score only nudging size and position.
+  const W = dim.w || 600
+  const cols = W < 520 ? 2 : W < 900 ? 3 : 4
+  const gap = 18
+  const cell = (W - gap * (cols - 1)) / cols
+  const rowH = cell * 0.92
+  const rows = Math.max(1, Math.ceil(items.length / cols))
+  const stageH = rows * rowH + (cols > 1 ? rowH * 0.25 : 0) + 24
 
   return (
     <main className="w page">
@@ -106,14 +113,16 @@ export default function ClusterPage() {
         )}
       </div>
       <Notice />
-      <div className="fs" ref={stage}>
+      <div className="fs" ref={stage} style={{ height: stageH }}>
         {items.map((it, k) => {
           const n = mx === mn ? 0.5 : (it.score - mn) / (mx - mn)
-          const z = 110 + n * (big - 110)
-          const h = z * 0.82
-          const left = dim.w ? ((k * 0.618 + 0.07) % 1) * Math.max(0, dim.w - z) : 0
-          const top = 12 + (1 - n) * Math.max(0, dim.h - h - 24) * 0.62
-          const fs = 12 + (Math.max(0, it.score) / Math.max(1, mx)) * 10
+          const z = cell * (0.86 + n * 0.14)
+          const h = z * 0.9
+          const col = k % cols
+          const row = Math.floor(k / cols)
+          const left = col * (cell + gap) + (cell - z) / 2
+          const top = row * rowH + (col % 2 ? rowH * 0.22 : 0) + (rowH - h) / 2 * 0.4 + 8
+          const fs = 13 + n * 8
           return (
             <div
               className="fi"
