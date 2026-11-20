@@ -49,8 +49,10 @@ export default function TeeHero() {
   return (
     <div className="tw">
       <div className="tee" ref={tee}>
-        <img src="/tee.webp" alt="White t-shirt with its graphic hidden behind a blur" />
-        <div className="cens" ref={box} />
+        <img src="/tee.webp" alt="White t-shirt with its graphic hidden behind a CENSORED box" />
+        <div className="cens" ref={box}>
+          <span>CENSORED</span>
+        </div>
       </div>
     </div>
   )

@@ -33,7 +33,7 @@ function PastDrop({ drop, cluster, onOpen }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={drop.design_image} alt={'Drop ' + pad(drop.number) + ' design'} />
         ) : (
-          <TeeMock blur />
+          <TeeMock art="#000" label="CENSORED" />
         )}
       </div>
 
@@ -102,8 +102,8 @@ export default function Archive() {
         <div className="cvh">
           <h1>You&apos;re early!</h1>
           <p className="mu sub">
-            in the future, this page will showcase each month&apos;s design. in the meantime, heres some of
-            my own design work i&apos;m proud of
+            in the future, this page will showcase each previous drop&apos;s design. in the meantime, heres
+            some of my own shirt designs i&apos;m proud of.
           </p>
         </div>
       )}

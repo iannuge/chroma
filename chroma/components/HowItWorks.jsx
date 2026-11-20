@@ -43,6 +43,11 @@ export default function HowItWorks() {
                 the board for the next drop.
               </li>
               <li>
+                <b>Revise and iterate.</b> Choosing a cluster isn&apos;t the end. Once it wins, I post a
+                draft of the design and the community can weigh in with feedback. The design gets revised
+                and iterated on before it&apos;s finalized and sent to print.
+              </li>
+              <li>
                 <b>Pre-order early.</b> You can pre-order before the design is final, and pre-orderers&apos;
                 votes carry more weight.
               </li>
