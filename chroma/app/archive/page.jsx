@@ -111,10 +111,13 @@ export default function Archive() {
       {past.length > 0 && <h2 className="sh">more of my own work</h2>}
       <div className="wk">
         {WORK.map((x, i) => (
-          <figure className="g" key={x.src || x.label || i}>
+          <figure className={'g' + (x.src ? ' has' : '')} key={x.src || x.label || i}>
             {x.src ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={x.src} alt={x.label || 'Design work'} />
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={x.src} alt={x.label || 'Design work'} />
+                {x.label && <figcaption>{x.label}</figcaption>}
+              </>
             ) : (
               <figcaption>{x.label}</figcaption>
             )}

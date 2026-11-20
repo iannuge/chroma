@@ -66,10 +66,8 @@ export const HAS_ITERATIONS = false
 // Your own design work, shown on the past drops page.
 // Put image files in /public/work and list them here, e.g. { src: '/work/tee1.jpg', label: 'tee 01' }
 export const WORK = [
-  { label: 'tee 01' },
-  { label: 'tee 02' },
-  { label: 'tee 03' },
-  { label: 'tee 04' },
-  { label: 'tee 05' },
-  { label: 'tee 06' },
+  { src: '/work/becoming.webp', label: 'becoming' },
+  { src: '/work/fall-rush.webp', label: 'fall rush' },
+  { src: '/work/student-government.webp', label: 'student government' },
+  { src: '/work/this-way-up.webp', label: 'this way up' },
 ]
