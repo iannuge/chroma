@@ -45,7 +45,7 @@ const SECTIONS = [
   {
     h: 'your choices',
     p: [
-      'you can ask to see, correct or delete the personal information we hold about you. depending on where you live, you may have additional rights under local law. to make a request, reach out through threeletters.net and we will respond as soon as we can.',
+      'you can ask to see, correct or delete the personal information we hold about you. depending on where you live, you may have additional rights under local law. to make a request, reach out through threeletters.net or instagram @iannuge. and we will respond as soon as we can.',
     ],
   },
   {
@@ -63,7 +63,7 @@ const SECTIONS = [
   {
     h: 'changes and contact',
     p: [
-      'we may update this policy as the project changes. the date below shows the latest version. questions or requests: reach out through threeletters.net.',
+      'we may update this policy as the project changes. the date below shows the latest version. questions or requests: reach out through threeletters.net or instagram @iannuge.',
     ],
   },
 ]

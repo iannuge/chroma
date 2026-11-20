@@ -119,7 +119,7 @@ export default function Copyright() {
           <h2>if your upload was removed</h2>
           <p>
             if you believe your upload was removed by mistake, or that you have permission to use it, you can send a
-            counter-notice through threeletters.net. include your name, contact details, the image, and a statement
+            counter-notice through threeletters.net or instagram @iannuge. include your name, contact details, the image, and a statement
             under penalty of perjury that you believe it was removed by mistake. if the original complainant does not
             take legal action, we may restore it.
           </p>

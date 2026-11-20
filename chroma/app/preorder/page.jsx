@@ -134,6 +134,10 @@ export default function PreOrder() {
           Questions? Reach out through{' '}
           <a href="https://threeletters.net" target="_blank" rel="noopener noreferrer">
             threeletters.net
+          </a>{' '}
+          or on instagram,{' '}
+          <a href="https://instagram.com/iannuge" target="_blank" rel="noopener noreferrer">
+            @iannuge
           </a>
           .
         </p>

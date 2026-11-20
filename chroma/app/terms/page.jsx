@@ -70,7 +70,7 @@ const SECTIONS = [
     h: 'changes and contact',
     p: [
       'we may update these terms as the project grows. the date below shows the latest version. continuing to use the site after a change means you accept it.',
-      'questions, copyright complaints or cancellation help: reach out through threeletters.net.',
+      'questions, copyright complaints or cancellation help: reach out through threeletters.net or instagram @iannuge.',
     ],
   },
 ]
@@ -97,6 +97,10 @@ export default function Terms() {
         <p className="mu pof">
           <a href="https://threeletters.net" target="_blank" rel="noopener noreferrer">
             threeletters.net
+          </a>{' '}
+          ·{' '}
+          <a href="https://instagram.com/iannuge" target="_blank" rel="noopener noreferrer">
+            @iannuge
           </a>
         </p>
       </div>
