@@ -586,3 +586,7 @@ footer{padding-bottom:48px}
 /* ---- how it works: bold white title, gray body ---- */
 .hiw{color:var(--mu);font-weight:400}
 .hiw b{color:#fff;font-weight:700}
+
+/* ---- squares live inside the about frame ---- */
+.bio .sqf{display:flex;justify-content:center;gap:6px;margin:0 0 18px;text-decoration:none;border:0}
+.bio .sqf i{display:block;width:11px;height:11px;background:var(--ink)}

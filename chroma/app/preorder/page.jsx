@@ -110,7 +110,7 @@ export default function PreOrder() {
 
           <ul className="facts mu">
             <li>ships to the united states only</li>
-            <li>cancel and refund anytime before production</li>
+            <li>cancel and refund anytime before production, by replying to your confirmation email</li>
             <li>secure checkout through shopify</li>
           </ul>
         </div>
@@ -118,52 +118,15 @@ export default function PreOrder() {
 
       <div className="pocs">
         <section className="g poc">
-          <h2>what you&apos;re pre-ordering</h2>
+          <h2>about this drop</h2>
           <p>
-            A shirt before its design is final. The community picks the idea: once a cluster is chosen on the
-            moodboard, pre-orders open and I design the tee from it. You&apos;ll see a draft and
-            can give feedback before it&apos;s finalized. Once all {goal} pieces are claimed, buyers vote to
-            approve the final design before it goes to print.
+            You&apos;re pre-ordering a shirt before its design is final. The community picks the idea, I design
+            the tee from it, and you can give feedback on the draft. Once all {goal} are claimed, buyers vote
+            to approve the final design before it goes to print. Pre-orderers&apos; votes count more. Sign in
+            with the same email you check out with so your order is matched to your account.
           </p>
           <p>
-            Pre-orderers&apos; votes carry more weight. Sign in to the site with the same email you check out
-            with so your order is matched to your account.
-          </p>
-        </section>
-
-        <section className="g poc">
-          <h2>what happens next</h2>
-          <ol className="hiw">
-            <li>The community votes and a cluster is chosen. Pre-orders open.</li>
-            <li>You pre-order and get a confirmation email.</li>
-            <li>A draft is posted, and the design is revised with feedback.</li>
-            <li>When all {goal} are claimed, buyers vote to approve the design.</li>
-            <li>The shirts are printed and shipped.</li>
-          </ol>
-        </section>
-
-        <section className="g poc">
-          <h2>cancel and refund</h2>
-          <p>
-            You can cancel and be refunded at any time up until production starts. If you cancel, your
-            pre-order&apos;s vote weight is removed. Once the design is approved and sent to print, orders
-            are final. To cancel, reply to your order confirmation email.
-          </p>
-        </section>
-
-        <section className="g poc">
-          <h2>shipping</h2>
-          <p>
-            Ships to the United States only. Shipping cost is shown at checkout, and the ship date is
-            announced once production starts.
-          </p>
-        </section>
-
-        <section className="g poc">
-          <h2>sizing and garment</h2>
-          <p>
-            Sizes S to XL. The blank, fabric and fit details are announced once the design is final, before
-            the approval vote.
+            I&apos;m not planning to make any money off this drop. I just want to get some work out there.
           </p>
         </section>
 
