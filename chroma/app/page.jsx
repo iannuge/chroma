@@ -159,7 +159,7 @@ export default function Home() {
           <div className="hd">
             <h2 style={{ margin: 0 }}>The moodboard</h2>
             <p className="mu" style={{ margin: 0 }}>
-              these are just placeholder images right now. but its all functional! try uploading something
+              start a cluster or add to one, then vote on your favorites. when the countdown ends, the top cluster becomes the shirt.
             </p>
           </div>
           <Notice />
