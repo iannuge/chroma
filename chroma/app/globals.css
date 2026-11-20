@@ -457,3 +457,14 @@ h2{margin-bottom:22px}
   .hero3 .tw{width:min(92vw,56svh)}
   .h3m h1{font-size:clamp(30px,10vw,56px)}
 }
+
+/* ---- dark scheme (overrides the beige variables above) ---- */
+:root{color-scheme:dark;--bg:#0d0c0b;--gl:rgba(255,255,255,.06);--gb:rgba(255,255,255,.16);--sh:rgba(0,0,0,.55);--ink:#f2eee6;--mu:#9b958a;--b1:#2a1c13;--b2:#4a2312}
+.lb{background:rgba(6,6,7,.78)}
+.lbc img,.lbt{box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.tee img{filter:url(#ca) drop-shadow(0 30px 34px rgba(0,0,0,.6))}
+.tm img{filter:drop-shadow(0 20px 22px rgba(0,0,0,.55))}
+.cens{box-shadow:0 18px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.35)}
+.wk img,.wkt img,.wvi img{mix-blend-mode:normal}
+input[type=text],.cform input[type=email],.cform textarea,.lbr select{color:var(--ink)}
+input::placeholder,textarea::placeholder{color:var(--mu)}
