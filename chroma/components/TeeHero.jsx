@@ -30,11 +30,11 @@ export default function TeeHero() {
       ty += (my - ty) * 0.06
       if (y < window.innerHeight * 1.5 && tee.current && box.current) {
         tee.current.style.transform =
-          'translateY(' + (Math.sin(t / 1500) * 6 + sy * 0.05) + 'px) rotateX(' + -ty * 4 +
-          'deg) rotateY(' + tx * 6 + 'deg) rotateZ(' + Math.sin(t / 2600) * 0.4 + 'deg)'
+          'translateY(' + (Math.sin(t / 2800) * 6) + 'px) rotateX(' + -ty * 4 +
+          'deg) rotateY(' + tx * 6 + 'deg) rotateZ(' + Math.sin(t / 4600) * 0.4 + 'deg)'
         const d = Math.max(-7, Math.min(7, vel * 0.25))
         box.current.style.transform =
-          'translate(' + tx * 16 + 'px,' + (ty * 10 + sy * 0.2 + Math.sin(t / 1100 + 1) * 5) +
+          'translate(' + tx * 16 + 'px,' + (ty * 10 + sy * 0.2 + Math.sin(t / 2200 + 1) * 5) +
           'px) rotate(' + (-3 + d) + 'deg)'
       }
       raf = requestAnimationFrame(frame)

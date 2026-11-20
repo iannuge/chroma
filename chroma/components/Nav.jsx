@@ -1,28 +1,60 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { useAuth } from './AuthProvider'
-import { useMoodboard } from './MoodboardProvider'
 
 export default function Nav() {
   const { user, ready, signIn, signOut } = useAuth()
-  const { drop } = useMoodboard()
-  const label = drop
-    ? 'Drop ' + String(drop.number).padStart(2, '0') + ', theme: “' + drop.theme + '”'
-    : ''
+  const [open, setOpen] = useState(false)
+  const path = usePathname()
   const who = user && user.user_metadata ? user.user_metadata.full_name || user.email : ''
+
+  useEffect(() => {
+    setOpen(false)
+  }, [path])
+
+  const close = () => setOpen(false)
+  const links = (
+    <>
+      <Link href="/archive" onClick={close}>
+        Past drops
+      </Link>
+      <Link href="/#board" onClick={close}>
+        Moodboard
+      </Link>
+      {user && (
+        <Link href="/profile" onClick={close}>
+          Profile
+        </Link>
+      )}
+    </>
+  )
 
   return (
     <div className="w">
       <nav className="g">
+        <Link href="/" className="sq sqd" aria-label="home">
+          <i />
+          <i />
+          <i />
+        </Link>
+        <button
+          className="sq sqm"
+          aria-label="menu"
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
+        >
+          <i />
+          <i />
+          <i />
+        </button>
         <Link href="/" className="brand">
           <b>CHROMA</b>
         </Link>
-        <span className="mu navmid">{label}</span>
         <span className="nl">
-          <Link href="/archive">Past drops</Link>
-          <Link href="/#board">Moodboard</Link>
-          {user && <Link href="/profile">Profile</Link>}
+          <span className="dl">{links}</span>
           {ready &&
             (user ? (
               <button className="pill" onClick={signOut} title={who}>
@@ -30,10 +62,11 @@ export default function Nav() {
               </button>
             ) : (
               <button className="pill" onClick={signIn}>
-                Sign in with Google
+                Sign in
               </button>
             ))}
         </span>
+        {open && <div className="mm g">{links}</div>}
       </nav>
     </div>
   )

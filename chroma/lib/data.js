@@ -5,7 +5,7 @@ export const PAST = [
   {
     n: '02',
     t: 'Night shift',
-    art: 'radial-gradient(circle at 50% 38%,#f2c200 0 15%,transparent 16%),#0b1020',
+    art: 'radial-gradient(circle at 50% 38%,#f2c200 0 15%,transparent 16%),#1a0c06',
     d: [
       ['Released', 'Oct 28, 2026'],
       ['Price', '$42'],
@@ -18,7 +18,7 @@ export const PAST = [
   {
     n: '01',
     t: 'Overexposed',
-    art: 'linear-gradient(180deg,#ffffff,#9db8ff)',
+    art: 'linear-gradient(180deg,#ffffff,#f6b79c)',
     d: [
       ['Released', 'Sep 30, 2026'],
       ['Price', '$38'],
@@ -54,8 +54,22 @@ export const ITER = [
   {
     n: 2,
     w: 'Nov 16',
-    art: 'linear-gradient(90deg,#1f3bff 0 28%,transparent 28%),repeating-linear-gradient(0deg,#111 0 2px,transparent 2px 8px)',
+    art: 'linear-gradient(90deg,#F24D11 0 28%,transparent 28%),repeating-linear-gradient(0deg,#111 0 2px,transparent 2px 8px)',
     t: 'Palette narrowed to black and one blue after votes moved Dropped frame up.',
     f: 'Signal loss: Dropped frame, Quiet blue: Overexposed sky',
   },
+]
+
+// Set to true once there are real previous iterations to look at.
+export const HAS_ITERATIONS = false
+
+// Your own design work, shown on the past drops page.
+// Put image files in /public/work and list them here, e.g. { src: '/work/tee1.jpg', label: 'tee 01' }
+export const WORK = [
+  { label: 'tee 01' },
+  { label: 'tee 02' },
+  { label: 'tee 03' },
+  { label: 'tee 04' },
+  { label: 'tee 05' },
+  { label: 'tee 06' },
 ]

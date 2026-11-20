@@ -8,9 +8,11 @@ import VoteBox from '../../../components/VoteBox'
 import Notice from '../../../components/Notice'
 import Lightbox from '../../../components/Lightbox'
 import { useMoodboard } from '../../../components/MoodboardProvider'
+import { useAuth } from '../../../components/AuthProvider'
 
 function AddItem({ clusterId }) {
-  const { addItem } = useMoodboard()
+  const { addItem, setPrompt } = useMoodboard()
+  const { user } = useAuth()
   const [file, setFile] = useState(null)
   const [busy, setBusy] = useState(false)
 
@@ -27,12 +29,22 @@ function AddItem({ clusterId }) {
   }
 
   return (
-    <form className="add g" onSubmit={submit}>
+    <form
+      className="add g"
+      onSubmit={submit}
+      onClickCapture={(e) => {
+        if (!user) {
+          e.preventDefault()
+          e.stopPropagation()
+          setPrompt(true)
+        }
+      }}
+    >
       <label className="im">
         {file ? 'Image ✓' : 'Choose an image'}
         <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
       </label>
-      <button disabled={busy || !file}>{busy ? 'Adding…' : 'Add image'}</button>
+      <button disabled={busy || (!!user && !file)}>{busy ? 'Adding…' : 'Add image'}</button>
     </form>
   )
 }
@@ -85,7 +97,13 @@ export default function ClusterPage() {
         <span className="mu">
           started by <Link href={'/u/' + cluster.byId}>{cluster.by}</Link>
         </span>
-        <VoteBox score={cluster.score} mine={cluster.mine} onVote={(d) => vote('cluster', cluster.id, d)} />
+        {cluster.won ? (
+          <span className="badge">
+            became drop {String(cluster.wonNumber == null ? 0 : cluster.wonNumber).padStart(2, '0')}
+          </span>
+        ) : (
+          <VoteBox score={cluster.score} mine={cluster.mine} onVote={(d) => vote('cluster', cluster.id, d)} />
+        )}
       </div>
       <Notice />
       <div className="fs" ref={stage}>
@@ -106,18 +124,20 @@ export default function ClusterPage() {
                 className="fl"
                 style={{
                   '--r': (k % 2 ? 1.2 : -1.2) + 'deg',
-                  '--dur': 5 + (k % 4) * 1.3 + 's',
+                  '--dur': 9 + (k % 4) * 2 + 's',
                   animationDelay: '-' + k + 's',
                 }}
               >
-                <Tile item={it} size={fs} onOpen={(x) => setOpenId(x.id)} onVote={(d) => vote('item', it.id, d)} />
+                <Tile item={it} size={fs} onOpen={(x) => setOpenId(x.id)} onVote={cluster.won ? undefined : (d) => vote('item', it.id, d)} />
               </div>
             </div>
           )
         })}
       </div>
-      <AddItem clusterId={cluster.id} />
-      <p className="mu">Higher scores float higher and grow larger. Click an image to expand it.</p>
+      {!cluster.won && <AddItem clusterId={cluster.id} />}
+      <p className="mu">{cluster.won
+          ? 'This cluster won, so voting and uploads are closed. Click an image to expand it.'
+          : 'Higher scores float higher and grow larger. Click an image to expand it.'}</p>
       <Lightbox item={items.find((i) => i.id === openId) || null} onClose={() => setOpenId(null)} />
     </main>
   )

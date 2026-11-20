@@ -13,6 +13,7 @@ export function useMoodboard() {
 
 const EMPTY = {
   drop: null,
+  drops: [],
   rawClusters: [],
   clusterScores: {},
   rawItems: [],
@@ -37,17 +38,14 @@ export default function MoodboardProvider({ children }) {
   const [data, setData] = useState(EMPTY)
   const [status, setStatus] = useState('loading')
   const [msg, setMsg] = useState('')
+  const [prompt, setPrompt] = useState(false)
 
   const load = useCallback(async () => {
     try {
-      const dr = await supabase
-        .from('drops')
-        .select('*')
-        .order('number', { ascending: false })
-        .limit(1)
-        .maybeSingle()
+      const dr = await supabase.from('drops').select('*').order('number', { ascending: false })
       if (dr.error) throw dr.error
-      const drop = dr.data
+      const drops = dr.data || []
+      const drop = drops[0] || null
       if (!drop) {
         setData(EMPTY)
         setStatus('ready')
@@ -58,9 +56,8 @@ export default function MoodboardProvider({ children }) {
       const [cl, csc, prog, ord, mcv] = await Promise.all([
         supabase
           .from('clusters')
-          .select('id,name,created_at,created_by,profiles!created_by(display_name)')
-          .eq('drop_id', drop.id),
-        supabase.from('cluster_scores').select('cluster_id,score').eq('drop_id', drop.id),
+          .select('id,name,created_at,created_by,won_drop_id,profiles!created_by(display_name)'),
+        supabase.from('cluster_scores').select('cluster_id,score'),
         supabase.from('drop_progress').select('claimed,goal').eq('drop_id', drop.id).maybeSingle(),
         uid
           ? supabase.from('orders').select('id').eq('drop_id', drop.id).eq('user_id', uid).limit(1)
@@ -72,17 +69,15 @@ export default function MoodboardProvider({ children }) {
       if (cl.error) throw cl.error
 
       const clusters = cl.data || []
-      const ids = clusters.map((c) => c.id)
       let rawItems = []
       let itemScoreRows = []
       let myItemRows = []
-      if (ids.length) {
+      if (clusters.length) {
         const [it, isc, miv] = await Promise.all([
           supabase
             .from('items')
-            .select('id,cluster_id,caption,image_path,color,created_at,created_by,profiles!created_by(display_name)')
-            .in('cluster_id', ids),
-          supabase.from('item_scores').select('item_id,score').in('cluster_id', ids),
+            .select('id,cluster_id,caption,image_path,color,created_at,created_by,profiles!created_by(display_name)'),
+          supabase.from('item_scores').select('item_id,score'),
           uid ? supabase.from('item_votes').select('item_id,value').eq('user_id', uid) : none,
         ])
         if (it.error) throw it.error
@@ -93,6 +88,7 @@ export default function MoodboardProvider({ children }) {
 
       setData({
         drop,
+        drops,
         rawClusters: clusters,
         clusterScores: toMap(csc.data, 'cluster_id', 'score'),
         rawItems,
@@ -155,6 +151,8 @@ export default function MoodboardProvider({ children }) {
         name: c.name,
         by: (c.profiles && c.profiles.display_name) || 'Someone',
         byId: c.created_by,
+        won: !!c.won_drop_id,
+        wonNumber: c.won_drop_id ? (data.drops.find((d) => d.id === c.won_drop_id) || {}).number : null,
         score: data.clusterScores[c.id] || 0,
         mine: data.myClusterVotes[c.id] || 0,
         at: c.created_at,
@@ -166,7 +164,7 @@ export default function MoodboardProvider({ children }) {
 
   const need = () => {
     if (!uid) {
-      setMsg('Sign in with Google to vote or add to the moodboard.')
+      setPrompt(true)
       return false
     }
     return true
@@ -236,6 +234,11 @@ export default function MoodboardProvider({ children }) {
       return false
     }
     try {
+      const target = data.rawClusters.find((c) => c.id === clusterId)
+      if (target && target.won_drop_id) {
+        setMsg('This cluster already won a drop, so it is closed.')
+        return false
+      }
       const img = await upload(file)
       const i = await supabase
         .from('items')
@@ -251,12 +254,15 @@ export default function MoodboardProvider({ children }) {
 
   const value = {
     drop: data.drop,
+    drops: data.drops,
     clusters,
     progress: data.progress,
     hasOrder: data.hasOrder,
     status,
     msg,
     setMsg,
+    prompt,
+    setPrompt,
     vote,
     addCluster,
     addItem,

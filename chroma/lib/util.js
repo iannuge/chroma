@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-export const TONES = ['#9db8ff', '#d9d9d6', '#f2c200', '#6a6f7a', '#e8590c']
+export const TONES = ['#f6b79c', '#d9d9d6', '#f2c200', '#6a6f7a', '#e8590c']
 
 export function hash(s) {
   let h = 0

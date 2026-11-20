@@ -2,14 +2,17 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Countdown from '../components/Countdown'
 import TeeHero from '../components/TeeHero'
 import Tile from '../components/Tile'
 import VoteBox from '../components/VoteBox'
 import Notice from '../components/Notice'
 import { useMoodboard } from '../components/MoodboardProvider'
+import { useAuth } from '../components/AuthProvider'
 import { hash } from '../lib/util'
+import useFlip from '../lib/useFlip'
+import { HAS_ITERATIONS } from '../lib/data'
 
 const PHASES = ['Moodboard open', 'Design in progress', 'Sold out', 'Approval vote', 'Printing']
 const ORDER = ['moodboard', 'design', 'sold_out', 'approval', 'printing']
@@ -17,7 +20,8 @@ const ORDER = ['moodboard', 'design', 'sold_out', 'approval', 'printing']
 const PREORDER_URL = process.env.NEXT_PUBLIC_PREORDER_URL || ''
 
 function NewCluster() {
-  const { addCluster } = useMoodboard()
+  const { addCluster, setPrompt } = useMoodboard()
+  const { user } = useAuth()
   const [name, setName] = useState('')
   const [file, setFile] = useState(null)
   const [busy, setBusy] = useState(false)
@@ -36,7 +40,17 @@ function NewCluster() {
   }
 
   return (
-    <form className="nc" onSubmit={submit}>
+    <form
+      className="nc"
+      onSubmit={submit}
+      onClickCapture={(e) => {
+        if (!user) {
+          e.preventDefault()
+          e.stopPropagation()
+          setPrompt(true)
+        }
+      }}
+    >
       <input
         type="text"
         placeholder="New cluster name"
@@ -50,7 +64,7 @@ function NewCluster() {
         {file ? 'Image ✓' : 'First image'}
         <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
       </label>
-      <button className="pill" disabled={busy || !file}>
+      <button className="pill" disabled={busy || (!!user && !file)}>
         {busy ? 'Adding…' : 'Start cluster'}
       </button>
     </form>
@@ -58,8 +72,11 @@ function NewCluster() {
 }
 
 export default function Home() {
-  const { drop, clusters, progress, hasOrder, status, vote } = useMoodboard()
+  const { drop, clusters: all, progress, hasOrder, status, vote } = useMoodboard()
+  const clusters = all.filter((c) => !c.won)
   const router = useRouter()
+  const boardRef = useRef(null)
+  useFlip(boardRef)
 
   const idx = !drop ? 0 : drop.status === 'shipped' ? PHASES.length : Math.max(0, ORDER.indexOf(drop.status))
   const goal = progress.goal || 100
@@ -90,29 +107,44 @@ export default function Home() {
 
   return (
     <>
-      <div className="hero w">
-        <div className="stage">
+      <div className="hero2">
+        <div className="hl" aria-hidden="true">
+          <h1>
+            {'drop ' + String(drop ? drop.number : 0).padStart(2, '0')}
+            <span className="cur">|</span>
+          </h1>
+          <p>{drop ? drop.theme : 'genesis'}</p>
+        </div>
+        <div className="hteewrap">
           <Countdown target={drop ? drop.next_iteration_at : null} />
           <TeeHero />
-          <Link className="pill pv2" href="/iterations">
-            Previous iterations
-          </Link>
+          {HAS_ITERATIONS ? (
+            <Link className="pill pv2" href="/iterations">
+              Previous iterations
+            </Link>
+          ) : (
+            <button className="pill pv2 off" disabled title="No previous iterations yet">
+              Previous iterations
+            </button>
+          )}
         </div>
-        <div className="cta g">
-          <span className="mu">
-            {drop ? drop.goal : 100} pieces, 280 gsm cotton
-          </span>
-          {pre}
+        <div className="w">
+          <div className="cta g">
+            <span className="mu">
+              {drop ? drop.goal : 100} pieces, 280 gsm cotton
+            </span>
+            {pre}
+          </div>
         </div>
       </div>
 
       <section>
         <div className="w">
-          <h2>DESIGNED BY THOSE WHO WEAR IT</h2>
+          <h2>DESIGNED BY THOSE WHO&apos;LL WEAR IT</h2>
           <p className="lede">
-            <b>Submit</b> images, colors and words to the moodboard, then vote on what stays. The top picks
-            shape the tee, with an update every week. <b>Pre-order</b> before the design is final and your
-            votes carry more weight, and past buyers get a bonus too.
+            <b>Submit</b> clusters of images, colors and ideas to the moodboard, then vote on what stays.
+            After two weeks the top cluster becomes the next tee, and everything else stays on the board
+            for the next drop. <b>Pre-order</b> before the design is final and your votes carry more weight.
           </p>
           <div className="trk g">
             <div className="ph">
@@ -156,16 +188,17 @@ export default function Home() {
             <NewCluster />
           </div>
           <Notice />
-          <div className="board">
+          <div className="board" ref={boardRef}>
             {clusters.map((c, r) => {
               const h = hash(c.id)
               return (
                 <article
                   key={c.id}
+                  data-flip={c.id}
                   className={'cl g' + (r < 5 ? ' k' + r : '')}
                   style={{
                     '--r': (h % 2 ? 0.6 : -0.6) + 'deg',
-                    '--dur': 6 + (h % 3) * 1.5 + 's',
+                    '--dur': 11 + (h % 3) * 2.5 + 's',
                     animationDelay: '-' + (h % 7) + 's',
                   }}
                   onClick={(e) => {
@@ -208,7 +241,7 @@ export default function Home() {
 
       <section id="about">
         <div className="w">
-          <h2 style={{ maxWidth: '18ch' }}>Bridging the gap in taste between an artist and their audience.</h2>
+          <h2 style={{ maxWidth: '18ch' }}>Bridging the gap in taste between artist and audience.</h2>
           <div className="g bio">
             <p>
               i am ian, a freelance artist and multidisciplinary creative 🤓. this brand is my passion
