@@ -21,7 +21,7 @@ const SECTIONS = [
     p: [
       'you can upload images and start clusters on the moodboard. only upload things you made, or that you have the right to share. do not upload anything illegal, hateful, sexual, or that infringes someone else\'s copyright, trademark or privacy.',
       'you keep ownership of what you upload. by uploading, you give chroma a non-exclusive, worldwide, royalty-free license to display it on the site and to use it as inspiration while designing a shirt. the moodboard is a source of reference and direction. chroma\'s shirt designs are original artwork made by ian, and are not copies of what users upload.',
-      'we may remove any submission, cluster or account at any time, for any reason, including to respond to a copyright complaint. if you believe something on the site infringes your copyright, contact us using the details at the bottom of this page and include a link to the content and proof that you own the rights.',
+      'we may remove any submission, cluster or account at any time, for any reason, including to respond to a copyright complaint. we remove accounts that repeatedly upload infringing material. if you believe something on the site infringes your copyright, send a notice through our copyright page at /copyright.',
     ],
   },
   {
