@@ -102,9 +102,12 @@ export default function Archive() {
         <div className="cvh">
           <h1>You&apos;re early!</h1>
           <p className="mu sub">
-            in the future, this page will showcase each previous drop. in the meantime, heres some of my own
-            shirt designs.
+            in the future, this page will showcase each previous drop. in the meantime, you can check out my
+            design work here.
           </p>
+          <a className="pill" href="https://threeletters.net" target="_blank" rel="noopener noreferrer">
+            threeletters.net
+          </a>
         </div>
       )}
 
