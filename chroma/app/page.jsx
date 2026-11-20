@@ -8,6 +8,7 @@ import TeeHero from '../components/TeeHero'
 import Tile from '../components/Tile'
 import VoteBox from '../components/VoteBox'
 import Notice from '../components/Notice'
+import HowItWorks from '../components/HowItWorks'
 import { useMoodboard } from '../components/MoodboardProvider'
 import { useAuth } from '../components/AuthProvider'
 import { hash } from '../lib/util'
@@ -113,7 +114,7 @@ export default function Home() {
             {'drop ' + String(drop ? drop.number : 0).padStart(2, '0')}
             <span className="cur">|</span>
           </h1>
-          <p>{drop ? drop.theme : 'genesis'}</p>
+          <p>[{drop ? drop.theme : 'genesis'}]</p>
         </div>
         <div className="hteewrap">
           <Countdown target={drop ? drop.next_iteration_at : null} />
@@ -140,12 +141,8 @@ export default function Home() {
 
       <section>
         <div className="w">
-          <h2>DESIGNED BY THOSE WHO&apos;LL WEAR IT</h2>
-          <p className="lede">
-            <b>Submit</b> clusters of images, colors and ideas to the moodboard, then vote on what stays.
-            After two weeks the top cluster becomes the next tee, and everything else stays on the board
-            for the next drop. <b>Pre-order</b> before the design is final and your votes carry more weight.
-          </p>
+          <h2 style={{ maxWidth: '20ch' }}>CROWDSOURCED ART DIRECTION ON A GRAPHIC TEE.</h2>
+          <HowItWorks />
           <div className="trk g">
             <div className="ph">
               {PHASES.map((p, i) => (

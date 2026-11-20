@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import TeeMock from '../../components/TeeMock'
 import { ITER } from '../../lib/data'
-import { HIDDEN_ART } from '../../lib/util'
 
 export const metadata = { title: 'Previous iterations – CHROMA' }
 
@@ -28,7 +27,7 @@ export default function Iterations() {
           </article>
         ))}
         <article className="g pc">
-          <TeeMock art={HIDDEN_ART} blur />
+          <TeeMock blur />
           <div>
             <h3>Iteration 3</h3>
             <p>Lands at the next countdown</p>

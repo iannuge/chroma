@@ -7,7 +7,6 @@ import Lightbox from '../../components/Lightbox'
 import TeeMock from '../../components/TeeMock'
 import { useMoodboard } from '../../components/MoodboardProvider'
 import { WORK } from '../../lib/data'
-import { HIDDEN_ART } from '../../lib/util'
 
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -34,7 +33,7 @@ function PastDrop({ drop, cluster, onOpen }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={drop.design_image} alt={'Drop ' + pad(drop.number) + ' design'} />
         ) : (
-          <TeeMock art={HIDDEN_ART} blur />
+          <TeeMock blur />
         )}
       </div>
 
