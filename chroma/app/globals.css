@@ -471,12 +471,12 @@ input::placeholder,textarea::placeholder{color:var(--mu)}
 .szb:disabled{opacity:.45;cursor:not-allowed}.szb:disabled:hover{border-color:var(--gb)}
 
 /* podium: #1 in the center and subtly bigger in both directions, #2 left, #3 right */
-.top3{grid-template-columns:minmax(0,1fr) minmax(0,1.14fr) minmax(0,1fr);align-items:end}
+.top3{grid-template-columns:minmax(0,1fr) minmax(0,1.06fr) minmax(0,1fr);align-items:center}
 .top3 .r2{order:1}.top3 .r1{order:2}.top3 .r3{order:3}
-.top3 .r1{padding:clamp(18px,2vw,28px);box-shadow:0 26px 70px var(--sh),inset 0 1px 0 var(--gb)}
-.top3 .r1 .ch h3{font-size:clamp(28px,3vw,42px)}
+.top3 .r1{padding:clamp(15px,1.7vw,23px);box-shadow:0 22px 60px var(--sh),inset 0 1px 0 var(--gb)}
+.top3 .r1 .ch h3{font-size:clamp(25px,2.8vw,38px)}
 .top3.n1{grid-template-columns:minmax(0,420px);justify-content:center}
-.top3.n2{grid-template-columns:minmax(0,1.14fr) minmax(0,1fr)}
+.top3.n2{grid-template-columns:minmax(0,1.06fr) minmax(0,1fr)}
 .top3.n2 .r1{order:1}.top3.n2 .r2{order:2}
 @media(max-width:860px){
   .top3,.top3.n1,.top3.n2{grid-template-columns:1fr;align-items:start}
