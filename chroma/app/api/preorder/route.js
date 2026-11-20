@@ -24,7 +24,7 @@ export async function POST(req) {
     return Response.json({ ok: false, error: 'Wrong password.' }, { status: 401 })
   }
   if (!body.size) return Response.json({ ok: true })
-  const url = checkoutUrl(body.size)
-  if (!url) return Response.json({ ok: false, error: 'Choose a size.' }, { status: 400 })
+  const url = checkoutUrl(body.size, body.qty)
+  if (!url) return Response.json({ ok: false, error: 'Choose a size and quantity.' }, { status: 400 })
   return Response.json({ ok: true, url })
 }

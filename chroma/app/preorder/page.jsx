@@ -4,13 +4,14 @@ import Link from 'next/link'
 import { useState } from 'react'
 import TeeHero from '../../components/TeeHero'
 import { useMoodboard } from '../../components/MoodboardProvider'
-import { SIZES, shopOpen, needsSize } from '../../lib/shop'
+import { SIZES, MAX_QTY, shopOpen, needsSize } from '../../lib/shop'
 
 const pad = (n) => String(n).padStart(2, '0')
 
 export default function PreOrder() {
   const { drop, progress, hasOrder } = useMoodboard()
   const [size, setSize] = useState('')
+  const [qty, setQty] = useState(1)
   const [pw, setPw] = useState('')
   const [unlocked, setUnlocked] = useState(false)
   const [msg, setMsg] = useState('')
@@ -36,7 +37,7 @@ export default function PreOrder() {
   const checkout = async () => {
     setBusy(true)
     setMsg('')
-    const r = await call({ size })
+    const r = await call({ size, qty })
     if (r.ok && r.url) window.location.href = r.url
     else {
       setBusy(false)
@@ -85,7 +86,7 @@ export default function PreOrder() {
   } else {
     action = (
       <button className="pill" onClick={checkout} disabled={busy}>
-        {busy ? 'opening checkout…' : 'pre-order size ' + size + ', ' + price}
+        {busy ? 'opening checkout…' : 'pre-order ' + (qty > 1 ? qty + ' × ' : '') + 'size ' + size + (price && qty > 1 ? ', $' + qty * Math.round(drop.price_cents / 100) : price ? ', ' + price : '')}
       </button>
     )
   }
@@ -136,6 +137,17 @@ export default function PreOrder() {
                 {s}
               </button>
             ))}
+          </div>
+
+          <div className="qty" aria-label="Quantity">
+            <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={!chosen || qty <= 1} aria-label="Fewer">
+              −
+            </button>
+            <span>{qty}</span>
+            <button type="button" onClick={() => setQty((q) => Math.min(MAX_QTY, q + 1))} disabled={!chosen || qty >= MAX_QTY} aria-label="More">
+              +
+            </button>
+            <span className="mu">quantity (one size per order)</span>
           </div>
 
           {action}

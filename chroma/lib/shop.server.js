@@ -13,8 +13,12 @@ import { SIZES } from './shop'
 const DOMAIN = process.env.NEXT_PUBLIC_SHOP_DOMAIN || 'ra9equ-3p.myshopify.com'
 const VARIANT_ID = process.env.NEXT_PUBLIC_VARIANT_ID || '44528449191999'
 
-export function checkoutUrl(size) {
-  if (!SIZES.includes(size)) return ''
+export const MAX_QTY = 10
+
+// Base: https://{shop}/cart/{variant}:{qty}?channel=buy_button  (goes straight to checkout; no storefront=true)
+export function checkoutUrl(size, qty) {
+  const q = Math.floor(Number(qty))
+  if (!SIZES.includes(size) || !(q >= 1 && q <= MAX_QTY)) return ''
   const props = Buffer.from(JSON.stringify({ Size: size })).toString('base64url')
-  return 'https://' + DOMAIN + '/cart/' + VARIANT_ID + ':1?properties=' + props
+  return 'https://' + DOMAIN + '/cart/' + VARIANT_ID + ':' + q + '?channel=buy_button&properties=' + props
 }

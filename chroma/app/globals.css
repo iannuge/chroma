@@ -594,3 +594,14 @@ footer{padding-bottom:48px}
 /* ---- early access password ---- */
 .pwf{display:flex;gap:8px;margin-top:12px;justify-content:center;flex-wrap:wrap}
 .pwf input{flex:1 1 160px;min-width:0;background:transparent;border:1px solid var(--gb);padding:10px 12px;color:var(--ink);font:inherit;border-radius:0}
+
+/* ---- add to a cluster: same box-with-plus as make a cluster ---- */
+.addc{width:min(100%,300px);margin:28px auto 0;text-align:center}
+.addc .ncl{overflow-wrap:anywhere}
+.addc .ncp{aspect-ratio:1}
+
+/* ---- quantity stepper ---- */
+.qty{display:flex;align-items:center;gap:12px;justify-content:center;margin:12px 0 14px}
+.qty button{width:34px;height:34px;border:1px solid var(--gb);background:transparent;color:var(--ink);font:inherit;font-size:18px;cursor:pointer;border-radius:0}
+.qty button:disabled{opacity:.4;cursor:default}
+.qty span:not(.mu){min-width:1.5ch;text-align:center}

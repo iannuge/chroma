@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Tile from '../../../components/Tile'
 import VoteBox from '../../../components/VoteBox'
 import Notice from '../../../components/Notice'
@@ -10,11 +10,12 @@ import Lightbox from '../../../components/Lightbox'
 import { useMoodboard } from '../../../components/MoodboardProvider'
 import { useAuth } from '../../../components/AuthProvider'
 
-function AddItem({ clusterId }) {
+function AddItem({ clusterId, clusterName }) {
   const { addItem, setPrompt } = useMoodboard()
   const { user } = useAuth()
   const [file, setFile] = useState(null)
   const [busy, setBusy] = useState(false)
+  const preview = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file])
 
   const submit = async (e) => {
     e.preventDefault()
@@ -30,7 +31,7 @@ function AddItem({ clusterId }) {
 
   return (
     <form
-      className="add g"
+      className="nc g addc"
       onSubmit={submit}
       onClickCapture={(e) => {
         if (!user) {
@@ -40,11 +41,19 @@ function AddItem({ clusterId }) {
         }
       }}
     >
-      <label className="im">
-        {file ? 'Image ✓' : 'Choose an image'}
+      <span className="ncl mu">add to {clusterName}</span>
+      <label
+        className="ncp"
+        style={preview ? { backgroundImage: 'url("' + preview + '")' } : undefined}
+        aria-label={'Add an image to ' + clusterName}
+      >
+        {!preview && <span className="plus">+</span>}
+        {!preview && <span className="mu">add an image</span>}
         <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
       </label>
-      <button disabled={busy || (!!user && !file)}>{busy ? 'Adding…' : 'Add image'}</button>
+      <button className="pill" disabled={busy || (!!user && !file)}>
+        {busy ? 'Adding…' : 'Add image'}
+      </button>
     </form>
   )
 }
@@ -143,7 +152,7 @@ export default function ClusterPage() {
           )
         })}
       </div>
-      {!cluster.won && <AddItem clusterId={cluster.id} />}
+      {!cluster.won && <AddItem clusterId={cluster.id} clusterName={cluster.name} />}
       <p className="mu">{cluster.won
           ? 'This cluster won, so voting and uploads are closed. Click an image to expand it.'
           : 'Higher scores float higher and grow larger. Click an image to expand it.'}</p>
