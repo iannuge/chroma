@@ -559,3 +559,6 @@ footer .sqf i{display:block;width:11px;height:11px;background:var(--ink)}
 .hero3 .cens span,.cens span{font-size:17cqw}
 .pot .tw{width:100%}
 .pot .cens{top:24%}
+
+/* cut-out shirts on the dark page: a hairline light rim so black tees keep their silhouette */
+.wk img,.wkt img,.wvi img{filter:drop-shadow(0 0 1px rgba(255,255,255,.35)) drop-shadow(0 18px 24px rgba(0,0,0,.5))}
