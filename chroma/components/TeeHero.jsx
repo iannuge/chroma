@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import PixelTee from './PixelTee'
 
 export default function TeeHero() {
   const tee = useRef(null)
@@ -49,7 +50,7 @@ export default function TeeHero() {
   return (
     <div className="tw">
       <div className="tee" ref={tee}>
-        <img src="/tee.webp" alt="White t-shirt with its graphic reading TO BE DETERMINED, by you" />
+        <PixelTee src="/tee.webp" alt="White t-shirt reading TO BE DETERMINED, by you" />
         <div className="cens" ref={box}>
           <span>TO BE<br />DETERMINED</span>
           <small>(by you)</small>
