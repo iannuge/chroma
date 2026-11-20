@@ -70,7 +70,7 @@ export const WORK = [
     src: '/work/becoming.webp',
     title: 'becoming',
     year: '2026',
-    desc: "a back print. a blackletter 'becoming' sits over a red halftone eye, with a line about making art to experience it, not for money or fame.",
+    desc: "a back print. a blackletter 'becoming' sits over a red halftone eye. the quote on the shirt is by kurt vonnegut, about making art to experience becoming, not for money or fame.",
   },
   {
     src: '/work/fall-rush.webp',

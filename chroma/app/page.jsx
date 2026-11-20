@@ -168,7 +168,7 @@ export default function Home() {
           <div className="hd">
             <h2 style={{ margin: 0 }}>choose a direction</h2>
             <p className="mu" style={{ margin: 0 }}>
-              one of these will guide the tee. vote for your favorite, or start a cluster.
+              one of these will guide the tee. vote for your favorites, add to other people's clusters, or start your own.
             </p>
           </div>
           <Notice />
@@ -247,6 +247,11 @@ export default function Home() {
         <div className="w">
           <h2 style={{ maxWidth: '18ch' }}>Bridging the gap in taste between artist and audience.</h2>
           <div className="g bio">
+            <Link href="/" className="sqf" aria-label="back to top of home page">
+              <i />
+              <i />
+              <i />
+            </Link>
             <p>
               i am ian, a freelance artist and multidisciplinary creative 🤓. this brand is my passion
               project. peep more of my work at{' '}
