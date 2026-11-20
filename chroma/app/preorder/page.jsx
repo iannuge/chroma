@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import TeeMock from '../../components/TeeMock'
+import TeeHero from '../../components/TeeHero'
 import { useMoodboard } from '../../components/MoodboardProvider'
 import { SIZES, shopOpen, needsSize, checkoutUrl } from '../../lib/shop'
 
@@ -73,7 +73,7 @@ export default function PreOrder() {
 
       <div className="pob">
         <div className="pot">
-          <TeeMock blur label="TO BE DETERMINED" />
+          <TeeHero />
         </div>
 
         <div className="g pop">

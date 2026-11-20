@@ -142,7 +142,7 @@ export default function Home() {
 
   const pre = (
     <Link className="pill" href="/preorder">
-      {hasOrder ? 'Pre-ordered' : shopOpen && chosen ? 'Pre-order for ' + price : 'Pre-order details'}
+      {hasOrder ? 'Pre-ordered' : shopOpen && chosen ? 'Pre-order for ' + price : 'Pre-order details, ' + price}
     </Link>
   )
 
