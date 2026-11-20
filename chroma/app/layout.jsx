@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
             <AuthPrompt />
             {children}
             <footer className="w mu">
-              chroma. crowdsourced art direction on a graphic tee. <Link href="/terms">terms</Link>
+              chroma. crowdsourced art direction on a graphic tee. <Link href="/terms">terms</Link> <Link href="/privacy">privacy</Link>
             </footer>
           </MoodboardProvider>
         </AuthProvider>
