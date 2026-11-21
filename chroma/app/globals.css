@@ -780,3 +780,17 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .page .pedit{margin-top:34px}
 .page .pord{margin-top:30px}
 @media(max-width:560px){.page .phead{margin-top:28px}.page h2.sh{margin:60px auto 20px}.page .pg{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
+
+/* ================= back to squares: glass card, images drifting inside ================= */
+.cc{border-radius:0!important;-webkit-mask-image:none;mask-image:none;aspect-ratio:1}
+.cap{border-radius:0!important;background:rgba(13,12,11,.74)}
+.cv,.ncw .ncp{border-radius:0!important}
+.fl2{position:absolute;display:block;animation:idrift var(--id) ease-in-out infinite;will-change:transform}
+.fl2 i{display:block;width:100%;height:100%;background:center/cover no-repeat;box-shadow:0 10px 28px rgba(0,0,0,.5);filter:saturate(1.12) contrast(1.04);border-radius:0!important}
+@keyframes idrift{
+  0%,100%{transform:translate(0,0) rotate(0)}
+  25%{transform:translate(var(--ix),calc(var(--iy) * -1)) rotate(var(--ir))}
+  50%{transform:translate(calc(var(--ix) * -.8),var(--iy)) rotate(calc(var(--ir) * -1))}
+  75%{transform:translate(calc(var(--ix) * .4),calc(var(--iy) * .5)) rotate(calc(var(--ir) * .5))}
+}
+@media(prefers-reduced-motion:reduce){.fl2{animation:none}}

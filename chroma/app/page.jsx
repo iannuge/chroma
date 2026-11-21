@@ -76,12 +76,23 @@ function NewCluster() {
   )
 }
 
+// Where each floating image rests inside a cluster: [centerX, centerY, size] in % of the card.
+const SLOTS = [
+  [50, 50, 42],
+  [24, 25, 30],
+  [77, 24, 29],
+  [24, 77, 29],
+  [77, 76, 30],
+  [50, 14, 22],
+  [50, 87, 22],
+  [12, 51, 20],
+  [88, 50, 20],
+]
+
 function ClusterCard({ c, rank }) {
   const router = useRouter()
   const { vote } = useMoodboard()
   const h = hash(c.id)
-  const center = c.items[0]
-  const ring = c.items.slice(1, 9)
   const bg = (it) =>
     it.img ? { backgroundImage: 'url("' + it.img + '")' } : { backgroundColor: it.color }
   return (
@@ -114,23 +125,30 @@ function ClusterCard({ c, rank }) {
           if (e.key === 'Enter') router.push('/cluster/' + c.id)
         }}
       >
-        {center && <span className="cen" style={bg(center)} />}
-        <div
-          className="orb"
-          style={{
-            '--d': 34 + (h % 4) * 9 + 's',
-            animationDirection: h % 2 ? 'reverse' : 'normal',
-          }}
-        >
-          {ring.map((it, k) => (
-            <span key={it.id} className="oi" style={{ '--a': (360 / ring.length) * k + 'deg' }}>
-              <i
-                className="oii"
-                style={{ ...bg(it), animationDirection: h % 2 ? 'normal' : 'reverse' }}
-              />
+        {c.items.slice(0, SLOTS.length).map((it, k) => {
+          const [x, y, sz] = SLOTS[k]
+          const q = hash(it.id)
+          return (
+            <span
+              key={it.id}
+              className="fl2"
+              style={{
+                left: 'calc(' + x + 'cqw - ' + sz / 2 + 'cqw)',
+                top: 'calc(' + y + 'cqw - ' + sz / 2 + 'cqw)',
+                width: sz + 'cqw',
+                height: sz + 'cqw',
+                zIndex: k ? 2 : 1,
+                '--ix': 4 + (q % 9) + 'cqw',
+                '--iy': 3 + (q % 7) + 'cqw',
+                '--ir': (q % 2 ? 1 : -1) * (1 + (q % 3)) + 'deg',
+                '--id': 9 + (q % 8) + 's',
+                animationDelay: '-' + (q % 11) + 's',
+              }}
+            >
+              <i style={bg(it)} />
             </span>
-          ))}
-        </div>
+          )
+        })}
         <div className="cap">
           <h3>
             <Link href={'/cluster/' + c.id}>{c.name}</Link>
