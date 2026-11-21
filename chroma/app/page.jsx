@@ -13,6 +13,7 @@ import { useAuth } from '../components/AuthProvider'
 import { hash, fmtScore } from '../lib/util'
 import { shopOpen } from '../lib/shop'
 import useFlip from '../lib/useFlip'
+import useSift from '../lib/useSift'
 
 const PHASES = ['Moodboard open', 'Design in progress', 'Sold out', 'Approval vote', 'Printing']
 const ORDER = ['moodboard', 'design', 'sold_out', 'approval', 'printing']
@@ -40,7 +41,7 @@ function NewCluster() {
 
   return (
     <form
-      className="nc g"
+      className="nc ncw"
       onSubmit={submit}
       onClickCapture={(e) => {
         if (!user) {
@@ -50,7 +51,15 @@ function NewCluster() {
         }
       }}
     >
-      <span className="ncl mu">make a cluster</span>
+      <label
+        className="ncp ncc"
+        style={preview ? { backgroundImage: 'url("' + preview + '")' } : undefined}
+        aria-label="Add a first image"
+      >
+        {!preview && <span className="plus">+</span>}
+        {!preview && <span className="mu">make a cluster</span>}
+        <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
+      </label>
       <input
         type="text"
         placeholder="Cluster title"
@@ -60,15 +69,6 @@ function NewCluster() {
         onChange={(e) => setName(e.target.value)}
         maxLength={60}
       />
-      <label
-        className="ncp"
-        style={preview ? { backgroundImage: 'url("' + preview + '")' } : undefined}
-        aria-label="Add a first image"
-      >
-        {!preview && <span className="plus">+</span>}
-        {!preview && <span className="mu">first image</span>}
-        <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
-      </label>
       <button className="pill" disabled={busy || (!!user && (!file || !name.trim()))}>
         {busy ? 'Adding…' : 'Start cluster'}
       </button>
@@ -88,11 +88,15 @@ function ClusterCard({ c, rank }) {
     <div
       data-flip={c.id}
       className={'cw' + (rank ? ' r' + rank : '')}
-      style={{ '--r': (h % 2 ? 0.6 : -0.6) + 'deg', '--dur': 11 + (h % 3) * 2.5 + 's', animationDelay: '-' + (h % 7) + 's' }}
+      style={{
+        '--dx': 10 + (h % 13) + 'px',
+        '--dy': 8 + (h % 11) + 'px',
+        '--dur': 14 + (h % 5) * 3 + 's',
+        animationDelay: '-' + (h % 9) + 's',
+      }}
     >
-      <CircleVote dir={1} active={c.mine === 1} onVote={(d) => vote('cluster', c.id, d)} />
       <article
-        className="cc g"
+        className="cc"
         tabIndex={0}
         aria-label={c.name}
         onClick={(e) => {
@@ -132,10 +136,13 @@ function ClusterCard({ c, rank }) {
           </span>
         </div>
       </article>
-      <CircleVote dir={-1} active={c.mine === -1} onVote={(d) => vote('cluster', c.id, d)} />
-      <span className="cs mu" aria-label="Votes">
-        {fmtScore(c.score)}
-      </span>
+      <div className="vcol">
+        <CircleVote dir={1} active={c.mine === 1} onVote={(d) => vote('cluster', c.id, d)} />
+        <span className="cs mu" aria-label="Votes">
+          {fmtScore(c.score)}
+        </span>
+        <CircleVote dir={-1} active={c.mine === -1} onVote={(d) => vote('cluster', c.id, d)} />
+      </div>
     </div>
   )
 }
@@ -149,6 +156,8 @@ export default function Home() {
   const boardRef = useRef(null)
   useFlip(topRef)
   useFlip(boardRef)
+  const siftRef = useRef(null)
+  useSift(siftRef)
 
   const idx = !drop ? 0 : drop.status === 'shipped' ? PHASES.length : Math.max(0, ORDER.indexOf(drop.status))
   const goal = progress.goal || 20
@@ -182,7 +191,7 @@ export default function Home() {
       </div>
 
       <section id="board">
-        <div className="w">
+        <div className="w" ref={siftRef}>
           <div className="hd">
             <h2 style={{ margin: 0 }}>choose a direction</h2>
             <p className="mu" style={{ margin: 0 }}>

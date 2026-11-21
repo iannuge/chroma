@@ -709,3 +709,43 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .role{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1.5px solid var(--rc,var(--gb));color:var(--rc,var(--mu));background:rgba(255,255,255,.03);font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;letter-spacing:-.02em;border-radius:99px!important}
 .role i{width:8px;height:8px;background:var(--rc);display:block;border-radius:50%!important}
 .role.stat{color:var(--mu);border-color:var(--gb)}
+
+/* ================= circles, round two: glass, free-floating, loud ================= */
+.cw{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto;align-items:center;column-gap:4px;row-gap:0;animation:drift var(--dur) ease-in-out infinite;translate:var(--px,0px) var(--py,0px);scale:var(--sc,1);transition:translate .7s cubic-bezier(.22,.8,.22,1),scale .5s cubic-bezier(.22,.8,.22,1);position:relative}
+.cw:hover{z-index:6}
+.cw .cc{grid-column:1;grid-row:1}
+.vcol{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.vcol .cs{font-size:13px;min-width:2ch;text-align:center;color:var(--ink)}
+@keyframes drift{0%,100%{transform:translate(0,0)}25%{transform:translate(var(--dx),calc(var(--dy) * -1))}50%{transform:translate(calc(var(--dx) * -.7),var(--dy))}75%{transform:translate(calc(var(--dx) * .5),calc(var(--dy) * .3))}}
+
+/* glass without a frame: translucent disc, no border, no blur layer (blur is what draws square edges) */
+.cc{border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.14),rgba(255,255,255,.05) 55%,rgba(255,255,255,.02) 72%,transparent 74%)}
+.cc:hover,.cc:focus-visible{border:0;box-shadow:0 0 0 1px rgba(255,255,255,.22)}
+.top3 .r1 .cc{border:0;box-shadow:0 0 90px rgba(242,77,17,.22)}
+.cv{width:clamp(22px,2vw,27px);height:clamp(22px,2vw,27px);font-size:9px;background:rgba(255,255,255,.08);color:var(--ink);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.cv:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.4)}
+.cv.on{background:#fff;color:#000;border-color:#fff}
+
+/* bigger, bolder contents */
+.cen{width:31cqw;height:31cqw;margin:-15.5cqw 0 0 -15.5cqw}
+.oi{width:19cqw;height:19cqw;margin:-9.5cqw 0 0 -9.5cqw;transform:rotate(var(--a)) translateX(33cqw) rotate(calc(-1 * var(--a)))}
+.cen,.oii{box-shadow:0 10px 30px rgba(0,0,0,.55);filter:saturate(1.12) contrast(1.04)}
+
+/* the podium: wide, tight, overlapping a little, and the loudest thing on the page */
+.top3{width:min(1380px,96vw);margin-inline:calc(50% - min(690px,48vw));gap:0;align-items:center}
+.top3 .cw{width:104%;margin:0 -2%}
+.top3 .r2{margin-right:-4%}.top3 .r3{margin-left:-4%}
+.top3 .r2 .cw,.top3 .r3 .cw{}
+.mb .board{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0}
+.mb .board .cw{margin:-6px -8px}
+@media(max-width:860px){.top3{width:100%;margin-inline:0}.top3 .cw{width:100%;margin:0 auto;max-width:440px}.mb .board{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}}
+@media(prefers-reduced-motion:reduce){.cw{animation:none;transition:none}}
+
+/* make a cluster: a circle too */
+.ncw{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;padding:0;gap:10px;align-items:stretch}
+.ncw .ncp{aspect-ratio:1;width:100%;border:1px dashed rgba(255,255,255,.3);border-radius:50%!important;background-color:rgba(255,255,255,.04);transition:background-color .2s,border-color .2s,transform .3s cubic-bezier(.22,.8,.22,1)}
+.ncw .ncp:hover{background-color:rgba(255,255,255,.1);border-color:var(--ink);transform:scale(1.03)}
+.ncw .ncp .plus{font-size:clamp(54px,6vw,84px)}
+.ncw input[type=text]{text-align:center;background:transparent;border:0;border-bottom:1px solid var(--gb);padding:10px 4px}
+.ncw .pill{border-radius:0}
+@media(max-width:860px){.ncw .ncp{aspect-ratio:1;max-width:260px;margin:0 auto}}
