@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useMemo, useRef, useState } from 'react'
 import HeroClock from '../components/HeroClock'
 import TeeHero from '../components/TeeHero'
-import CircleVote from '../components/CircleVote'
+import VoteBox from '../components/VoteBox'
 import Notice from '../components/Notice'
 import HowItWorks from '../components/HowItWorks'
 import { useMoodboard } from '../components/MoodboardProvider'
@@ -92,39 +92,30 @@ const SLOTS = [
 function ClusterCard({ c, rank }) {
   const router = useRouter()
   const { vote } = useMoodboard()
-  const h = hash(c.id)
   const bg = (it) =>
     it.img ? { backgroundImage: 'url("' + it.img + '")' } : { backgroundColor: it.color }
   return (
-    <div
+    <article
       data-flip={c.id}
-      className={'cw' + (rank ? ' r' + rank : '')}
-      style={{
-        '--dx': 10 + (h % 13) + 'px',
-        '--dy': 8 + (h % 11) + 'px',
-        '--dur': 14 + (h % 5) * 3 + 's',
-        animationDelay: '-' + (h % 9) + 's',
+      className={'cw cd g' + (rank ? ' r' + rank : '')}
+      onClick={(e) => {
+        if (e.target.closest('button,a')) return
+        router.push('/cluster/' + c.id)
       }}
     >
-      <div className="vcol">
-        <CircleVote dir={1} active={c.mine === 1} onVote={(d) => vote('cluster', c.id, d)} />
-        <span className="cs mu" aria-label="Votes">
-          {fmtScore(c.score)}
-        </span>
-        <CircleVote dir={-1} active={c.mine === -1} onVote={(d) => vote('cluster', c.id, d)} />
+      <div className="ch">
+        <div>
+          {rank ? <span className="rk">#{rank}</span> : null}
+          <h3>
+            <Link href={'/cluster/' + c.id}>{c.name}</Link>
+          </h3>
+          <span className="by2">
+            by <Link href={'/u/' + c.byId}>{c.by}</Link>
+          </span>
+        </div>
+        <VoteBox score={c.score} mine={c.mine} onVote={(d) => vote('cluster', c.id, d)} />
       </div>
-      <article
-        className="cc g"
-        tabIndex={0}
-        aria-label={c.name}
-        onClick={(e) => {
-          if (e.target.closest('a')) return
-          router.push('/cluster/' + c.id)
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') router.push('/cluster/' + c.id)
-        }}
-      >
+      <div className="stg">
         {c.items.slice(0, SLOTS.length).map((it, k) => {
           const [x, y, sz] = SLOTS[k]
           const q = hash(it.id)
@@ -138,10 +129,10 @@ function ClusterCard({ c, rank }) {
                 width: sz + 'cqw',
                 height: sz + 'cqw',
                 zIndex: k ? 2 : 1,
-                '--ix': 4 + (q % 9) + 'cqw',
-                '--iy': 3 + (q % 7) + 'cqw',
-                '--ir': (q % 2 ? 1 : -1) * (1 + (q % 3)) + 'deg',
-                '--id': 9 + (q % 8) + 's',
+                '--ix': 1.5 + (q % 5) * 0.5 + 'cqw',
+                '--iy': 1.5 + (q % 4) * 0.5 + 'cqw',
+                '--ir': (q % 2 ? 1 : -1) * (1 + (q % 2)) + 'deg',
+                '--id': 10 + (q % 8) + 's',
                 animationDelay: '-' + (q % 11) + 's',
               }}
             >
@@ -149,19 +140,14 @@ function ClusterCard({ c, rank }) {
             </span>
           )
         })}
-        <div className="cap">
-          <h3>
-            <Link href={'/cluster/' + c.id}>{c.name}</Link>
-          </h3>
-          <span className="by2">
-            by <Link href={'/u/' + c.byId}>{c.by}</Link>
-          </span>
-          <span className="mu">
-            {c.items.length} {c.items.length === 1 ? 'item' : 'items'}
-          </span>
-        </div>
-      </article>
-    </div>
+      </div>
+      <div className="open">
+        <span className="mu">
+          {c.items.length} {c.items.length === 1 ? 'item' : 'items'}
+        </span>
+        <b>Open</b>
+      </div>
+    </article>
   )
 }
 

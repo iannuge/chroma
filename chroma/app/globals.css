@@ -797,3 +797,20 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 
 .mult .tip{white-space:normal;width:230px;text-align:left;line-height:1.3;padding:10px 12px;font-family:inherit}
 .mult .tip b{display:block;margin-bottom:3px;font-weight:700}
+
+/* ================= back to the original card format, with images floating inside ================= */
+.cw.cd{display:block;animation:none;padding:14px;cursor:pointer;text-align:left;border-radius:0!important}
+.cd .ch{margin:2px 2px 12px}
+.cd .stg{position:relative;aspect-ratio:1;container-type:inline-size;overflow:hidden;background:rgba(255,255,255,.03)}
+.cd .open{display:flex;justify-content:space-between;margin:12px 4px 2px}
+.top3 .r1.cd{border-color:var(--ac)}
+.top3{width:auto;margin-inline:0;gap:clamp(20px,2.6vw,40px);align-items:center}
+.top3 .cw.cd{width:100%;margin:0}
+.top3 .r2,.top3 .r3{margin:0}
+.top3 .r1.cd{padding:clamp(15px,1.7vw,23px)}
+.top3 .cd .ch h3{font-size:clamp(24px,2.6vw,36px)}
+.top3 .r1 .ch h3{font-size:clamp(25px,2.8vw,38px)}
+.mb .board{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:34px 24px;align-items:start}
+.mb .board .cw.cd{margin:0;padding:11px}
+.mb .board .cd .ch h3{font-size:20px}
+@media(max-width:860px){.top3{width:100%}.top3 .cw.cd{max-width:440px;margin:0 auto}.mb .board{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
