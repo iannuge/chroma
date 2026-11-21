@@ -81,7 +81,7 @@ function ClusterCard({ c, rank }) {
   const { vote } = useMoodboard()
   const h = hash(c.id)
   const center = c.items[0]
-  const ring = c.items.slice(1, 7)
+  const ring = c.items.slice(1, 9)
   const bg = (it) =>
     it.img ? { backgroundImage: 'url("' + it.img + '")' } : { backgroundColor: it.color }
   return (
@@ -95,8 +95,15 @@ function ClusterCard({ c, rank }) {
         animationDelay: '-' + (h % 9) + 's',
       }}
     >
+      <div className="vcol">
+        <CircleVote dir={1} active={c.mine === 1} onVote={(d) => vote('cluster', c.id, d)} />
+        <span className="cs mu" aria-label="Votes">
+          {fmtScore(c.score)}
+        </span>
+        <CircleVote dir={-1} active={c.mine === -1} onVote={(d) => vote('cluster', c.id, d)} />
+      </div>
       <article
-        className="cc"
+        className="cc g"
         tabIndex={0}
         aria-label={c.name}
         onClick={(e) => {
@@ -136,13 +143,6 @@ function ClusterCard({ c, rank }) {
           </span>
         </div>
       </article>
-      <div className="vcol">
-        <CircleVote dir={1} active={c.mine === 1} onVote={(d) => vote('cluster', c.id, d)} />
-        <span className="cs mu" aria-label="Votes">
-          {fmtScore(c.score)}
-        </span>
-        <CircleVote dir={-1} active={c.mine === -1} onVote={(d) => vote('cluster', c.id, d)} />
-      </div>
     </div>
   )
 }

@@ -749,3 +749,19 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .ncw input[type=text]{text-align:center;background:transparent;border:0;border-bottom:1px solid var(--gb);padding:10px 4px}
 .ncw .pill{border-radius:0}
 @media(max-width:860px){.ncw .ncp{aspect-ratio:1;max-width:260px;margin:0 auto}}
+
+/* ---- round three: original glass back, votes on top, bigger overlapping images ---- */
+.cw{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;row-gap:6px}
+.cw .vcol{grid-column:1;grid-row:1;flex-direction:row;gap:12px;justify-content:center}
+.cw .cc{grid-column:1;grid-row:2}
+
+/* the glassy backdrop from before, clipped hard to the circle so no rectangle can show */
+.cc{background:var(--gl);border:1px solid var(--gb);-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);box-shadow:inset 0 1px 0 var(--gb);-webkit-mask-image:radial-gradient(circle closest-side,#000 calc(100% - .5px),transparent 100%);mask-image:radial-gradient(circle closest-side,#000 calc(100% - .5px),transparent 100%);isolation:isolate}
+.cc:hover,.cc:focus-visible{border-color:var(--ink);box-shadow:inset 0 1px 0 var(--gb)}
+.top3 .r1 .cc{border-color:var(--ac);box-shadow:inset 0 1px 0 var(--gb)}
+/* the hover caption was drawing its own blur box: plain dark fill, round */
+.cap{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(13,12,11,.78);border-radius:50%!important}
+
+/* images: bigger, and allowed to overlap each other */
+.cen{width:42cqw;height:42cqw;margin:-21cqw 0 0 -21cqw}
+.oi{width:28cqw;height:28cqw;margin:-14cqw 0 0 -14cqw;transform:rotate(var(--a)) translateX(33cqw) rotate(calc(-1 * var(--a)))}
