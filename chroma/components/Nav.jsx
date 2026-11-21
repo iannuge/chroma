@@ -36,7 +36,7 @@ export default function Nav() {
   )
 
   return (
-    <div className="w">
+    <div className="w navw">
       <nav className="g">
         <Link href="/" className="brand">
           <b>CHROMA</b>
@@ -62,7 +62,9 @@ export default function Nav() {
               </button>
             ))}
         </span>
-        {open && <div className="mm g">{links}</div>}
+        <div className={'mm g' + (open ? ' open' : '')} aria-hidden={!open}>
+          {links}
+        </div>
       </nav>
     </div>
   )

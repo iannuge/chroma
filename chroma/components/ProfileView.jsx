@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useMoodboard } from './MoodboardProvider'
 import Tile from './Tile'
+import { Avatar } from './Comments'
 import { fmtScore, imgUrl } from '../lib/util'
 
 function toMap(rows, k) {
@@ -26,7 +27,7 @@ export default function ProfileView({ uid, isMe }) {
   const load = useCallback(async () => {
     try {
       const none = Promise.resolve({ data: [] })
-      const [p, cl, it, ord] = await Promise.all([
+      const [p, cl, it, ord, bd, mu] = await Promise.all([
         supabase.from('profiles').select('id,display_name,avatar_url,created_at').eq('id', uid).maybeSingle(),
         supabase.from('clusters').select('id,name,created_at').eq('created_by', uid),
         supabase
@@ -36,6 +37,8 @@ export default function ProfileView({ uid, isMe }) {
         isMe
           ? supabase.from('orders').select('id,created_at,drops(number,theme)').eq('user_id', uid)
           : none,
+        supabase.from('user_badges').select('badge_slug,badges(label,color,description,sort)').eq('user_id', uid),
+        supabase.rpc('profile_multiplier', { uid }),
       ])
       if (p.error) throw p.error
       if (!p.data) {
@@ -64,7 +67,12 @@ export default function ProfileView({ uid, isMe }) {
         }))
         .sort((a, b) => b.score - a.score)
       setName(p.data.display_name || '')
-      setState({ status: 'ready', profile: p.data, clusters, items, orders: ord.data || [] })
+      const badges = (bd.data || [])
+        .filter((b) => b.badges)
+        .map((b) => ({ slug: b.badge_slug, ...b.badges }))
+        .sort((a, b) => a.sort - b.sort)
+      const mult = mu && mu.data != null ? Number(mu.data) : 1
+      setState({ status: 'ready', profile: p.data, clusters, items, orders: ord.data || [], badges, mult })
     } catch (e) {
       setState({ status: 'error' })
     }
@@ -95,21 +103,40 @@ export default function ProfileView({ uid, isMe }) {
   if (state.status === 'missing') return <p className="mu">That profile could not be found.</p>
   if (state.status === 'error') return <p className="mu">Could not load this profile.</p>
 
-  const { profile, clusters, items, orders } = state
+  const { profile, clusters, items, orders, badges, mult } = state
   const initial = (profile.display_name || '?').slice(0, 1).toUpperCase()
 
   return (
     <>
       <div className="phead">
-        {profile.avatar_url ? (
-          <img className="avatar" src={profile.avatar_url} alt="" referrerPolicy="no-referrer" />
-        ) : (
-          <span className="avatar">{initial}</span>
-        )}
-        <h1>{profile.display_name}</h1>
+        <Avatar url={profile.avatar_url} name={profile.display_name} size={84} />
+        <div className="pnm">
+          <h1>{profile.display_name}</h1>
+          <span className="mult" tabIndex={0} aria-label="Vote multiplier">
+            x{Math.round(mult * 100) / 100}
+            <span className="tip">vote multiplier</span>
+          </span>
+        </div>
+        <div className="roles">
+          {badges.map((b) => (
+            <span
+              key={b.slug}
+              className="role"
+              style={{ '--rc': b.color }}
+              title={b.description || b.label}
+            >
+              <i />
+              {b.label}
+            </span>
+          ))}
+          <span className="role stat" title="images added and clusters started">
+            {items.length} {items.length === 1 ? 'element' : 'elements'} · {clusters.length}{' '}
+            {clusters.length === 1 ? 'cluster' : 'clusters'}
+          </span>
+        </div>
         <span className="mu">
-          {clusters.length} {clusters.length === 1 ? 'cluster' : 'clusters'} · {items.length}{' '}
-          {items.length === 1 ? 'image' : 'images'}
+          joined{' '}
+          {new Date(profile.created_at).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }).toLowerCase()}
         </span>
       </div>
 

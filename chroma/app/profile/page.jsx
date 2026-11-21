@@ -19,7 +19,7 @@ export default function MyProfile() {
         <div>
           <p className="mu">Sign in to see your profile.</p>
           <button className="pill" onClick={signIn}>
-            Sign in with Google
+            Sign in
           </button>
         </div>
       )}

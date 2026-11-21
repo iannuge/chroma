@@ -5,13 +5,12 @@ import { useRouter } from 'next/navigation'
 import { useMemo, useRef, useState } from 'react'
 import HeroClock from '../components/HeroClock'
 import TeeHero from '../components/TeeHero'
-import Tile from '../components/Tile'
-import VoteBox from '../components/VoteBox'
+import CircleVote from '../components/CircleVote'
 import Notice from '../components/Notice'
 import HowItWorks from '../components/HowItWorks'
 import { useMoodboard } from '../components/MoodboardProvider'
 import { useAuth } from '../components/AuthProvider'
-import { hash } from '../lib/util'
+import { hash, fmtScore } from '../lib/util'
 import { shopOpen } from '../lib/shop'
 import useFlip from '../lib/useFlip'
 
@@ -77,48 +76,67 @@ function NewCluster() {
   )
 }
 
-function ClusterCard({ c, rank, big }) {
+function ClusterCard({ c, rank }) {
   const router = useRouter()
   const { vote } = useMoodboard()
   const h = hash(c.id)
+  const center = c.items[0]
+  const ring = c.items.slice(1, 7)
+  const bg = (it) =>
+    it.img ? { backgroundImage: 'url("' + it.img + '")' } : { backgroundColor: it.color }
   return (
-    <article
+    <div
       data-flip={c.id}
-      className={'cl g' + (big ? ' big' : '') + (rank ? ' r' + rank : '')}
-      style={{
-        '--r': (h % 2 ? 0.6 : -0.6) + 'deg',
-        '--dur': 11 + (h % 3) * 2.5 + 's',
-        animationDelay: '-' + (h % 7) + 's',
-      }}
-      onClick={(e) => {
-        if (e.target.closest('button,a')) return
-        router.push('/cluster/' + c.id)
-      }}
+      className={'cw' + (rank ? ' r' + rank : '')}
+      style={{ '--r': (h % 2 ? 0.6 : -0.6) + 'deg', '--dur': 11 + (h % 3) * 2.5 + 's', animationDelay: '-' + (h % 7) + 's' }}
     >
-      <div className="ch">
-        <div>
-          {rank ? <span className="rk">#{rank}</span> : null}
+      <CircleVote dir={1} active={c.mine === 1} onVote={(d) => vote('cluster', c.id, d)} />
+      <article
+        className="cc g"
+        tabIndex={0}
+        aria-label={c.name}
+        onClick={(e) => {
+          if (e.target.closest('a')) return
+          router.push('/cluster/' + c.id)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') router.push('/cluster/' + c.id)
+        }}
+      >
+        {center && <span className="cen" style={bg(center)} />}
+        <div
+          className="orb"
+          style={{
+            '--d': 34 + (h % 4) * 9 + 's',
+            animationDirection: h % 2 ? 'reverse' : 'normal',
+          }}
+        >
+          {ring.map((it, k) => (
+            <span key={it.id} className="oi" style={{ '--a': (360 / ring.length) * k + 'deg' }}>
+              <i
+                className="oii"
+                style={{ ...bg(it), animationDirection: h % 2 ? 'normal' : 'reverse' }}
+              />
+            </span>
+          ))}
+        </div>
+        <div className="cap">
           <h3>
             <Link href={'/cluster/' + c.id}>{c.name}</Link>
           </h3>
           <span className="by2">
             by <Link href={'/u/' + c.byId}>{c.by}</Link>
           </span>
+          <span className="mu">
+            {c.items.length} {c.items.length === 1 ? 'item' : 'items'}
+          </span>
         </div>
-        <VoteBox score={c.score} mine={c.mine} onVote={(d) => vote('cluster', c.id, d)} />
-      </div>
-      <div className="pv">
-        {c.items.slice(0, 4).map((it) => (
-          <Tile key={it.id} item={it} />
-        ))}
-      </div>
-      <div className="open">
-        <span className="mu">
-          {c.items.length} {c.items.length === 1 ? 'item' : 'items'}
-        </span>
-        <b>Open</b>
-      </div>
-    </article>
+      </article>
+      <CircleVote dir={-1} active={c.mine === -1} onVote={(d) => vote('cluster', c.id, d)} />
+      <span className="cs mu" aria-label="Votes">
+        {fmtScore(c.score)}
+      </span>
+    </div>
   )
 }
 
@@ -175,7 +193,7 @@ export default function Home() {
           {top.length > 0 && (
             <div className={'top3 n' + top.length} ref={topRef}>
               {top.map((c, i) => (
-                <ClusterCard key={c.id} c={c} rank={i + 1} big />
+                <ClusterCard key={c.id} c={c} rank={i + 1} />
               ))}
             </div>
           )}
