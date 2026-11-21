@@ -765,3 +765,18 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 /* images: bigger, and allowed to overlap each other */
 .cen{width:42cqw;height:42cqw;margin:-21cqw 0 0 -21cqw}
 .oi{width:28cqw;height:28cqw;margin:-14cqw 0 0 -14cqw;transform:rotate(var(--a)) translateX(33cqw) rotate(calc(-1 * var(--a)))}
+
+/* ---- profile spacing ---- */
+.page .phead{gap:20px;margin-top:40px}
+.phead .pnm{gap:16px;margin-top:6px}
+.phead .roles{gap:10px;margin-top:2px}
+.phead > .mu{margin-top:2px}
+.page h2.sh{margin:84px auto 26px}
+.page .chips{gap:14px}
+.page .chip{padding:12px 22px}
+.page .pg{width:100%;max-width:1000px;margin:0 auto;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;padding:0 4px 64px}
+.page .pgi{min-width:0}
+.page .pg .it{width:100%;min-width:0;aspect-ratio:1;overflow:hidden}
+.page .pedit{margin-top:34px}
+.page .pord{margin-top:30px}
+@media(max-width:560px){.page .phead{margin-top:28px}.page h2.sh{margin:60px auto 20px}.page .pg{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
