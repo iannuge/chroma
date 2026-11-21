@@ -814,3 +814,6 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .mb .board .cw.cd{margin:0;padding:11px}
 .mb .board .cd .ch h3{font-size:20px}
 @media(max-width:860px){.top3{width:100%}.top3 .cw.cd{max-width:440px;margin:0 auto}.mb .board{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
+
+/* floating images keep their own shape: nothing cropped to a square */
+.fl2 i{background-size:contain;background-position:center;background-repeat:no-repeat;box-shadow:none;filter:saturate(1.12) contrast(1.04) drop-shadow(0 8px 16px rgba(0,0,0,.5))}
