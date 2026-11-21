@@ -24,11 +24,17 @@ function NewCluster() {
   const [name, setName] = useState('')
   const [file, setFile] = useState(null)
   const [busy, setBusy] = useState(false)
+  const [hint, setHint] = useState('')
   const preview = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file])
 
   const submit = async (e) => {
     e.preventDefault()
     const form = e.currentTarget
+    if (!name.trim() || !file) {
+      setHint(!name.trim() && !file ? 'Add a title and a first image.' : !name.trim() ? 'Add a title.' : 'Add a first image.')
+      return
+    }
+    setHint('')
     setBusy(true)
     const ok = await addCluster(name.trim(), file)
     setBusy(false)
@@ -63,13 +69,17 @@ function NewCluster() {
       <input
         type="text"
         placeholder="Cluster title"
-        required
         aria-label="Cluster title"
         value={name}
         onChange={(e) => setName(e.target.value)}
         maxLength={60}
       />
-      <button className="pill" disabled={busy || (!!user && (!file || !name.trim()))}>
+      {hint && (
+        <p className="mu" role="status" style={{ margin: 0, fontSize: 13, textAlign: 'center' }}>
+          {hint}
+        </p>
+      )}
+      <button className="pill" disabled={busy}>
         {busy ? 'Adding…' : 'Start cluster'}
       </button>
     </form>
