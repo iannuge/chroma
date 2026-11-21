@@ -69,6 +69,31 @@ export default function Copyright() {
         </section>
 
         <section className="g poc">
+          <h2>designated agent</h2>
+          <p>
+            copyright notices under the dmca (17 u.s.c. § 512) can be sent to chroma&apos;s designated agent:
+          </p>
+          <p>
+            ian nugent
+            <br />
+            chroma
+            <br />
+            31 chester st, boston, ma
+            <br />
+            <a href="mailto:21.iann.thy@gmail.com">21.iann.thy@gmail.com</a>
+          </p>
+          <p>you can also use the form below.</p>
+        </section>
+
+        <section className="g poc">
+          <h2>repeat infringers</h2>
+          <p>
+            chroma ends the accounts of people who repeatedly upload infringing material. an account that is the
+            subject of two or more valid copyright notices is removed.
+          </p>
+        </section>
+
+        <section className="g poc">
           <h2>send a notice</h2>
           {done ? (
             <p>Thank you. We received your notice and will review it as soon as we can.</p>
@@ -119,7 +144,7 @@ export default function Copyright() {
           <h2>if your upload was removed</h2>
           <p>
             if you believe your upload was removed by mistake, or that you have permission to use it, you can send a
-            counter-notice through threeletters.net or instagram @iannuge. include your name, contact details, the image, and a statement
+            counter-notice to the email above, or through threeletters.net or instagram @iannuge. include your name, contact details, the image, and a statement
             under penalty of perjury that you believe it was removed by mistake. if the original complainant does not
             take legal action, we may restore it.
           </p>
