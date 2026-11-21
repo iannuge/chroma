@@ -5,8 +5,8 @@ export default function useSift(ref) {
   useEffect(() => {
     const root = ref.current
     if (!root || !window.matchMedia('(hover:hover)').matches) return
-    const RANGE = 560
-    const PUSH = 90
+    const RANGE = 480
+    const PUSH = 36
 
     const reset = () => {
       root.querySelectorAll('.cw').forEach((el) => {
@@ -23,7 +23,7 @@ export default function useSift(ref) {
       const hy = hr.top + hr.height / 2
       root.querySelectorAll('.cw').forEach((el) => {
         if (el === hov) {
-          el.style.setProperty('--sc', '1.08')
+          el.style.setProperty('--sc', '1.03')
           el.style.removeProperty('--px')
           el.style.removeProperty('--py')
           return
