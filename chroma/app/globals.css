@@ -794,3 +794,6 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
   75%{transform:translate(calc(var(--ix) * .4),calc(var(--iy) * .5)) rotate(calc(var(--ir) * .5))}
 }
 @media(prefers-reduced-motion:reduce){.fl2{animation:none}}
+
+.mult .tip{white-space:normal;width:230px;text-align:left;line-height:1.3;padding:10px 12px;font-family:inherit}
+.mult .tip b{display:block;margin-bottom:3px;font-weight:700}

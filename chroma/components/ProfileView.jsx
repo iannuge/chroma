@@ -114,7 +114,10 @@ export default function ProfileView({ uid, isMe }) {
           <h1>{profile.display_name}</h1>
           <span className="mult" tabIndex={0} aria-label="Vote multiplier">
             x{Math.round(mult * 100) / 100}
-            <span className="tip">vote multiplier</span>
+            <span className="tip">
+              <b>vote multiplier</b>
+              users who contribute more get more weight in their votes.
+            </span>
           </span>
         </div>
         <div className="roles">
