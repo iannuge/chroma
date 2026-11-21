@@ -18,8 +18,9 @@ export function imgUrl(path) {
   return supabase.storage.from('moodboard').getPublicUrl(path).data.publicUrl
 }
 
+// Votes are weighted behind the scenes; show the closest whole number.
 export function fmtScore(n) {
-  return String(Math.round(n * 10) / 10)
+  return String(Math.round(n))
 }
 
 // Shrinks a photo in the browser before upload so storage stays small and pages load fast.
