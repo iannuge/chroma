@@ -5,15 +5,15 @@ import { useRouter } from 'next/navigation'
 import { useMemo, useRef, useState } from 'react'
 import HeroClock from '../components/HeroClock'
 import TeeHero from '../components/TeeHero'
-import Tile from '../components/Tile'
 import VoteBox from '../components/VoteBox'
 import Notice from '../components/Notice'
 import HowItWorks from '../components/HowItWorks'
 import { useMoodboard } from '../components/MoodboardProvider'
 import { useAuth } from '../components/AuthProvider'
-import { hash } from '../lib/util'
+import { hash, fmtScore } from '../lib/util'
 import { shopOpen } from '../lib/shop'
 import useFlip from '../lib/useFlip'
+import useSift from '../lib/useSift'
 
 const PHASES = ['Moodboard open', 'Design in progress', 'Sold out', 'Approval vote', 'Printing']
 const ORDER = ['moodboard', 'design', 'sold_out', 'approval', 'printing']
@@ -24,11 +24,17 @@ function NewCluster() {
   const [name, setName] = useState('')
   const [file, setFile] = useState(null)
   const [busy, setBusy] = useState(false)
+  const [hint, setHint] = useState('')
   const preview = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file])
 
   const submit = async (e) => {
     e.preventDefault()
     const form = e.currentTarget
+    if (!name.trim() || !file) {
+      setHint(!name.trim() && !file ? 'Add a title and a first image.' : !name.trim() ? 'Add a title.' : 'Add a first image.')
+      return
+    }
+    setHint('')
     setBusy(true)
     const ok = await addCluster(name.trim(), file)
     setBusy(false)
@@ -41,7 +47,7 @@ function NewCluster() {
 
   return (
     <form
-      className="nc g"
+      className="nc ncw"
       onSubmit={submit}
       onClickCapture={(e) => {
         if (!user) {
@@ -51,45 +57,57 @@ function NewCluster() {
         }
       }}
     >
-      <span className="ncl mu">make a cluster</span>
+      <label
+        className="ncp ncc"
+        style={preview ? { backgroundImage: 'url("' + preview + '")' } : undefined}
+        aria-label="Add a first image"
+      >
+        {!preview && <span className="plus">+</span>}
+        {!preview && <span className="mu">make a cluster</span>}
+        <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
+      </label>
       <input
         type="text"
         placeholder="Cluster title"
-        required
         aria-label="Cluster title"
         value={name}
         onChange={(e) => setName(e.target.value)}
         maxLength={60}
       />
-      <label
-        className="ncp"
-        style={preview ? { backgroundImage: 'url("' + preview + '")' } : undefined}
-        aria-label="Add a first image"
-      >
-        {!preview && <span className="plus">+</span>}
-        {!preview && <span className="mu">first image</span>}
-        <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0] || null)} />
-      </label>
-      <button className="pill" disabled={busy || (!!user && (!file || !name.trim()))}>
+      {hint && (
+        <p className="mu" role="status" style={{ margin: 0, fontSize: 13, textAlign: 'center' }}>
+          {hint}
+        </p>
+      )}
+      <button className="pill" disabled={busy}>
         {busy ? 'Adding…' : 'Start cluster'}
       </button>
     </form>
   )
 }
 
-function ClusterCard({ c, rank, big }) {
+// Where each floating image rests inside a cluster: [centerX, centerY, size] in % of the card.
+const SLOTS = [
+  [50, 50, 42],
+  [24, 25, 30],
+  [77, 24, 29],
+  [24, 77, 29],
+  [77, 76, 30],
+  [50, 14, 22],
+  [50, 87, 22],
+  [12, 51, 20],
+  [88, 50, 20],
+]
+
+function ClusterCard({ c, rank }) {
   const router = useRouter()
   const { vote } = useMoodboard()
-  const h = hash(c.id)
+  const bg = (it) =>
+    it.img ? { backgroundImage: 'url("' + it.img + '")' } : { backgroundColor: it.color }
   return (
     <article
       data-flip={c.id}
-      className={'cl g' + (big ? ' big' : '') + (rank ? ' r' + rank : '')}
-      style={{
-        '--r': (h % 2 ? 0.6 : -0.6) + 'deg',
-        '--dur': 11 + (h % 3) * 2.5 + 's',
-        animationDelay: '-' + (h % 7) + 's',
-      }}
+      className={'cw cd g' + (rank ? ' r' + rank : '')}
       onClick={(e) => {
         if (e.target.closest('button,a')) return
         router.push('/cluster/' + c.id)
@@ -107,10 +125,31 @@ function ClusterCard({ c, rank, big }) {
         </div>
         <VoteBox score={c.score} mine={c.mine} onVote={(d) => vote('cluster', c.id, d)} />
       </div>
-      <div className="pv">
-        {c.items.slice(0, 4).map((it) => (
-          <Tile key={it.id} item={it} />
-        ))}
+      <div className="stg">
+        {c.items.slice(0, SLOTS.length).map((it, k) => {
+          const [x, y, sz] = SLOTS[k]
+          const q = hash(it.id)
+          return (
+            <span
+              key={it.id}
+              className="fl2"
+              style={{
+                left: 'calc(' + x + 'cqw - ' + sz / 2 + 'cqw)',
+                top: 'calc(' + y + 'cqw - ' + sz / 2 + 'cqw)',
+                width: sz + 'cqw',
+                height: sz + 'cqw',
+                zIndex: k ? 2 : 1,
+                '--ix': 1.5 + (q % 5) * 0.5 + 'cqw',
+                '--iy': 1.5 + (q % 4) * 0.5 + 'cqw',
+                '--ir': (q % 2 ? 1 : -1) * (1 + (q % 2)) + 'deg',
+                '--id': 10 + (q % 8) + 's',
+                animationDelay: '-' + (q % 11) + 's',
+              }}
+            >
+              <i style={bg(it)} />
+            </span>
+          )
+        })}
       </div>
       <div className="open">
         <span className="mu">
@@ -131,6 +170,8 @@ export default function Home() {
   const boardRef = useRef(null)
   useFlip(topRef)
   useFlip(boardRef)
+  const siftRef = useRef(null)
+  useSift(siftRef)
 
   const idx = !drop ? 0 : drop.status === 'shipped' ? PHASES.length : Math.max(0, ORDER.indexOf(drop.status))
   const goal = progress.goal || 20
@@ -164,7 +205,7 @@ export default function Home() {
       </div>
 
       <section id="board">
-        <div className="w">
+        <div className="w" ref={siftRef}>
           <div className="hd">
             <h2 style={{ margin: 0 }}>choose a direction</h2>
             <p className="mu" style={{ margin: 0 }}>
@@ -175,7 +216,7 @@ export default function Home() {
           {top.length > 0 && (
             <div className={'top3 n' + top.length} ref={topRef}>
               {top.map((c, i) => (
-                <ClusterCard key={c.id} c={c} rank={i + 1} big />
+                <ClusterCard key={c.id} c={c} rank={i + 1} />
               ))}
             </div>
           )}

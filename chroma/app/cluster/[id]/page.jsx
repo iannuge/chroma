@@ -2,13 +2,14 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import Tile from '../../../components/Tile'
+import { useMemo, useState } from 'react'
 import VoteBox from '../../../components/VoteBox'
 import Notice from '../../../components/Notice'
 import Lightbox from '../../../components/Lightbox'
 import { useMoodboard } from '../../../components/MoodboardProvider'
 import { useAuth } from '../../../components/AuthProvider'
+import Comments from '../../../components/Comments'
+import { lum } from '../../../lib/util'
 
 function AddItem({ clusterId, clusterName }) {
   const { addItem, setPrompt } = useMoodboard()
@@ -63,21 +64,7 @@ export default function ClusterPage() {
   const id = params ? params.id : null
   const { clusters, status, vote } = useMoodboard()
   const cluster = clusters.find((c) => c.id === id)
-  const found = !!cluster
-
-  const stage = useRef(null)
-  const [dim, setDim] = useState({ w: 0, h: 0 })
   const [openId, setOpenId] = useState(null)
-
-  useEffect(() => {
-    const el = stage.current
-    if (!el) return
-    const measure = () => setDim({ w: el.clientWidth, h: el.clientHeight })
-    measure()
-    const ro = new ResizeObserver(measure)
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [found])
 
   if (!cluster) {
     return (
@@ -91,17 +78,6 @@ export default function ClusterPage() {
   }
 
   const items = cluster.items
-  const scores = items.map((i) => i.score)
-  const mx = scores.length ? Math.max(...scores) : 0
-  const mn = scores.length ? Math.min(...scores) : 0
-  // Staggered grid: big enough to read at 0-1 votes, with score only nudging size and position.
-  const W = dim.w || 600
-  const cols = W < 520 ? 2 : W < 900 ? 3 : 4
-  const gap = 18
-  const cell = (W - gap * (cols - 1)) / cols
-  const rowH = cell * 0.92
-  const rows = Math.max(1, Math.ceil(items.length / cols))
-  const stageH = rows * rowH + (cols > 1 ? rowH * 0.25 : 0) + 24
 
   return (
     <main className="w page">
@@ -111,7 +87,8 @@ export default function ClusterPage() {
       <div className="cvh">
         <h1>{cluster.name}</h1>
         <span className="mu">
-          started by <Link href={'/u/' + cluster.byId}>{cluster.by}</Link>
+          started by <Link href={'/u/' + cluster.byId}>{cluster.by}</Link> · {items.length}{' '}
+          {items.length === 1 ? 'item' : 'items'}
         </span>
         {cluster.won ? (
           <span className="badge">
@@ -122,40 +99,34 @@ export default function ClusterPage() {
         )}
       </div>
       <Notice />
-      <div className="fs" ref={stage} style={{ height: stageH }}>
-        {items.map((it, k) => {
-          const n = mx === mn ? 0.5 : (it.score - mn) / (mx - mn)
-          const z = cell * (0.86 + n * 0.14)
-          const h = z * 0.9
-          const col = k % cols
-          const row = Math.floor(k / cols)
-          const left = col * (cell + gap) + (cell - z) / 2
-          const top = row * rowH + (col % 2 ? rowH * 0.22 : 0) + (rowH - h) / 2 * 0.4 + 8
-          const fs = 13 + n * 8
-          return (
-            <div
-              className="fi"
-              key={it.id}
-              style={{ width: z, height: h, left, top, zIndex: 100 - k }}
-            >
-              <div
-                className="fl"
-                style={{
-                  '--r': (k % 2 ? 1.2 : -1.2) + 'deg',
-                  '--dur': 9 + (k % 4) * 2 + 's',
-                  animationDelay: '-' + k + 's',
-                }}
-              >
-                <Tile item={it} size={fs} onOpen={(x) => setOpenId(x.id)} onVote={cluster.won ? undefined : (d) => vote('item', it.id, d)} />
-              </div>
-            </div>
-          )
-        })}
+      <div className="mas">
+        {items.map((it) => (
+          <figure
+            key={it.id}
+            className={'mi' + (it.img ? '' : ' flat')}
+            style={it.img ? undefined : { backgroundColor: it.color, color: lum(it.color) > 0.55 ? '#000' : '#fff' }}
+            onClick={(e) => {
+              if (e.target.closest('button,a')) return
+              setOpenId(it.id)
+            }}
+          >
+            {it.img ? <img src={it.img} alt={it.caption || 'moodboard image'} loading="lazy" /> : <span className="mic">{it.caption}</span>}
+            <figcaption className="mib">
+              <Link className="by" href={'/u/' + it.byId}>
+                {it.by}
+              </Link>
+              {!cluster.won && <VoteBox score={it.score} mine={it.mine} onVote={(d) => vote('item', it.id, d)} />}
+            </figcaption>
+          </figure>
+        ))}
       </div>
       {!cluster.won && <AddItem clusterId={cluster.id} clusterName={cluster.name} />}
-      <p className="mu">{cluster.won
+      <p className="mu">
+        {cluster.won
           ? 'This cluster won, so voting and uploads are closed. Click an image to expand it.'
-          : 'Higher scores float higher and grow larger. Click an image to expand it.'}</p>
+          : 'Click an image to expand it.'}
+      </p>
+      <Comments kind="cluster" id={cluster.id} />
       <Lightbox item={items.find((i) => i.id === openId) || null} onClose={() => setOpenId(null)} />
     </main>
   )

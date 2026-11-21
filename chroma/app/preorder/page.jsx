@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import TeeHero from '../../components/TeeHero'
 import { useMoodboard } from '../../components/MoodboardProvider'
+import Comments from '../../components/Comments'
 import { SIZES, MAX_QTY, shopOpen, needsSize } from '../../lib/shop'
 
 const pad = (n) => String(n).padStart(2, '0')
@@ -175,6 +176,8 @@ export default function PreOrder() {
           </ul>
         </div>
       </div>
+
+      {drop && drop.design_image && <Comments kind="design" id={drop.id} title="comments on the design" />}
 
       <div className="pocs">
         <section className="g poc">
