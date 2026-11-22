@@ -870,3 +870,6 @@ footer.w{margin-top:clamp(72px,10vw,128px)}
 nav .nl .dl{gap:2px}
 nav .nl .dl a,nav .nl .dl a+a,nav .nl .dl a:first-child,nav .nl .dl a:last-child{border:0;background:transparent;box-shadow:none;padding:10px 14px}
 nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
+
+/* orange outline on #2 and #3 too */
+.top3 .r2.cd,.top3 .r3.cd{border-color:var(--ac)}
