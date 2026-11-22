@@ -901,3 +901,10 @@ nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
 .v button.on,.it .v button.on,.mib .v button.on,.v button[data-d="down"].on,.it .v button[data-d="down"].on,.mib .v button[data-d="down"].on{background:transparent;border:0;-webkit-mask:none;mask:none}
 .v button.on::after{opacity:1;background:#fff}
 .v button[data-d="down"].on::after{background:#ff3b30}
+
+/* claim page "how it works" panel: left aligned, list lines up under the heading */
+.poc,.poc p,.poc .hiw{text-align:left}
+.poc .hiw{padding-left:0;list-style:none;counter-reset:s;gap:12px}
+.poc .hiw li{counter-increment:s;position:relative;padding-left:2.2em;display:block}
+.poc .hiw li:before{content:counter(s) ".";position:absolute;left:0;color:var(--ac);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.poc .hiw li::marker{content:""}
