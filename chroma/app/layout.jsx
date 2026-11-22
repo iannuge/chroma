@@ -4,6 +4,7 @@ import MoodboardProvider from '../components/MoodboardProvider'
 import Nav from '../components/Nav'
 import AuthPrompt from '../components/AuthPrompt'
 import Aberration from '../components/Aberration'
+import Backdrop from '../components/Backdrop'
 import Link from 'next/link'
 
 export const metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
       <body>
         <AuthProvider>
           <MoodboardProvider>
+            <Backdrop />
             <Aberration />
             <Nav />
             <AuthPrompt />
