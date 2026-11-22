@@ -908,3 +908,8 @@ nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
 .poc .hiw li{counter-increment:s;position:relative;padding-left:2.2em;display:block}
 .poc .hiw li:before{content:counter(s) ".";position:absolute;left:0;color:var(--ac);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
 .poc .hiw li::marker{content:""}
+
+/* design tool page: the node editor fills the width under the nav */
+.dtool{padding:16px 24px 0}
+.dtframe{display:block;width:100%;height:calc(100vh - 120px);height:calc(100dvh - 120px);min-height:560px;border:1px solid var(--gb);background:#0a0a0b}
+@media (max-width:820px){.dtool{padding:12px 12px 0}.dtframe{height:calc(100dvh - 100px)}}
