@@ -817,3 +817,8 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 
 /* floating images keep their own shape: nothing cropped to a square */
 .fl2 i{background-size:contain;background-position:center;background-repeat:no-repeat;box-shadow:none;filter:saturate(1.12) contrast(1.04) drop-shadow(0 8px 16px rgba(0,0,0,.5))}
+
+/* nav dropdown: solid panel. It sits inside the nav's own frosted layer, so a second blur can't see the page and the shirt showed through. */
+nav .mm,nav .mm.g{background:#181614;-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid var(--gb);box-shadow:0 22px 50px rgba(0,0,0,.7)}
+nav .mm a{background:transparent}
+nav .mm a:hover,nav .mm a:active{background:rgba(255,255,255,.07)}
