@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import VoteBox from '../../../components/VoteBox'
 import Notice from '../../../components/Notice'
 import Lightbox from '../../../components/Lightbox'
@@ -10,6 +10,7 @@ import { useMoodboard } from '../../../components/MoodboardProvider'
 import { useAuth } from '../../../components/AuthProvider'
 import Comments from '../../../components/Comments'
 import { lum } from '../../../lib/util'
+import { caReveal } from '../../../lib/caReveal'
 
 function AddItem({ clusterId, clusterName }) {
   const { addItem, setPrompt } = useMoodboard()
@@ -65,6 +66,12 @@ export default function ClusterPage() {
   const { clusters, status, vote } = useMoodboard()
   const cluster = clusters.find((c) => c.id === id)
   const [openId, setOpenId] = useState(null)
+  const found = !!cluster
+
+  useEffect(() => {
+    if (!found) return
+    return caReveal(document.querySelector('.mas'))
+  }, [id, found])
 
   if (!cluster) {
     return (
