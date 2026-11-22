@@ -5,6 +5,7 @@ import Nav from '../components/Nav'
 import AuthPrompt from '../components/AuthPrompt'
 import Aberration from '../components/Aberration'
 import Backdrop from '../components/Backdrop'
+import PageReveal from '../components/PageReveal'
 import Link from 'next/link'
 
 export const metadata = {
@@ -28,7 +29,7 @@ export default function RootLayout({ children }) {
             <Aberration />
             <Nav />
             <AuthPrompt />
-            {children}
+            <PageReveal>{children}</PageReveal>
             <footer className="w mu">
               chroma. crowdsourced art direction on a graphic tee. <Link href="/terms">terms</Link>{' '}
               <Link href="/privacy">privacy</Link> <Link href="/copyright">copyright</Link>
