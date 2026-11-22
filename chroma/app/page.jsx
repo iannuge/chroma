@@ -162,7 +162,7 @@ function ClusterCard({ c, rank }) {
 }
 
 export default function Home() {
-  const { drop, clusters: all, progress, hasOrder, status } = useMoodboard()
+  const { drop, clusters: all, progress, hasOrder, myClaim, status } = useMoodboard()
   const clusters = all.filter((c) => !c.won)
   const top = clusters.slice(0, 3)
   const rest = clusters.slice(3)
@@ -183,7 +183,7 @@ export default function Home() {
 
   const pre = (
     <Link className="pill" href="/preorder">
-      {hasOrder ? 'Pre-ordered' : shopOpen && chosen ? 'Pre-order for ' + price : 'Pre-order details, ' + price}
+      {hasOrder ? 'Pre-ordered' : myClaim && myClaim.status === 'claimed' ? 'Shirt claimed' : myClaim && myClaim.status === 'waitlist' ? 'On the waitlist' : 'Claim a shirt'}
     </Link>
   )
 
@@ -254,7 +254,7 @@ export default function Home() {
               ))}
             </div>
             <div className="row">
-              <b>Pre-orders</b>
+              <b>Shirts claimed</b>
               <span className="mu">
                 {claimed} of {goal} claimed
               </span>
@@ -265,7 +265,7 @@ export default function Home() {
               aria-valuemin={0}
               aria-valuemax={100}
               aria-valuenow={Math.round(pct)}
-              aria-label="Pre-orders claimed"
+              aria-label="Shirts claimed"
             >
               <i style={{ width: pct + '%' }} />
             </div>
@@ -274,9 +274,11 @@ export default function Home() {
               <span>
                 {hasOrder
                   ? 'Pre-order bonus on your votes'
-                  : chosen
-                    ? 'Pre-order to boost your votes'
-                    : 'Pre-orders open once a cluster is chosen'}
+                  : myClaim && myClaim.status === 'claimed'
+                    ? 'Your shirt is claimed'
+                    : myClaim && myClaim.status === 'waitlist'
+                      ? "You're on the waitlist"
+                      : 'Claim a spot, it\'s free'}
               </span>
             </div>
           </div>

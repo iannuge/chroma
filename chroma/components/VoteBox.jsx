@@ -9,9 +9,9 @@ export default function VoteBox({ score, mine, onVote }) {
   }
   return (
     <div className="v">
-      <button className={mine === 1 ? 'on' : ''} data-d="up" aria-label="Upvote" aria-pressed={mine === 1} onClick={click(1)} />
+      <button className={mine === 1 ? 'on' : ''} data-d="up" aria-label="Plus" aria-pressed={mine === 1} onClick={click(1)} />
       <b>{fmtScore(score)}</b>
-      <button className={mine === -1 ? 'on' : ''} data-d="down" aria-label="Downvote" aria-pressed={mine === -1} onClick={click(-1)} />
+      <button className={mine === -1 ? 'on' : ''} data-d="down" aria-label="Minus" aria-pressed={mine === -1} onClick={click(-1)} />
     </div>
   )
 }

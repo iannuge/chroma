@@ -46,8 +46,9 @@ export default function HowItWorks() {
                 print.
               </li>
               <li>
-                <b>Pre-order.</b> Each drop is limited. Pre-orderers&apos; votes count more, and once a drop is
-                claimed, buyers approve the final design.
+                <b>Claim a shirt.</b> Claiming a spot is free and each drop is limited. Once the design is
+                final you have 48 hours to buy yours, or it goes to the next person on the waitlist. Buyers&apos;
+                votes count more.
               </li>
             </ol>
             <p className="gift">

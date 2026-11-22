@@ -683,7 +683,7 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .cmh{display:flex;width:100%;justify-content:space-between;align-items:center;background:none;border:0;color:var(--ink);font:inherit;font-size:16px;padding:6px 2px;cursor:pointer}
 .cmx{font-size:20px;line-height:1}
 .cmb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.22,.8,.22,1)}
-.cm.open .cmb{grid-template-rows:1fr}
+.cm.is-open .cmb{grid-template-rows:1fr}
 .cmbi{overflow:hidden;min-height:0}
 .cml{list-style:none;margin:0;padding:8px 0 4px;max-height:420px;overflow:auto;display:grid;gap:14px}
 .cmi{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
@@ -877,3 +877,27 @@ nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
 /* clicks on the empty space around a popup's contents fall through to the backdrop and close it */
 .lbc,.wvc{pointer-events:none}
 .lbc > *,.wvc > *{pointer-events:auto}
+/* claim a shirt */
+.clm{display:grid;gap:4px;padding:14px 16px;border:1px solid var(--gb);background:rgba(255,255,255,.04);text-align:left}
+.clm b{font-size:18px;letter-spacing:-.04em}
+.clf{display:grid;gap:12px;text-align:center}
+.clf .row2{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.pop .pill.sub{background:transparent;color:var(--mu)}
+.pop .pill.sub:hover{color:var(--ink)}
+.poc .hiw{margin:0 0 14px}
+
+/* votes: plus / minus. grey at rest; plus turns white when voted, minus turns red */
+.v button[data-d="up"]{--ar:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M4.2.5h1.6v3.7h3.7v1.6H5.8v3.7H4.2V5.8H.5V4.2h3.7z'/%3E%3C/svg%3E")}
+.v button[data-d="down"]{--ar:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M.5 4.2h9v1.6h-9z'/%3E%3C/svg%3E")}
+.v button::after{width:42%;height:42%;background:rgba(255,255,255,.5)}
+.v button:hover::after{background:rgba(255,255,255,.85)}
+.v button.on,.it .v button.on,.mib .v button.on{-webkit-mask:var(--ar) center/42% no-repeat,linear-gradient(#000,#000);mask:var(--ar) center/42% no-repeat,linear-gradient(#000,#000);-webkit-mask-composite:xor;mask-composite:exclude}
+.v button[data-d="down"].on,.it .v button[data-d="down"].on,.mib .v button[data-d="down"].on{background:#ff3b30;border-color:#ff3b30}
+
+/* plus/minus without frames: just the glyph, grey -> white (plus) or red (minus) once voted */
+.v button,.it .v button,.mib .v button{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.v button:hover,.it .v button:hover,.mib .v button:hover{background:transparent;border:0;transform:scale(1.15)}
+.v button::after{width:60%;height:60%}
+.v button.on,.it .v button.on,.mib .v button.on,.v button[data-d="down"].on,.it .v button[data-d="down"].on,.mib .v button[data-d="down"].on{background:transparent;border:0;-webkit-mask:none;mask:none}
+.v button.on::after{opacity:1;background:#fff}
+.v button[data-d="down"].on::after{background:#ff3b30}
