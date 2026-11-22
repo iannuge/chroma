@@ -120,7 +120,7 @@ export default function Comments({ kind, id, title = 'comments' }) {
   }
 
   return (
-    <section className={'cm g' + (open ? ' open' : '')} aria-label={title}>
+    <section className={'cm g' + (open ? ' is-open' : '')} aria-label={title}>
       <button type="button" className="cmh" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
         <span>
           {title} <span className="mu">{list.length}</span>

@@ -683,7 +683,7 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .cmh{display:flex;width:100%;justify-content:space-between;align-items:center;background:none;border:0;color:var(--ink);font:inherit;font-size:16px;padding:6px 2px;cursor:pointer}
 .cmx{font-size:20px;line-height:1}
 .cmb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.22,.8,.22,1)}
-.cm.open .cmb{grid-template-rows:1fr}
+.cm.is-open .cmb{grid-template-rows:1fr}
 .cmbi{overflow:hidden;min-height:0}
 .cml{list-style:none;margin:0;padding:8px 0 4px;max-height:420px;overflow:auto;display:grid;gap:14px}
 .cmi{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
