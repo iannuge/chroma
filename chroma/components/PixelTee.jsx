@@ -152,7 +152,7 @@ export default function PixelTee({ src, alt }) {
       const prog = Math.min(1, y / (window.innerHeight * 0.9))
       const cellsGoal = Math.max(34, 64 - prog * 12 - av * 12 + Math.sin(t * 0.6) * 3)
       const disGoal = Math.min(0.4, 0.12 + av * 0.2 + prog * 0.08 + Math.sin(t * 0.9) * 0.02)
-      const caGoal = 0.008 + av * 0.018 + prog * 0.006
+      const caGoal = 0.008 + av * 0.03 + prog * 0.008
       cellsNow += (cellsGoal - cellsNow) * 0.12
       disNow += (disGoal - disNow) * 0.1
       caNow += (caGoal - caNow) * 0.12

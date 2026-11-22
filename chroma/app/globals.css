@@ -857,3 +857,7 @@ body:before{display:none}
 .bd .bd-c{transition:opacity 1.6s ease}
 .bd.calm .bd-o{opacity:.4}.bd.calm .bd-o2,.bd.calm .bd-o3{opacity:.55}.bd.calm .bd-r,.bd.calm .bd-b{opacity:.3}
 .bd.calm .bd-c{filter:blur(40px)}
+/* ---- nav links: plain text, no boxes ---- */
+nav .nl .dl{gap:2px}
+nav .nl .dl a,nav .nl .dl a+a,nav .nl .dl a:first-child,nav .nl .dl a:last-child{border:0;background:transparent;box-shadow:none;padding:10px 14px}
+nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
