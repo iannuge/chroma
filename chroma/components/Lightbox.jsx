@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useMoodboard } from './MoodboardProvider'
 import { useAuth } from './AuthProvider'
 import { lum } from '../lib/util'
+import { caReveal } from '../lib/caReveal'
 
 const REASONS = ['copyright', 'inappropriate', 'ai-generated', 'spam', 'other']
 
@@ -62,6 +63,12 @@ export default function Lightbox({ item, onClose }) {
       document.body.style.overflow = prev
     }
   }, [item, onClose])
+
+  useEffect(() => {
+    if (id == null) return
+    const el = document.querySelector('.lbc img, .lbc .lbt')
+    return caReveal(el)
+  }, [id])
 
   if (!item) return null
 
