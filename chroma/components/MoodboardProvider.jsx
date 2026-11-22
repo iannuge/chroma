@@ -20,8 +20,9 @@ const EMPTY = {
   itemScores: {},
   myClusterVotes: {},
   myItemVotes: {},
-  progress: { claimed: 0, goal: 100 },
+  progress: { claimed: 0, goal: 100, waitlist: 0 },
   hasOrder: false,
+  myClaim: null,
 }
 
 function toMap(rows, k, v) {
@@ -53,18 +54,19 @@ export default function MoodboardProvider({ children }) {
       }
 
       const none = Promise.resolve({ data: [] })
-      const [cl, csc, prog, ord, mcv] = await Promise.all([
+      const [cl, csc, prog, ord, mcv, mine] = await Promise.all([
         supabase
           .from('clusters')
           .select('id,name,created_at,created_by,won_drop_id,profiles!created_by(display_name)'),
         supabase.from('cluster_scores').select('cluster_id,score'),
-        supabase.from('drop_progress').select('claimed,goal').eq('drop_id', drop.id).maybeSingle(),
+        supabase.from('drop_progress').select('claimed,goal,waitlist').eq('drop_id', drop.id).maybeSingle(),
         uid
           ? supabase.from('orders').select('id').eq('drop_id', drop.id).eq('user_id', uid).limit(1)
           : none,
         uid
           ? supabase.from('cluster_votes').select('cluster_id,value').eq('user_id', uid)
           : none,
+        uid ? supabase.rpc('my_claim') : Promise.resolve({ data: null }),
       ])
       if (cl.error) throw cl.error
 
@@ -97,6 +99,7 @@ export default function MoodboardProvider({ children }) {
         myItemVotes: toMap(myItemRows, 'item_id', 'value'),
         progress: prog.data || { claimed: 0, goal: drop.goal },
         hasOrder: !!(ord.data && ord.data.length),
+        myClaim: (mine && mine.data) || null,
       })
       setStatus('ready')
     } catch (e) {
@@ -282,7 +285,22 @@ export default function MoodboardProvider({ children }) {
     return { ok: true }
   }
 
+  const claimCall = async (fn, args) => {
+    if (!uid) return { ok: false, error: 'Sign in first.' }
+    const r = await supabase.rpc(fn, args)
+    await load()
+    if (r.error) return { ok: false, error: r.error.message }
+    return r.data || { ok: false, error: 'Something went wrong.' }
+  }
+  const claimShirt = (size) => claimCall('claim_shirt', { p_size: size })
+  const joinWaitlist = (size) => claimCall('join_waitlist', { p_size: size })
+  const forfeitClaim = () => claimCall('forfeit_claim')
+
   const value = {
+    myClaim: data.myClaim,
+    claimShirt,
+    joinWaitlist,
+    forfeitClaim,
     drop: data.drop,
     drops: data.drops,
     clusters,
