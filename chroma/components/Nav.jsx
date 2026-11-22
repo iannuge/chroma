@@ -27,9 +27,6 @@ export default function Nav() {
       <Link href="/preorder" onClick={close}>
         Claim a shirt
       </Link>
-      <Link href="/design-tool" onClick={close}>
-        Design tool
-      </Link>
       {user && (
         <Link href="/profile" onClick={close}>
           Profile
@@ -69,6 +66,9 @@ export default function Nav() {
           {links}
         </div>
       </nav>
+      <Link href="/design-tool" className="dtlink">
+        design tool
+      </Link>
     </div>
   )
 }

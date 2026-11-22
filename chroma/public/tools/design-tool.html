@@ -42,6 +42,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .node .head{display:flex;align-items:center;justify-content:space-between;height:32px;padding:0 8px 0 12px;
   background:var(--node-head);border-bottom:1px solid var(--line);border-radius:10px 10px 0 0;cursor:grab}
 .node .title{font-weight:600;font-size:12px;letter-spacing:.02em}
+.node .head>div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .node .kind{font-family:var(--mono);font-size:10px;color:var(--faint);margin-left:8px}
 .node .x{width:22px;height:22px;border-radius:6px;color:var(--faint);font-size:15px;line-height:22px}
 .node .x:hover{background:#26262a;color:var(--text)}
@@ -387,6 +388,32 @@ void main(){
   o = vec4(mix(col, g, uMix)*c.a, c.a);
 }`;
 
+const GRAIN_FS = HDR + `uniform sampler2D uIn0; uniform float uAmount, uSize, uColor, uSeed, uPad; uniform vec2 uRes;
+float h(vec2 p){ p = fract(p*vec2(443.897, 441.423) + uSeed*0.1371); p += dot(p, p.yx + 19.19); return fract((p.x + p.y)*p.x); }
+// soft value noise so bigger grain sizes stay round instead of turning into squares
+float vn(vec2 p, float o){
+  vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
+  return mix(mix(h(i+o), h(i+vec2(1,0)+o), f.x), mix(h(i+vec2(0,1)+o), h(i+vec2(1,1)+o), f.x), f.y);
+}
+float g(vec2 p, float o){ return (vn(p, o) + vn(p*1.7 + 3.1, o) + vn(p*2.9 + 7.7, o))/3.0 - 0.5; }  // roughly bell-shaped
+void main(){
+  vec4 c = texture(uIn0, vUv); vec3 col = un(c);
+  vec2 p = vUv*uRes/max(uSize, 0.25);
+  vec3 n = uColor > 0.5 ? vec3(g(p, 0.0), g(p, 17.0), g(p, 41.0)) : vec3(g(p, 0.0));
+  float l = dot(col, LUMA);
+  col = clamp(col + n*uAmount*2.0*(0.35 + 0.65*4.0*l*(1.0-l)), 0.0, 1.0);   // strongest in the midtones, like film
+  o = vec4(col*c.a, c.a);
+}`;
+
+const CA_FS = HDR + `uniform sampler2D uIn0; uniform float uAmount, uMode, uAngle; uniform vec2 uRes;
+void main(){
+  vec2 off;
+  if(uMode < 0.5){ vec2 d = (vUv - 0.5)*uRes; off = d/(0.5*length(uRes))*uAmount; }   // radial: grows toward the corners
+  else off = vec2(cos(radians(uAngle)), sin(radians(uAngle)))*uAmount;                 // linear: same shift everywhere
+  vec4 r = texture(uIn0, vUv + off/uRes), g = texture(uIn0, vUv), b = texture(uIn0, vUv - off/uRes);
+  o = vec4(r.r, g.g, b.b, max(max(r.a, g.a), b.a));
+}`;
+
 function compile(fs, vs){
   const mk = (t,src)=>{ const s=gl.createShader(t); gl.shaderSource(s,src); gl.compileShader(s);
     if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
@@ -458,7 +485,7 @@ const TYPES = {
     run:(n)=>imageTex.get(n.id) || null,
   },
   blur: {
-    label:'blur', group:'operation', inputs:['image'], outputs:['image'], thumb:true, px:true, fs:BLUR_FS,
+    label:'blur', group:'simple', inputs:['image'], outputs:['image'], thumb:true, px:true, fs:BLUR_FS,
     params:[
       {key:'radius', label:'radius', min:0, max:64, step:0.5, def:8, fmt:v=>v.toFixed(1)+' px'},
     ],
@@ -471,7 +498,7 @@ const TYPES = {
     },
   },
   threshold: {
-    label:'threshold', group:'operation', inputs:['image'], outputs:['image'], thumb:true, fs:THRESH_FS,
+    label:'threshold', group:'simple', inputs:['image'], outputs:['image'], thumb:true, fs:THRESH_FS,
     params:[
       {key:'level',    label:'level',    min:0, max:1,   step:0.005, def:0.5,  fmt:v=>v.toFixed(3)},
       {key:'softness', label:'softness', min:0, max:0.5, step:0.005, def:0.02, fmt:v=>v.toFixed(3)},
@@ -479,7 +506,7 @@ const TYPES = {
     ],
   },
   blend: {
-    label:'blend', group:'operation', inputs:['base','blend'], outputs:['image'], thumb:true, fs:BLEND_FS,
+    label:'blend', group:'complex', inputs:['base','blend'], outputs:['image'], thumb:true, fs:BLEND_FS,
     params:[
       {key:'mode', label:'mode', kind:'choice', options:['add','subtract','overlay','mix'], def:0},
       {key:'mix',  label:'amount', min:0, max:1, step:0.005, def:1, fmt:v=>Math.round(v*100)+'%'},
@@ -492,7 +519,7 @@ const TYPES = {
     },
   },
   mask: {
-    label:'mask', group:'operation', inputs:['image','mask'], outputs:['image'], thumb:true, fs:MASK_FS,
+    label:'mask', group:'complex', inputs:['image','mask'], outputs:['image'], thumb:true, fs:MASK_FS,
     params:[
       {key:'keep',     label:'push through', kind:'choice', options:['white','black'], def:0},
       {key:'level',    label:'level', min:0, max:1, step:0.005, def:0.5, fmt:v=>v.toFixed(3)},
@@ -505,13 +532,13 @@ const TYPES = {
     },
   },
   segment: {
-    label:'segment', group:'operation', inputs:['image'], outputs:['image'], thumb:true, fs:SEGMENT_FS,
+    label:'segment', group:'simple', inputs:['image'], outputs:['image'], thumb:true, fs:SEGMENT_FS,
     params:[
       {key:'colors', label:'colors', min:2, max:16, step:1, boxMax:256, box:true, def:3, fmt:v=>String(v)},
     ],
   },
   glow: {
-    label:'glow', group:'operation', inputs:['image'], outputs:['image'], thumb:true, px:true,
+    label:'glow', group:'simple', inputs:['image'], outputs:['image'], thumb:true, px:true,
     params:[
       {key:'mode',      label:'glow from', kind:'choice', options:['luminance','lum + sat'], def:0},
       {key:'radius',    label:'radius', min:1, max:100, step:0.5, def:24, fmt:v=>v.toFixed(1)+' px'},
@@ -531,7 +558,7 @@ const TYPES = {
     },
   },
   scatter: {
-    label:'scatter points', group:'operation', inputs:['image','distribute among points'], outputs:['image'], thumb:true, fs:COMP_FS,
+    label:'scatter points', group:'complex', inputs:['image','distribute among points'], outputs:['image'], thumb:true, fs:COMP_FS,
     params:[
       {key:'count', label:'points', min:1, max:5000, step:1, boxMax:50000, def:400, fmt:v=>String(v), box:true},
       {key:'mode',  label:'distribution', kind:'choice', options:['even','random'], def:0},
@@ -553,7 +580,7 @@ const TYPES = {
     },
   },
   shadow: {
-    label:'drop shadow', group:'operation', inputs:['image'], outputs:['image'], thumb:true, px:true,
+    label:'drop shadow', group:'simple', inputs:['image'], outputs:['image'], thumb:true, px:true,
     params:[
       {key:'source',   label:'shadow from', kind:'choice', options:['shape','brightness'], def:0},
       {key:'angle',    label:'angle', min:0, max:360, step:1, def:120, fmt:v=>v+'°'},
@@ -573,7 +600,7 @@ const TYPES = {
     },
   },
   edges: {
-    label:'find edges', group:'operation', inputs:['image'], outputs:['image'], thumb:true, px:true, fs:EDGES_FS,
+    label:'find edges', group:'simple', inputs:['image'], outputs:['image'], thumb:true, px:true, fs:EDGES_FS,
     params:[
       {key:'width',    label:'line width', min:0.5, max:12, step:0.25, def:1.5, fmt:v=>v.toFixed(2)+' px'},
       {key:'strength', label:'strength', min:0, max:8, step:0.05, def:2, fmt:v=>v.toFixed(2)},
@@ -587,7 +614,7 @@ const TYPES = {
     },
   },
   gradmap: {
-    label:'gradient map', group:'operation', inputs:['image'], outputs:['image'], thumb:true, fs:GRADMAP_FS,
+    label:'gradient map', group:'simple', inputs:['image'], outputs:['image'], thumb:true, fs:GRADMAP_FS,
     params:[
       {key:'stops', label:'gradient', kind:'gradient',
        def:[{c:'#000000',p:0},{c:'#ff4fd8',p:0.5},{c:'#ffffff',p:1}]},
@@ -599,6 +626,33 @@ const TYPES = {
       st.forEach((s,i)=>{ const h = parseInt(s.c.slice(1),16); arr.set([(h>>16&255)/255, (h>>8&255)/255, (h&255)/255, s.p], i*4); });
       gl.useProgram(prog); gl.uniform4fv(uloc(prog,'uStops'), arr);
       draw(prog, t.fbo, {uCount:st.length, uMix:n.params.mix}, [ins[0]]);
+      return t.tex;
+    },
+  },
+  grain: {
+    label:'grain', group:'simple', inputs:['image'], outputs:['image'], thumb:true, px:true, fs:GRAIN_FS,
+    params:[
+      {key:'amount', label:'amount', min:0, max:1, step:0.005, def:0.25, fmt:v=>Math.round(v*100)+'%'},
+      {key:'size',   label:'grain size', min:0.5, max:8, step:0.05, def:1.2, fmt:v=>v.toFixed(2)+' px'},
+      {key:'color',  label:'color grain', kind:'toggle', def:0},
+      {key:'seed',   label:'seed', min:0, max:99, step:1, def:0, fmt:v=>String(v)},
+    ],
+    run:(n, ins)=>{
+      const t = target(n.id), p = n.params;
+      draw(TYPES.grain.prog, t.fbo, {uAmount:p.amount, uSize:p.size/(n._k||1)/n._pad, uColor:p.color, uSeed:p.seed}, [ins[0]]);
+      return t.tex;
+    },
+  },
+  aberration: {
+    label:'chromatic aberration', group:'simple', inputs:['image'], outputs:['image'], thumb:true, px:true, fs:CA_FS,
+    params:[
+      {key:'mode',   label:'type', kind:'choice', options:['radial','linear'], def:0},
+      {key:'amount', label:'amount', min:0, max:60, step:0.25, def:6, fmt:v=>v.toFixed(2)+' px'},
+      {key:'angle',  label:'angle', min:0, max:360, step:1, def:0, fmt:v=>v+'°', showIf:n=>n.params.mode===1},
+    ],
+    run:(n, ins)=>{
+      const t = target(n.id), p = n.params;
+      draw(TYPES.aberration.prog, t.fbo, {uAmount:p.amount/(n._k||1)/n._pad, uMode:p.mode, uAngle:p.angle}, [ins[0]]);
       return t.tex;
     },
   },
@@ -1061,7 +1115,7 @@ function openMenu(cx, cy){
   const r = editor.getBoundingClientRect();
   menuAt = toWorld(cx, cy);
   let h = '';
-  for(const [g, title] of [['input','inputs'],['operation','operations'],['output','output']]){
+  for(const [g, title] of [['input','inputs'],['simple','simple operations'],['complex','complex operations'],['output','output']]){
     const items = Object.entries(TYPES).filter(([,T])=>T.group===g);
     if(!items.length) continue;
     h += `<div class="mh">${title}</div>`;
@@ -1266,7 +1320,9 @@ function render(){
   lastOut = src;
   if(src) draw(EXTRA.preview, null, {uCell:16}, [src]);
   else { gl.bindFramebuffer(gl.FRAMEBUFFER,null); gl.clearColor(0,0,0,1); gl.clear(gl.COLOR_BUFFER_BIT); }
-  document.getElementById('pempty').textContent = out ? 'nothing wired into output' : 'add an output node to see a preview';
+  const wired = out && links.some(l=>l.to===out.id);
+  document.getElementById('pempty').textContent = !out ? 'add an output node to see a preview'
+    : wired ? 'choose an image (or drop one on the canvas) to start' : 'nothing wired into output';
   document.getElementById('pempty').classList.toggle('show', !src);
   drawWires(); // thumbnails can change node heights
 }
@@ -1303,7 +1359,8 @@ if(!gl){
   document.getElementById('pempty').classList.add('show');
 }
 if(!load()){
-  const a = addNode('noise', 0, 0), b = addNode('output', 320, 120);
+  // fresh start: an empty image node waiting for a picture, already wired to the output
+  const a = addNode('image', 0, 0), b = addNode('output', 320, 60);
   links.push({from:a.id, fromPort:'image', to:b.id, toPort:'image'});
   requestAnimationFrame(fit);
 }
