@@ -30,11 +30,12 @@ export default function HowItWorks() {
             <h3>how it works</h3>
             <ol className="hiw">
               <li>
-                <b>Submit.</b> Start a cluster of images and ideas around a theme, or add to someone
-                else&apos;s.
+                <b>Submit.</b> Start a cluster of images around a theme, or add to someone else&apos;s.
+                Every image you submit adds 1% to the weight of your votes.
               </li>
               <li>
-                <b>Vote.</b> Upvote the clusters and images you like. The top ones float higher and grow.
+                <b>Vote.</b> Upvote and downvote clusters and images, and leave comments. The top three are
+                shown biggest, but every cluster on the board can be voted on.
               </li>
               <li>
                 <b>One becomes the tee.</b> When the countdown ends, the top cluster is locked in as the next
@@ -45,8 +46,8 @@ export default function HowItWorks() {
                 print.
               </li>
               <li>
-                <b>Pre-order.</b> Pre-orders open once a cluster is chosen, and pre-orderers&apos; votes count
-                more. Each drop is limited, and once it&apos;s claimed, buyers approve the final design.
+                <b>Pre-order.</b> Each drop is limited. Pre-orderers&apos; votes count more, and once a drop is
+                claimed, buyers approve the final design.
               </li>
             </ol>
             <p className="gift">
