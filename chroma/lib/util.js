@@ -18,6 +18,12 @@ export function imgUrl(path) {
   return supabase.storage.from('moodboard').getPublicUrl(path).data.publicUrl
 }
 
+// Small display copy for the home page cards (resized and cached by Vercel); originals stay full quality in storage.
+export function thumbUrl(url, w = 384) {
+  if (!url || !/^https:\/\/[^/]+\.supabase\.co\/storage\//.test(url)) return url
+  return '/_next/image?url=' + encodeURIComponent(url) + '&w=' + w + '&q=80'
+}
+
 // Votes are weighted behind the scenes; show the closest whole number.
 export function fmtScore(n) {
   return String(Math.round(n))

@@ -10,7 +10,7 @@ import Notice from '../components/Notice'
 import HowItWorks from '../components/HowItWorks'
 import { useMoodboard } from '../components/MoodboardProvider'
 import { useAuth } from '../components/AuthProvider'
-import { hash, fmtScore } from '../lib/util'
+import { hash, fmtScore, thumbUrl } from '../lib/util'
 import { shopOpen } from '../lib/shop'
 import useFlip from '../lib/useFlip'
 import useSift from '../lib/useSift'
@@ -103,7 +103,7 @@ function ClusterCard({ c, rank }) {
   const router = useRouter()
   const { vote } = useMoodboard()
   const bg = (it) =>
-    it.img ? { backgroundImage: 'url("' + it.img + '")' } : { backgroundColor: it.color }
+    it.img ? { backgroundImage: 'url("' + thumbUrl(it.img) + '")' } : { backgroundColor: it.color }
   return (
     <article
       data-flip={c.id}
