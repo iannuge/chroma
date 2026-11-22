@@ -852,3 +852,8 @@ body:before{display:none}
 .bd .bd-o2,.bd .bd-o3{width:min(52vw,560px);height:min(52vw,560px);margin:calc(min(52vw,560px)/-2) 0 0 calc(min(52vw,560px)/-2)}
 .bd .bd-o2{left:var(--gx2,30vw);top:var(--gy2,35vh);background:radial-gradient(closest-side,rgba(242,77,17,.2),rgba(242,77,17,.07) 45%,transparent 72%)}
 .bd .bd-o3{left:var(--gx3,80vw);top:var(--gy3,50vh);width:min(46vw,480px);height:min(46vw,480px);margin:calc(min(46vw,480px)/-2) 0 0 calc(min(46vw,480px)/-2);background:radial-gradient(closest-side,rgba(242,77,17,.13),rgba(242,77,17,.04) 45%,transparent 72%)}
+
+/* off the home page: much softer, always drifting */
+.bd .bd-c{transition:opacity 1.6s ease}
+.bd.calm .bd-o{opacity:.4}.bd.calm .bd-o2,.bd.calm .bd-o3{opacity:.55}.bd.calm .bd-r,.bd.calm .bd-b{opacity:.3}
+.bd.calm .bd-c{filter:blur(40px)}
