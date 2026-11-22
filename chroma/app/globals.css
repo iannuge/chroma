@@ -882,3 +882,11 @@ nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
 .pop .pill.sub{background:transparent;color:var(--mu)}
 .pop .pill.sub:hover{color:var(--ink)}
 .poc .hiw{margin:0 0 14px}
+
+/* votes: plus / minus. grey at rest; plus turns white when voted, minus turns red */
+.v button[data-d="up"]{--ar:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M4.2.5h1.6v3.7h3.7v1.6H5.8v3.7H4.2V5.8H.5V4.2h3.7z'/%3E%3C/svg%3E")}
+.v button[data-d="down"]{--ar:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M.5 4.2h9v1.6h-9z'/%3E%3C/svg%3E")}
+.v button::after{width:42%;height:42%;background:rgba(255,255,255,.5)}
+.v button:hover::after{background:rgba(255,255,255,.85)}
+.v button.on,.it .v button.on,.mib .v button.on{-webkit-mask:var(--ar) center/42% no-repeat,linear-gradient(#000,#000);mask:var(--ar) center/42% no-repeat,linear-gradient(#000,#000);-webkit-mask-composite:xor;mask-composite:exclude}
+.v button[data-d="down"].on,.it .v button[data-d="down"].on,.mib .v button[data-d="down"].on{background:#ff3b30;border-color:#ff3b30}
