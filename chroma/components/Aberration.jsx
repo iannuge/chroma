@@ -75,6 +75,15 @@ export default function Aberration() {
         <feBlend in="ro" in2="g" mode="screen" result="rg" />
         <feBlend in="rg" in2="bo" mode="screen" />
       </filter>
+      <filter id="ca-in" x="-6%" y="-6%" width="112%" height="112%" colorInterpolationFilters="sRGB">
+        <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r0" />
+        <feOffset id="ca-in-r" in="r0" dx="0" dy="0" result="ro" />
+        <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g" />
+        <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b0" />
+        <feOffset id="ca-in-b" in="b0" dx="0" dy="0" result="bo" />
+        <feBlend in="ro" in2="g" mode="screen" result="rg" />
+        <feBlend in="rg" in2="bo" mode="screen" />
+      </filter>
     </svg>
   )
 }

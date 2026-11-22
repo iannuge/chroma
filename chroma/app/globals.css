@@ -837,3 +837,36 @@ nav .mm a:hover,nav .mm a:active{background:rgba(255,255,255,.07)}
 
 /* top three and the rest read as one board */
 .top3 + .mb{margin-top:clamp(20px,2.6vw,34px)}
+/* ---- backdrop: spec-sheet grid, registration marks, one glow behind the top cluster ---- */
+body:before{display:none}
+.bd{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;--gx:70vw;--gy:30vh;--gs:0px}
+.bd i{position:absolute;inset:0;display:block}
+.bd-grid{background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:64px 64px;background-position:-1px -1px;-webkit-mask-image:radial-gradient(130% 100% at 50% 40%,#000 30%,transparent 95%);mask-image:radial-gradient(130% 100% at 50% 40%,#000 30%,transparent 95%)}
+.bd-marks{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cpath d='M120 128H136M128 120V136' stroke='%23fff' stroke-opacity='.3' fill='none'/%3E%3C/svg%3E");background-size:256px 256px;background-position:0 0;-webkit-mask-image:radial-gradient(130% 100% at 50% 40%,#000 30%,transparent 95%);mask-image:radial-gradient(130% 100% at 50% 40%,#000 30%,transparent 95%)}
+.bd .bd-c{inset:auto;left:var(--gx);top:var(--gy);width:min(70vw,780px)!important;height:min(70vw,780px)!important;margin:calc(min(70vw,780px)/-2) 0 0 calc(min(70vw,780px)/-2);mix-blend-mode:screen;will-change:transform}
+.bd .bd-o{background:radial-gradient(closest-side,rgba(242,77,17,.42),rgba(242,77,17,.15) 45%,transparent 72%)}
+.bd .bd-r{background:radial-gradient(closest-side,rgba(255,60,30,.1),transparent 66%);transform:translate(calc(var(--gs)*-1.6),calc(var(--gs)*-.8))}
+.bd .bd-b{background:radial-gradient(closest-side,rgba(40,90,255,.12),transparent 66%);transform:translate(calc(var(--gs)*1.6),calc(var(--gs)*.8))}
+.bd-vig{background:radial-gradient(120% 100% at 50% 45%,transparent 55%,rgba(0,0,0,.45))}
+@media(max-width:700px){.bd-grid{background-size:48px 48px}.bd-marks{background-size:192px 192px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192'%3E%3Cpath d='M88 96H104M96 88V104' stroke='%23fff' stroke-opacity='.3' fill='none'/%3E%3C/svg%3E")}}
+
+/* softer glows behind #2 and #3 */
+.bd .bd-o2,.bd .bd-o3{width:min(52vw,560px);height:min(52vw,560px);margin:calc(min(52vw,560px)/-2) 0 0 calc(min(52vw,560px)/-2)}
+.bd .bd-o2{left:var(--gx2,30vw);top:var(--gy2,35vh);background:radial-gradient(closest-side,rgba(242,77,17,.2),rgba(242,77,17,.07) 45%,transparent 72%)}
+.bd .bd-o3{left:var(--gx3,80vw);top:var(--gy3,50vh);width:min(46vw,480px);height:min(46vw,480px);margin:calc(min(46vw,480px)/-2) 0 0 calc(min(46vw,480px)/-2);background:radial-gradient(closest-side,rgba(242,77,17,.13),rgba(242,77,17,.04) 45%,transparent 72%)}
+
+/* off the home page: much softer, always drifting */
+.bd .bd-c{transition:opacity 1.6s ease}
+.bd.calm .bd-o{opacity:.4}.bd.calm .bd-o2,.bd.calm .bd-o3{opacity:.55}.bd.calm .bd-r,.bd.calm .bd-b{opacity:.3}
+.bd.calm .bd-c{filter:blur(40px)}
+
+/* ---- vertical rhythm ---- */
+footer.w{margin-top:clamp(72px,10vw,128px)}
+.top3{margin-bottom:clamp(44px,5vw,72px)}
+.restlabel{margin-bottom:clamp(22px,2.4vw,30px)}
+#board .hd{margin-bottom:clamp(8px,1.6vw,20px)}
+.bio{margin-top:clamp(26px,3vw,36px)}
+/* ---- nav links: plain text, no boxes ---- */
+nav .nl .dl{gap:2px}
+nav .nl .dl a,nav .nl .dl a+a,nav .nl .dl a:first-child,nav .nl .dl a:last-child{border:0;background:transparent;box-shadow:none;padding:10px 14px}
+nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
