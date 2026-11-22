@@ -214,7 +214,7 @@ export default function ClaimShirt() {
           </ol>
           <p>
             Full? Join the waitlist with the size you want. It&apos;s first come, first served, and you&apos;ll
-            see your place in line. Claimed shirts get a white &ldquo;drop {drop ? pad(drop.number) : '00'}
+            see your place in line. Claimed shirts get a white &ldquo;drop {drop ? pad(drop.number) : '00'}{' '}
             claimed&rdquo; badge on your profile.
           </p>
           <p>
