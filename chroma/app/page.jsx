@@ -209,9 +209,6 @@ export default function Home() {
           <div className="hd">
             <h2 style={{ margin: 0 }}>choose a direction</h2>
             <p className="mu" style={{ margin: 0 }}>
-              the current top three. not the only ones you can vote for, so scroll down for the rest.
-            </p>
-            <p className="mu" style={{ margin: 0 }}>
               one of these will guide the tee. vote for your favorites, add to other people's clusters, or start your own.
             </p>
           </div>
@@ -227,7 +224,6 @@ export default function Home() {
           {status === 'ready' && clusters.length === 0 && (
             <p className="mu">No clusters yet. Sign in and start the first one below.</p>
           )}
-          <div className="restlabel mu">the rest</div>
           <div className="mb">
             <aside className="mba">
               <NewCluster />
