@@ -890,3 +890,11 @@ nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
 .v button:hover::after{background:rgba(255,255,255,.85)}
 .v button.on,.it .v button.on,.mib .v button.on{-webkit-mask:var(--ar) center/42% no-repeat,linear-gradient(#000,#000);mask:var(--ar) center/42% no-repeat,linear-gradient(#000,#000);-webkit-mask-composite:xor;mask-composite:exclude}
 .v button[data-d="down"].on,.it .v button[data-d="down"].on,.mib .v button[data-d="down"].on{background:#ff3b30;border-color:#ff3b30}
+
+/* plus/minus without frames: just the glyph, grey -> white (plus) or red (minus) once voted */
+.v button,.it .v button,.mib .v button{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.v button:hover,.it .v button:hover,.mib .v button:hover{background:transparent;border:0;transform:scale(1.15)}
+.v button::after{width:60%;height:60%}
+.v button.on,.it .v button.on,.mib .v button.on,.v button[data-d="down"].on,.it .v button[data-d="down"].on,.mib .v button[data-d="down"].on{background:transparent;border:0;-webkit-mask:none;mask:none}
+.v button.on::after{opacity:1;background:#fff}
+.v button[data-d="down"].on::after{background:#ff3b30}
