@@ -835,6 +835,8 @@ nav .mm,nav .mm.g{background:#181614;-webkit-backdrop-filter:none;backdrop-filte
 nav .mm a{background:transparent}
 nav .mm a:hover,nav .mm a:active{background:rgba(255,255,255,.07)}
 
+/* top three and the rest read as one board */
+.top3 + .mb{margin-top:clamp(20px,2.6vw,34px)}
 /* ---- backdrop: spec-sheet grid, registration marks, one glow behind the top cluster ---- */
 body:before{display:none}
 .bd{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;--gx:70vw;--gy:30vh;--gs:0px}
