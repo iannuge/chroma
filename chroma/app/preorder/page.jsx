@@ -4,93 +4,132 @@ import Link from 'next/link'
 import { useState } from 'react'
 import TeeHero from '../../components/TeeHero'
 import { useMoodboard } from '../../components/MoodboardProvider'
+import { useAuth } from '../../components/AuthProvider'
 import Comments from '../../components/Comments'
-import { SIZES, MAX_QTY, shopOpen, needsSize } from '../../lib/shop'
+import { SIZES } from '../../lib/shop'
 
 const pad = (n) => String(n).padStart(2, '0')
 
-export default function PreOrder() {
-  const { drop, progress, hasOrder } = useMoodboard()
+export default function ClaimShirt() {
+  const { drop, progress, hasOrder, myClaim, claimShirt, joinWaitlist, forfeitClaim } = useMoodboard()
+  const { user, signIn } = useAuth()
   const [size, setSize] = useState('')
-  const [qty, setQty] = useState(1)
-  const [pw, setPw] = useState('')
-  const [unlocked, setUnlocked] = useState(false)
   const [msg, setMsg] = useState('')
   const [busy, setBusy] = useState(false)
+  const [confirmForfeit, setConfirmForfeit] = useState(false)
 
-  const call = async (extra) => {
-    const r = await fetch('/api/preorder', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: pw, ...extra }),
-    })
-    return r.json().catch(() => ({ ok: false, error: 'Something went wrong.' }))
-  }
-  const unlock = async (e) => {
-    e.preventDefault()
+  const run = async (fn, arg) => {
     setBusy(true)
     setMsg('')
-    const r = await call({})
+    const r = await fn(arg)
     setBusy(false)
-    if (r.ok) setUnlocked(true)
-    else setMsg(r.error || 'Wrong password.')
-  }
-  const checkout = async () => {
-    setBusy(true)
-    setMsg('')
-    const r = await call({ size, qty })
-    if (r.ok && r.url) window.location.href = r.url
-    else {
-      setBusy(false)
-      setMsg(r.error || 'Something went wrong.')
-    }
+    setConfirmForfeit(false)
+    if (!r.ok) setMsg((r.error || 'something went wrong.').toLowerCase())
   }
 
   const goal = progress.goal || (drop && drop.goal) || 20
   const claimed = progress.claimed || 0
-  const soldOut = claimed >= goal
+  const waiting = progress.waitlist || 0
+  const full = claimed >= goal
   const pct = Math.min(100, (claimed / goal) * 100)
   const price = drop && drop.price_cents ? '$' + Math.round(drop.price_cents / 100) : ''
-  const chosen = unlocked
+  const st = myClaim && myClaim.status
+
+  const until = myClaim && myClaim.window_ends_at ? new Date(myClaim.window_ends_at) : null
+  const untilText = until
+    ? until.toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+    : ''
 
   let action
-  if (hasOrder) {
+  if (hasOrder || st === 'purchased') {
     action = (
       <button className="pill" disabled>
         you&apos;ve pre-ordered this drop
       </button>
     )
-  } else if (soldOut) {
+  } else if (!user) {
     action = (
-      <button className="pill" disabled>
-        sold out
+      <button className="pill" onClick={() => signIn()}>
+        sign in to {full ? 'join the waitlist' : 'claim a shirt'}
       </button>
     )
-  } else if (!chosen) {
+  } else if (st === 'claimed') {
     action = (
-      <button className="pill" disabled>
-        early access only
-      </button>
+      <>
+        <div className="clm">
+          <b>you&apos;ve claimed a shirt, size {myClaim.size}.</b>
+          <span className="mu">
+            {until
+              ? 'purchase window closes ' + untilText + '.'
+              : 'once the design is finalized you\'ll have 48 hours to buy it.'}
+          </span>
+        </div>
+        {confirmForfeit ? (
+          <div className="clf">
+            <span className="mu">give up your spot? it goes to the next person on the waitlist.</span>
+            <div className="row2">
+              <button className="pill" onClick={() => run(forfeitClaim)} disabled={busy}>
+                yes, forfeit
+              </button>
+              <button className="pill" onClick={() => setConfirmForfeit(false)} disabled={busy}>
+                keep it
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button className="pill sub" onClick={() => setConfirmForfeit(true)}>
+            forfeit claim
+          </button>
+        )}
+      </>
     )
-  } else if (!shopOpen) {
+  } else if (st === 'waitlist') {
     action = (
-      <button className="pill" disabled>
-        pre-orders open soon
-      </button>
+      <>
+        <div className="clm">
+          <b>you&apos;re #{myClaim.position} in line, size {myClaim.size}.</b>
+          <span className="mu">if a spot opens up it&apos;s yours, first come first served.</span>
+        </div>
+        {confirmForfeit ? (
+          <div className="clf">
+            <span className="mu">leave the waitlist? you&apos;ll lose your place in line.</span>
+            <div className="row2">
+              <button className="pill" onClick={() => run(forfeitClaim)} disabled={busy}>
+                yes, leave
+              </button>
+              <button className="pill" onClick={() => setConfirmForfeit(false)} disabled={busy}>
+                stay
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button className="pill sub" onClick={() => setConfirmForfeit(true)}>
+            leave waitlist
+          </button>
+        )}
+      </>
     )
-  } else if (needsSize && !size) {
+  } else if (!size) {
     action = (
       <button className="pill" disabled>
         choose a size
       </button>
     )
+  } else if (full) {
+    action = (
+      <button className="pill" onClick={() => run(joinWaitlist, size)} disabled={busy}>
+        {busy ? 'joining…' : 'join the waitlist, size ' + size}
+      </button>
+    )
   } else {
     action = (
-      <button className="pill" onClick={checkout} disabled={busy}>
-        {busy ? 'opening checkout…' : 'pre-order ' + (qty > 1 ? qty + ' × ' : '') + 'size ' + size + (price && qty > 1 ? ', $' + qty * Math.round(drop.price_cents / 100) : price ? ', ' + price : '')}
+      <button className="pill" onClick={() => run(claimShirt, size)} disabled={busy}>
+        {busy ? 'claiming…' : 'claim a shirt, size ' + size}
       </button>
     )
   }
+
+  const pickSize = !st && !hasOrder
 
   return (
     <main className="w page po">
@@ -99,7 +138,7 @@ export default function PreOrder() {
       </Link>
 
       <div className="cvh">
-        <h1>Pre-order</h1>
+        <h1>Claim a shirt</h1>
         <p className="mu">
           [drop {pad(drop ? drop.number : 0)}: {drop ? drop.theme : 'genesis'}]
         </p>
@@ -121,7 +160,7 @@ export default function PreOrder() {
               <i style={{ width: pct + '%' }} />
             </div>
             <span className="mu">
-              {claimed} of {goal} claimed
+              {claimed} of {goal} claimed{waiting > 0 ? ' · ' + waiting + ' on the waitlist' : ''}
             </span>
           </div>
 
@@ -130,49 +169,23 @@ export default function PreOrder() {
               <button
                 key={s}
                 role="radio"
-                aria-checked={size === s}
-                className={'szb' + (size === s ? ' on' : '')}
+                aria-checked={(st ? myClaim.size : size) === s}
+                className={'szb' + ((st ? myClaim.size : size) === s ? ' on' : '')}
                 onClick={() => setSize(s)}
-                disabled={!chosen}
+                disabled={!pickSize}
               >
                 {s}
               </button>
             ))}
           </div>
 
-          <div className="qty" aria-label="Quantity">
-            <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={!chosen || qty <= 1} aria-label="Fewer">
-              −
-            </button>
-            <span>{qty}</span>
-            <button type="button" onClick={() => setQty((q) => Math.min(MAX_QTY, q + 1))} disabled={!chosen || qty >= MAX_QTY} aria-label="More">
-              +
-            </button>
-            <span className="mu">quantity (one size per order)</span>
-          </div>
-
           {action}
           {msg && <p className="mu">{msg}</p>}
-          {!unlocked && (
-            <form onSubmit={unlock} className="pwf">
-              <input
-                type="password"
-                value={pw}
-                onChange={(e) => setPw(e.target.value)}
-                placeholder="early access password"
-                aria-label="Early access password"
-                autoComplete="off"
-              />
-              <button className="pill" type="submit" disabled={busy || !pw}>
-                unlock
-              </button>
-            </form>
-          )}
 
           <ul className="facts mu">
+            <li>claiming is free. nothing is charged until you buy</li>
+            <li>one claim per account. you need to be signed in</li>
             <li>ships to the united states only</li>
-            <li>cancel and refund anytime before production, by replying to your confirmation email</li>
-            <li>secure checkout through shopify</li>
           </ul>
         </div>
       </div>
@@ -181,12 +194,28 @@ export default function PreOrder() {
 
       <div className="pocs">
         <section className="g poc">
-          <h2>about this drop</h2>
+          <h2>how claiming works</h2>
+          <ol className="hiw">
+            <li>
+              <b>Claim.</b> Sign in, pick your size and claim a spot. It&apos;s free, and there are only {goal}.
+            </li>
+            <li>
+              <b>Wait for the design.</b> The community picks the idea, I design the tee from it, and you can
+              give feedback on the draft.
+            </li>
+            <li>
+              <b>Buy within 48 hours.</b> Once the design is finalized, everyone with a claim has 48 hours to
+              purchase their shirt.
+            </li>
+            <li>
+              <b>Or let it go.</b> If you don&apos;t buy in time, or you forfeit, your spot goes to the next
+              person on the waitlist. Hit forfeit any time before then if you change your mind.
+            </li>
+          </ol>
           <p>
-            You&apos;re pre-ordering a shirt before its design is final. The community picks the idea, I design
-            the tee from it, and you can give feedback on the draft. Once all {goal} are claimed, buyers vote
-            to approve the final design before it goes to print. Pre-orderers&apos; votes count more. Sign in
-            with the same email you check out with so your order is matched to your account.
+            Full? Join the waitlist with the size you want. It&apos;s first come, first served, and you&apos;ll
+            see your place in line. Claimed shirts get a white &ldquo;drop {drop ? pad(drop.number) : '00'}
+            claimed&rdquo; badge on your profile.
           </p>
           <p>
             I&apos;m not planning to make any money off this drop. I just want to get some work out there.

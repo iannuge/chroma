@@ -25,7 +25,7 @@ export default function Nav() {
         Moodboard
       </Link>
       <Link href="/preorder" onClick={close}>
-        Pre-order
+        Claim a shirt
       </Link>
       {user && (
         <Link href="/profile" onClick={close}>

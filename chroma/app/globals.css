@@ -873,3 +873,12 @@ nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
 
 /* orange outline on #2 and #3 too */
 .top3 .r2.cd,.top3 .r3.cd{border-color:var(--ac)}
+
+/* claim a shirt */
+.clm{display:grid;gap:4px;padding:14px 16px;border:1px solid var(--gb);background:rgba(255,255,255,.04);text-align:left}
+.clm b{font-size:18px;letter-spacing:-.04em}
+.clf{display:grid;gap:12px;text-align:center}
+.clf .row2{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.pop .pill.sub{background:transparent;color:var(--mu)}
+.pop .pill.sub:hover{color:var(--ink)}
+.poc .hiw{margin:0 0 14px}
