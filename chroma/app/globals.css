@@ -874,6 +874,9 @@ nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
 /* orange outline on #2 and #3 too */
 .top3 .r2.cd,.top3 .r3.cd{border-color:var(--ac)}
 
+/* clicks on the empty space around a popup's contents fall through to the backdrop and close it */
+.lbc,.wvc{pointer-events:none}
+.lbc > *,.wvc > *{pointer-events:auto}
 /* claim a shirt */
 .clm{display:grid;gap:4px;padding:14px 16px;border:1px solid var(--gb);background:rgba(255,255,255,.04);text-align:left}
 .clm b{font-size:18px;letter-spacing:-.04em}
