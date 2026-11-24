@@ -21,10 +21,23 @@ export default function ThemeToggle() {
   }
 
   return (
-    <button className="thm" onClick={() => set(!light)} aria-label={light ? 'Switch to dark' : 'Switch to light'}>
-      <span className={light ? '' : 'on'}>dark</span>
-      <i>/</i>
-      <span className={light ? 'on' : ''}>light</span>
-    </button>
+    <div className="thm">
+      <button type="button" className={'thl' + (light ? '' : ' on')} onClick={() => set(false)}>
+        dark
+      </button>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={light}
+        aria-label="Light mode"
+        className={'sw' + (light ? ' on' : '')}
+        onClick={() => set(!light)}
+      >
+        <i />
+      </button>
+      <button type="button" className={'thl' + (light ? ' on' : '')} onClick={() => set(true)}>
+        light
+      </button>
+    </div>
   )
 }
