@@ -994,3 +994,14 @@ input,textarea,select,.cmf textarea,.cform textarea{border-radius:14px}
 :root[data-theme="light"] .bd .bd-o{background:radial-gradient(closest-side,rgba(242,77,17,.22),rgba(242,77,17,.08) 45%,transparent 72%)}
 :root[data-theme="light"] .bd .bd-o2{background:radial-gradient(closest-side,rgba(242,77,17,.13),rgba(242,77,17,.045) 45%,transparent 72%)}
 :root[data-theme="light"] .bd .bd-o3{background:radial-gradient(closest-side,rgba(242,77,17,.09),rgba(242,77,17,.03) 45%,transparent 72%)}
+
+/* plus/minus: white at rest, orange once clicked */
+.v button::after,.it .v button::after,.mib .v button::after{background:#fff}
+.v button:hover::after{background:#fff}
+.v button.on::after,.v button[data-d="down"].on::after{background:#F24D11;opacity:1}
+:root[data-theme="light"] .v button::after{background:var(--ink)}
+:root[data-theme="light"] .v button:hover::after{background:var(--ink)}
+:root[data-theme="light"] .v button.on::after,:root[data-theme="light"] .v button[data-d="down"].on::after{background:#F24D11}
+/* hover gradient: clip to the tile's rounded corners from the first frame */
+.mi{isolation:isolate;clip-path:inset(0 round 18px);-webkit-mask-image:-webkit-radial-gradient(white,black)}
+.mib{border-radius:0 0 17px 17px;will-change:opacity}
