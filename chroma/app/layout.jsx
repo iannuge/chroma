@@ -21,7 +21,15 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('chroma-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}",
+          }}
+        />
+      </head>
       <body>
         <AuthProvider>
           <MoodboardProvider>
@@ -32,7 +40,8 @@ export default function RootLayout({ children }) {
             <PageReveal>{children}</PageReveal>
             <footer className="w mu">
               chroma. crowdsourced art direction on a graphic tee. <Link href="/terms">terms</Link>{' '}
-              <Link href="/privacy">privacy</Link> <Link href="/copyright">copyright</Link>
+              <Link href="/privacy">privacy</Link> <Link href="/copyright">copyright</Link>{' '}
+              <Link href="/design-tool">super secret design tool</Link>
             </footer>
           </MoodboardProvider>
         </AuthProvider>
