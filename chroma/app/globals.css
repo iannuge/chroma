@@ -918,3 +918,6 @@ nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
 .dtl{margin:24px auto 32px}
 .dtframe{display:block;width:100%;height:min(78vh,820px);min-height:520px;border:1px solid var(--gb);background:#0a0a0b}
 @media (max-width:820px){.dtframe{height:78dvh;min-height:440px}}
+
+/* cluster cards: no lighter frame behind the images */
+.cd .stg{background:transparent}
