@@ -86,7 +86,7 @@ footer{padding:40px 0 56px;font-size:14px}
 .pv2{margin-top:6px}
 .by{display:block;font-weight:500;font-size:11px;letter-spacing:-.02em;opacity:.75;margin-top:2px;line-height:1.1}
 .by2{display:block;color:var(--mu);font-weight:500;font-size:13px;margin-top:2px}
-.fs{overflow:visible;border-radius:0}
+.fs{overflow:visible;}
 .tm{position:relative;container-type:inline-size}
 .tm img{display:block;width:100%;height:auto;filter:drop-shadow(0 20px 22px rgba(20,25,40,.2))}
 .ta{position:absolute;left:30%;top:27%;width:40%;height:30%;display:grid;place-items:center;color:#fff;font-size:6cqw;font-weight:800;letter-spacing:-.06em}
@@ -255,7 +255,6 @@ nav .sqm{display:none}
 @media(max-width:760px){nav .sqd{display:none}nav .sqm{display:flex}}
 
 /* square everything, keep the glass */
-*,*::before,*::after{border-radius:0!important}
 
 /* archival caption type for small utility text */
 .mu,dt,.by,.by2,footer,.badge,.note,.lbm,.cdw span,.ph div span,.chip{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;font-weight:500;letter-spacing:-.03em}
@@ -404,12 +403,12 @@ h2{margin-bottom:22px}
 .mb .k0{grid-column:span 7}.mb .k1{grid-column:span 5;margin-top:48px}.mb .k3{margin-top:30px}.mb .k4{margin-top:0}
 .nc{flex-direction:column;align-items:stretch;gap:12px;padding:16px;flex-wrap:nowrap}
 .ncl{font-family:var(--mono,ui-monospace,monospace);font-size:12px;letter-spacing:.04em}
-.nc input[type=text]{width:100%;border-radius:0}
+.nc input[type=text]{width:100%;}
 .ncp{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;aspect-ratio:1;border:1px dashed var(--ink);background:var(--gl) center/cover no-repeat;cursor:pointer;transition:background-color .2s}
 .ncp:hover{background-color:rgba(255,255,255,.7)}
 .ncp .plus{font-size:clamp(64px,9vw,104px);line-height:.8;letter-spacing:-.06em;font-weight:500}
 .ncp input{display:none}
-.nc .pill{width:100%;text-align:center;border-radius:0}
+.nc .pill{width:100%;text-align:center;}
 @media(max-width:860px){
   .mb{grid-template-columns:1fr}
   .mba{position:static}
@@ -426,10 +425,10 @@ h2{margin-bottom:22px}
 /* copyright form */
 .cform{display:grid;gap:14px;text-align:left}
 .cform label{display:grid;gap:6px;font-size:14px;color:var(--mu)}
-.cform input[type=text],.cform input[type=email],.cform textarea{width:100%;background:var(--gl);border:1px solid var(--gb);border-radius:0;padding:11px 14px;font:inherit;color:var(--ink)}
+.cform input[type=text],.cform input[type=email],.cform textarea{width:100%;background:var(--gl);border:1px solid var(--gb);padding:11px 14px;font:inherit;color:var(--ink)}
 .cform .ck{display:flex;gap:10px;align-items:flex-start;line-height:1.3}
 .cform .ck input{margin-top:3px}
-.cform .pill{border-radius:0;justify-self:start}
+.cform .pill{justify-self:start}
 
 /* ---- cold open: the shirt first, then straight into the moodboard ---- */
 .hero3{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,2vh,20px);padding:84px 16px 24px;text-align:center}
@@ -471,14 +470,14 @@ input::placeholder,textarea::placeholder{color:var(--mu)}
 .szb:disabled{opacity:.45;cursor:not-allowed}.szb:disabled:hover{border-color:var(--gb)}
 
 /* ---- nav: segmented boxes inside the bar. chroma left, squares centered, links and sign in right ---- */
-nav{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:stretch;padding:8px;border-radius:0}
+nav{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:stretch;padding:8px;}
 nav .nb{display:flex;align-items:center;justify-content:center;gap:5px;padding:12px 18px;border:1px solid var(--gb);background:rgba(255,255,255,.04);text-decoration:none;color:var(--ink);cursor:pointer}
 nav .brand{justify-self:start;font-size:18px;letter-spacing:-.06em}
 nav .sq{justify-self:center}
 nav button.sq{padding:12px 18px}
 nav .nl{display:flex;justify-self:end;align-items:stretch;gap:8px}
 nav .nl .dl{display:flex;align-items:stretch;gap:8px}
-nav .nl .dl a,nav .nl .pill{display:flex;align-items:center;padding:12px 16px;border:1px solid var(--gb);background:rgba(255,255,255,.04);text-decoration:none;font-size:15px;color:var(--ink);border-radius:0}
+nav .nl .dl a,nav .nl .pill{display:flex;align-items:center;padding:12px 16px;border:1px solid var(--gb);background:rgba(255,255,255,.04);text-decoration:none;font-size:15px;color:var(--ink);}
 nav .nl .pill{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 nav .nb:hover,nav .nl .dl a:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 nav .nb:hover i{background:var(--bg)}
@@ -494,17 +493,17 @@ nav .sqm{display:none}
 @media(max-width:760px){nav .sqd{display:none}nav .sqm{display:flex}nav .nl .dl{display:none}}
 
 /* ---- nav v3: plain CHROMA on the left, one attached strip of boxes on the right ---- */
-nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 8px 8px 22px;border-radius:0}
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 8px 8px 22px;}
 nav .brand{flex:none;white-space:nowrap;font-size:18px;letter-spacing:-.06em;text-decoration:none;color:var(--ink)}
 nav .nl{display:flex;align-items:stretch;gap:0;flex:none}
 nav .nl .dl{display:flex;align-items:stretch;gap:0}
-nav .nl .dl a,nav .nbx,nav .nl .pill{display:flex;align-items:center;justify-content:center;white-space:nowrap;padding:12px 16px;border:1px solid var(--gb);background:rgba(255,255,255,.04);font:inherit;font-size:15px;letter-spacing:-.03em;text-decoration:none;color:var(--ink);border-radius:0;cursor:pointer}
+nav .nl .dl a,nav .nbx,nav .nl .pill{display:flex;align-items:center;justify-content:center;white-space:nowrap;padding:12px 16px;border:1px solid var(--gb);background:rgba(255,255,255,.04);font:inherit;font-size:15px;letter-spacing:-.03em;text-decoration:none;color:var(--ink);cursor:pointer}
 nav .nl > *+*,nav .nl .dl > *+*,nav .nl .dl + *{margin-left:-1px}
 nav .nl .pill{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 nav .nl .dl a:hover,nav .nbx:hover{background:var(--ink);color:var(--bg);border-color:var(--ink);position:relative;z-index:1}
 nav .nbx{display:none}
-nav .mm{display:flex;flex-direction:column;position:absolute;z-index:50;top:calc(100% + 8px);left:0;right:0;padding:10px;border-radius:0}
-nav .mm a{padding:14px 16px;text-decoration:none;font-size:20px;letter-spacing:-.05em;border-radius:0;white-space:nowrap}
+nav .mm{display:flex;flex-direction:column;position:absolute;z-index:50;top:calc(100% + 8px);left:0;right:0;padding:10px;}
+nav .mm a{padding:14px 16px;text-decoration:none;font-size:20px;letter-spacing:-.05em;white-space:nowrap}
 @media(max-width:900px){
   nav .nl .dl{display:none}
   nav .nbx{display:flex}
@@ -593,7 +592,7 @@ footer{padding-bottom:48px}
 
 /* ---- early access password ---- */
 .pwf{display:flex;gap:8px;margin-top:12px;justify-content:center;flex-wrap:wrap}
-.pwf input{flex:1 1 160px;min-width:0;background:transparent;border:1px solid var(--gb);padding:10px 12px;color:var(--ink);font:inherit;border-radius:0}
+.pwf input{flex:1 1 160px;min-width:0;background:transparent;border:1px solid var(--gb);padding:10px 12px;color:var(--ink);font:inherit;}
 
 /* ---- add to a cluster: same box-with-plus as make a cluster ---- */
 .addc{width:min(100%,300px);margin:28px auto 0;text-align:center}
@@ -602,7 +601,7 @@ footer{padding-bottom:48px}
 
 /* ---- quantity stepper ---- */
 .qty{display:flex;align-items:center;gap:12px;justify-content:center;margin:12px 0 14px}
-.qty button{width:34px;height:34px;border:1px solid var(--gb);background:transparent;color:var(--ink);font:inherit;font-size:18px;cursor:pointer;border-radius:0}
+.qty button{width:34px;height:34px;border:1px solid var(--gb);background:transparent;color:var(--ink);font:inherit;font-size:18px;cursor:pointer;}
 .qty button:disabled{opacity:.4;cursor:default}
 .qty span:not(.mu){min-width:1.5ch;text-align:center}
 
@@ -623,7 +622,7 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .ap .or{display:flex;align-items:center;gap:10px;margin:14px 0 10px;font-size:12px;text-align:center;justify-content:center}
 .ap .or:before,.ap .or:after{content:"";flex:1;height:1px;background:var(--gb)}
 .authf{display:grid;gap:10px;margin-bottom:12px}
-.authf input{width:100%;background:transparent;border:1px solid var(--gb);padding:12px 14px;color:var(--ink);font:inherit;border-radius:0}
+.authf input{width:100%;background:transparent;border:1px solid var(--gb);padding:12px 14px;color:var(--ink);font:inherit;}
 .authf .pill{width:100%}
 .authm{margin:0;font-size:13px}
 
@@ -651,7 +650,7 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .cap .by2,.cap .mu{margin:0;font-size:clamp(11px,4.4cqw,14px)}
 @media(hover:none){.cap{display:none}}
 .cc,.cv{border-radius:50%!important}
-.cen,.oii{border-radius:0!important}
+.cen,.oii{}
 
 /* podium and the rest */
 .top3 .cw{width:100%}
@@ -693,7 +692,7 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .cmd{background:none;border:0;padding:0;cursor:pointer;font-size:12px;text-decoration:underline;text-underline-offset:3px;opacity:.7}
 .cmav{display:inline-grid;place-items:center;flex:none;object-fit:cover;background:var(--ink);color:var(--bg);font-weight:600;border-radius:50%!important}
 .cmf{display:flex;gap:8px;align-items:flex-end;margin-top:10px}
-.cmf textarea{flex:1;min-width:0;resize:none;background:transparent;border:1px solid var(--gb);padding:10px 12px;color:var(--ink);font:inherit;border-radius:0;transition:height .3s ease;overflow:hidden}
+.cmf textarea{flex:1;min-width:0;resize:none;background:transparent;border:1px solid var(--gb);padding:10px 12px;color:var(--ink);font:inherit;transition:height .3s ease;overflow:hidden}
 .cmmsg{margin:6px 0 0;font-size:13px}
 .cme{padding:6px 0}
 @media(prefers-reduced-motion:reduce){.cmb{transition:none}}
@@ -703,7 +702,7 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .pnm{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
 .pnm h1{margin:0}
 .mult{position:relative;display:inline-grid;place-items:center;min-width:38px;height:38px;padding:0 8px;border:1px solid var(--gb);background:var(--gl);font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;cursor:default;outline:none;border-radius:50%!important}
-.mult .tip{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%) translateY(-4px);white-space:nowrap;padding:6px 10px;background:var(--ink);color:var(--bg);font-size:12px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;border-radius:0!important;z-index:5}
+.mult .tip{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%) translateY(-4px);white-space:nowrap;padding:6px 10px;background:var(--ink);color:var(--bg);font-size:12px;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:5}
 .mult:hover .tip,.mult:focus .tip{opacity:1;transform:translateX(-50%)}
 .roles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .role{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1.5px solid var(--rc,var(--gb));color:var(--rc,var(--mu));background:rgba(255,255,255,.03);font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;letter-spacing:-.02em;border-radius:99px!important}
@@ -747,7 +746,7 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .ncw .ncp:hover{background-color:rgba(255,255,255,.1);border-color:var(--ink);transform:scale(1.03)}
 .ncw .ncp .plus{font-size:clamp(54px,6vw,84px)}
 .ncw input[type=text]{text-align:center;background:transparent;border:0;border-bottom:1px solid var(--gb);padding:10px 4px}
-.ncw .pill{border-radius:0}
+.ncw .pill{}
 @media(max-width:860px){.ncw .ncp{aspect-ratio:1;max-width:260px;margin:0 auto}}
 
 /* ---- round three: original glass back, votes on top, bigger overlapping images ---- */
@@ -782,11 +781,11 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 @media(max-width:560px){.page .phead{margin-top:28px}.page h2.sh{margin:60px auto 20px}.page .pg{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}
 
 /* ================= back to squares: glass card, images drifting inside ================= */
-.cc{border-radius:0!important;-webkit-mask-image:none;mask-image:none;aspect-ratio:1}
-.cap{border-radius:0!important;background:rgba(13,12,11,.74)}
-.cv,.ncw .ncp{border-radius:0!important}
+.cc{-webkit-mask-image:none;mask-image:none;aspect-ratio:1}
+.cap{background:rgba(13,12,11,.74)}
+.cv,.ncw .ncp{}
 .fl2{position:absolute;display:block;animation:idrift var(--id) ease-in-out infinite;will-change:transform}
-.fl2 i{display:block;width:100%;height:100%;background:center/cover no-repeat;box-shadow:0 10px 28px rgba(0,0,0,.5);filter:saturate(1.12) contrast(1.04);border-radius:0!important}
+.fl2 i{display:block;width:100%;height:100%;background:center/cover no-repeat;box-shadow:0 10px 28px rgba(0,0,0,.5);filter:saturate(1.12) contrast(1.04);}
 @keyframes idrift{
   0%,100%{transform:translate(0,0) rotate(0)}
   25%{transform:translate(var(--ix),calc(var(--iy) * -1)) rotate(var(--ir))}
@@ -799,7 +798,7 @@ nav .mm.open a:nth-child(4){transition-delay:.17s}
 .mult .tip b{display:block;margin-bottom:3px;font-weight:700}
 
 /* ================= back to the original card format, with images floating inside ================= */
-.cw.cd{display:block;animation:none;padding:14px;cursor:pointer;text-align:left;border-radius:0!important}
+.cw.cd{display:block;animation:none;padding:14px;cursor:pointer;text-align:left;}
 .cd .ch{margin:2px 2px 12px}
 .cd .stg{position:relative;aspect-ratio:1;container-type:inline-size;overflow:hidden;background:rgba(255,255,255,.03)}
 .cd .open{display:flex;justify-content:space-between;margin:12px 4px 2px}
@@ -909,6 +908,23 @@ nav .nl .dl a:hover{background:rgba(255,255,255,.07)}
 .poc .hiw li:before{content:counter(s) ".";position:absolute;left:0;color:var(--ac);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
 .poc .hiw li::marker{content:""}
 
+/* ---- rounded edges everywhere ---- */
+.g{border-radius:22px}
+nav,nav.g{border-radius:99px}
+nav .nl .dl a,nav .nbx,nav .nl .pill{border-radius:99px}
+nav .mm,nav .mm.g{border-radius:22px}
+nav .mm a{border-radius:14px}
+.cw.cd,.cc,.cap,.ncw .ncp{border-radius:26px!important}
+.cen,.oii,.fl2 i{border-radius:0!important}
+input,textarea,select,.cmf textarea,.cform textarea{border-radius:14px}
+.szb,.qty button{border-radius:12px}
+.mi{border-radius:18px}
+.mult{border-radius:99px}
+.mult .tip{border-radius:10px}
+.clm,.clf{border-radius:14px}
+.lb .lbc img,.pdd img{border-radius:20px}
+.ncw .pill,.nc .pill,.cform .pill{border-radius:99px}
+.hero3 .cens{border-radius:0}
 /* design tool page: heading + blurb, then the node editor in a framed window */
 .dtool{padding-top:clamp(48px,7vw,96px)}
 .dtool .cvh h1{font-size:clamp(40px,7vw,96px)}
