@@ -1005,3 +1005,13 @@ input,textarea,select,.cmf textarea,.cform textarea{border-radius:14px}
 /* hover gradient: clip to the tile's rounded corners from the first frame */
 .mi{isolation:isolate;clip-path:inset(0 round 18px);-webkit-mask-image:-webkit-radial-gradient(white,black)}
 .mib{border-radius:0 0 17px 17px;will-change:opacity}
+
+/* clusters keep the grey plus/minus; only moodboard tiles go white */
+.v button::after,.it .v button::after{background:rgba(255,255,255,.5)}
+.v button:hover::after,.it .v button:hover::after{background:rgba(255,255,255,.85)}
+.mib .v button::after,.mib .v button:hover::after{background:#fff}
+:root[data-theme="light"] .v button::after{background:rgba(21,19,15,.38)}
+:root[data-theme="light"] .v button:hover::after{background:rgba(21,19,15,.8)}
+:root[data-theme="light"] .mib .v button::after,:root[data-theme="light"] .mib .v button:hover::after{background:#fff}
+.v button.on::after,.v button[data-d="down"].on::after,.it .v button.on::after,.mib .v button.on::after{background:#F24D11}
+:root[data-theme="light"] .v button.on::after,:root[data-theme="light"] .v button[data-d="down"].on::after{background:#F24D11}
