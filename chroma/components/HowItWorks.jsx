@@ -31,24 +31,22 @@ export default function HowItWorks() {
             <ol className="hiw">
               <li>
                 <b>Submit.</b> Start a cluster of images around a theme, or add to someone else&apos;s.
-                Every image you submit adds 1% to the weight of your votes.
               </li>
               <li>
-                <b>Vote.</b> Upvote and downvote clusters and images, and leave comments. The top three are
-                shown biggest, but every cluster on the board can be voted on.
+                <b>Vote.</b> Upvote and downvote clusters and images. The top three are shown biggest, but
+                every cluster on the board can be voted on.
               </li>
               <li>
-                <b>One becomes the tee.</b> When the countdown ends, the top cluster is locked in as the next
-                shirt. The rest stay on the board for the next drop.
+                <b>Top three advance.</b> When the countdown ends, the three top clusters move on. Each gets a
+                mockup, and you vote on which one becomes the tee.
               </li>
               <li>
                 <b>Revise.</b> I post a draft, you give feedback, and the design is revised before it goes to
                 print.
               </li>
               <li>
-                <b>Claim a shirt.</b> Claiming a spot is free and each drop is limited. Once the design is
-                final you have 48 hours to buy yours, or it goes to the next person on the waitlist. Buyers&apos;
-                votes count more.
+                <b>Production.</b> Claim a shirt for free. Once the design is final you have 48 hours to buy
+                yours, then the shirts get printed and shipped.
               </li>
             </ol>
             <p className="gift">
