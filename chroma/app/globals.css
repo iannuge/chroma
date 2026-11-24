@@ -1015,3 +1015,5 @@ input,textarea,select,.cmf textarea,.cform textarea{border-radius:14px}
 :root[data-theme="light"] .mib .v button::after,:root[data-theme="light"] .mib .v button:hover::after{background:#fff}
 .v button.on::after,.v button[data-d="down"].on::after,.it .v button.on::after,.mib .v button.on::after{background:#F24D11}
 :root[data-theme="light"] .v button.on::after,:root[data-theme="light"] .v button[data-d="down"].on::after{background:#F24D11}
+
+.pdn{margin-top:28px;max-width:560px}

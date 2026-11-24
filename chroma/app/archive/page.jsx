@@ -97,6 +97,10 @@ export default function Archive() {
               <PastDrop key={d.id} drop={d} cluster={byCluster[d.winning_cluster_id]} onOpen={(x) => setOpen(x.id)} />
             ))}
           </div>
+          <p className="mu sub pdn">
+            i also do this shit freelance and im a tapstitch affiliate so i can get you a good deal if you want to
+            commission me.
+          </p>
         </>
       ) : (
         <div className="cvh">
