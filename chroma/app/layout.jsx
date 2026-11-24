@@ -40,7 +40,8 @@ export default function RootLayout({ children }) {
             <PageReveal>{children}</PageReveal>
             <footer className="w mu">
               chroma. crowdsourced art direction on a graphic tee. <Link href="/terms">terms</Link>{' '}
-              <Link href="/privacy">privacy</Link> <Link href="/copyright">copyright</Link>
+              <Link href="/privacy">privacy</Link> <Link href="/copyright">copyright</Link>{' '}
+              <Link href="/design-tool">super secret design tool</Link>
             </footer>
           </MoodboardProvider>
         </AuthProvider>
