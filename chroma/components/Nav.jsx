@@ -66,6 +66,9 @@ export default function Nav() {
           {links}
         </div>
       </nav>
+      <Link href="/design-tool" className="dtlink">
+        design tool
+      </Link>
     </div>
   )
 }
