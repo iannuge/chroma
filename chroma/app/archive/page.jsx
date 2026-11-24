@@ -99,7 +99,7 @@ export default function Archive() {
           </div>
           <p className="mu sub pdn">
             i also do this shit freelance and im a tapstitch affiliate so i can get you a good deal if you want to
-            commission me.
+            commission me to make your merch.
           </p>
         </>
       ) : (
