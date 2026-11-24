@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useMoodboard } from './MoodboardProvider'
 import Tile from './Tile'
@@ -17,12 +17,31 @@ function toMap(rows, k) {
   return m
 }
 
+const MAX_PHOTO = 8 * 1024 * 1024
+const bucketPath = (u) => {
+  const m = u && String(u).match(/\/object\/public\/moodboard\/(.+)$/)
+  return m ? decodeURIComponent(m[1]) : null
+}
+
+// Center-crop to a small square so nobody uploads a 12mb photo as an avatar.
+async function squarePhoto(file, size = 320) {
+  const bmp = await createImageBitmap(file)
+  const s = Math.min(bmp.width, bmp.height)
+  const c = document.createElement('canvas')
+  c.width = c.height = size
+  c.getContext('2d').drawImage(bmp, (bmp.width - s) / 2, (bmp.height - s) / 2, s, s, 0, 0, size, size)
+  return new Promise((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error('Could not read that image.'))), 'image/jpeg', 0.9))
+}
+
 export default function ProfileView({ uid, isMe }) {
   const router = useRouter()
   const { reload } = useMoodboard()
   const [state, setState] = useState({ status: 'loading' })
   const [name, setName] = useState('')
   const [note, setNote] = useState('')
+  const [photoBusy, setPhotoBusy] = useState(false)
+  const [photoMsg, setPhotoMsg] = useState('')
+  const fileRef = useRef(null)
 
   const load = useCallback(async () => {
     try {
@@ -82,6 +101,57 @@ export default function ProfileView({ uid, isMe }) {
     load()
   }, [load])
 
+  const dropOld = async (url) => {
+    const old = bucketPath(url)
+    if (old && old.startsWith(uid + '/')) await supabase.storage.from('moodboard').remove([old])
+  }
+
+  const changePhoto = async (e) => {
+    const file = e.target.files && e.target.files[0]
+    e.target.value = ''
+    if (!file) return
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) {
+      setPhotoMsg('use a jpg, png or webp.')
+      return
+    }
+    if (file.size > MAX_PHOTO) {
+      setPhotoMsg('that file is too big. keep it under 8mb.')
+      return
+    }
+    setPhotoBusy(true)
+    setPhotoMsg('')
+    try {
+      const blob = await squarePhoto(file)
+      const path = uid + '/avatar-' + Date.now() + '.jpg'
+      const up = await supabase.storage.from('moodboard').upload(path, blob, { contentType: 'image/jpeg' })
+      if (up.error) throw up.error
+      const url = supabase.storage.from('moodboard').getPublicUrl(path).data.publicUrl
+      const prev = state.profile && state.profile.avatar_url
+      const { error } = await supabase.from('profiles').update({ avatar_url: url }).eq('id', uid)
+      if (error) throw error
+      await dropOld(prev)
+      await load()
+      reload()
+    } catch (err) {
+      setPhotoMsg((err && err.message ? err.message : 'could not upload that.').toLowerCase())
+    }
+    setPhotoBusy(false)
+  }
+
+  const removePhoto = async () => {
+    setPhotoBusy(true)
+    setPhotoMsg('')
+    const prev = state.profile && state.profile.avatar_url
+    const { error } = await supabase.from('profiles').update({ avatar_url: null }).eq('id', uid)
+    if (error) setPhotoMsg(error.message.toLowerCase())
+    else {
+      await dropOld(prev)
+      await load()
+      reload()
+    }
+    setPhotoBusy(false)
+  }
+
   const save = async (e) => {
     e.preventDefault()
     const n = name.trim()
@@ -109,7 +179,37 @@ export default function ProfileView({ uid, isMe }) {
   return (
     <>
       <div className="phead">
-        <Avatar url={profile.avatar_url} name={profile.display_name} size={84} />
+        {isMe ? (
+          <div className="pav">
+            <button
+              type="button"
+              className="pav-b"
+              onClick={() => fileRef.current && fileRef.current.click()}
+              disabled={photoBusy}
+              aria-label="Change profile photo"
+            >
+              <Avatar url={profile.avatar_url} name={profile.display_name} size={84} />
+              <span className="pav-o">{photoBusy ? '…' : 'change'}</span>
+            </button>
+            <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={changePhoto} hidden />
+            <div className="pav-l mu">
+              <button type="button" onClick={() => fileRef.current && fileRef.current.click()} disabled={photoBusy}>
+                {photoBusy ? 'uploading…' : 'change photo'}
+              </button>
+              {profile.avatar_url && !photoBusy && (
+                <>
+                  {' · '}
+                  <button type="button" onClick={removePhoto}>
+                    remove
+                  </button>
+                </>
+              )}
+            </div>
+            {photoMsg && <p className="mu pav-m">{photoMsg}</p>}
+          </div>
+        ) : (
+          <Avatar url={profile.avatar_url} name={profile.display_name} size={84} />
+        )}
         <div className="pnm">
           <h1>{profile.display_name}</h1>
           <span className="mult" tabIndex={0} aria-label="Vote multiplier">
