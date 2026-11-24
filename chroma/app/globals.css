@@ -947,3 +947,49 @@ input,textarea,select,.cmf textarea,.cform textarea{border-radius:14px}
 
 /* cluster cards: no lighter frame behind the images */
 .cd .stg{background:transparent}
+
+/* ---- theme toggle: dark is the default (the live scheme); light is the grayish beige scheme ---- */
+:root[data-theme="light"]{color-scheme:light;--bg:#e7e3db;--gl:rgba(255,255,255,.42);--gb:rgba(255,255,255,.7);--sh:rgba(70,55,30,.15);--ink:#15130f;--mu:#6a655b;--b1:#f7f4ee;--b2:#e6cdb8}
+:root[data-theme="light"] .lb{background:rgba(231,227,219,.78)}
+:root[data-theme="light"] .lbc img,:root[data-theme="light"] .lbt{box-shadow:0 24px 60px rgba(70,55,30,.28)}
+:root[data-theme="light"] .tee img{filter:url(#ca) drop-shadow(0 30px 34px rgba(70,55,30,.2))}
+:root[data-theme="light"] .tm img{filter:drop-shadow(0 20px 22px rgba(70,55,30,.18))}
+:root[data-theme="light"] .cens{box-shadow:0 18px 40px rgba(70,55,30,.22),inset 0 1px 0 rgba(255,255,255,.35)}
+.navw{--tt:0}
+.thm{position:absolute;left:22px;bottom:0;display:inline-flex;gap:0;align-items:center;font:500 11px/1 ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:-.02em;text-transform:lowercase;color:var(--mu);background:none;border:0;padding:0;cursor:pointer}
+.thm span{opacity:.55;transition:opacity .2s ease,color .2s ease}
+.thm span.on{opacity:1;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.thm i{font-style:normal;opacity:.4;margin:0 6px}
+.thm:hover span{opacity:.9}
+@media(max-width:760px){.thm{left:16px}}
+:root[data-theme="light"] nav .nb,:root[data-theme="light"] nav .nl .dl a,:root[data-theme="light"] nav .nbx,:root[data-theme="light"] nav .nl .pill{background:rgba(255,255,255,.35)}
+:root[data-theme="light"] nav .nl .dl a{background:transparent}
+:root[data-theme="light"] nav .nl .dl a:hover,:root[data-theme="light"] nav .mm a:hover,:root[data-theme="light"] nav .mm a:active{background:rgba(21,19,15,.07)}
+:root[data-theme="light"] nav .mm,:root[data-theme="light"] nav .mm.g{background:#ece8e0;box-shadow:0 22px 50px rgba(70,55,30,.22)}
+:root[data-theme="light"] .tee .pxt img,:root[data-theme="light"] .tee .pxt canvas{filter:drop-shadow(0 30px 34px rgba(70,55,30,.35))}
+:root[data-theme="light"] .fl2 i{filter:saturate(1.08) contrast(1.02) drop-shadow(0 8px 16px rgba(70,55,30,.3))}
+:root[data-theme="light"] .ncw .ncp{border-color:rgba(21,19,15,.3);background-color:rgba(255,255,255,.3)}
+:root[data-theme="light"] .ncw .ncp:hover{background-color:rgba(255,255,255,.55);border-color:var(--ink)}
+:root[data-theme="light"] .role{background:rgba(255,255,255,.35)}
+:root[data-theme="light"] .clm{background:rgba(255,255,255,.35)}
+:root[data-theme="light"] .hiw b{color:var(--ink)}
+:root[data-theme="light"] .v button::after{background:rgba(21,19,15,.38)}
+:root[data-theme="light"] .v button:hover::after{background:rgba(21,19,15,.8)}
+:root[data-theme="light"] .v button.on::after{background:var(--ink)}
+:root[data-theme="light"] .v button[data-d="down"].on::after{background:#e5342b}
+:root[data-theme="light"] .bd-grid{background-image:linear-gradient(rgba(21,19,15,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(21,19,15,.06) 1px,transparent 1px)}
+:root[data-theme="light"] .bd-marks{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cpath d='M120 128H136M128 120V136' stroke='%2315130f' stroke-opacity='.3' fill='none'/%3E%3C/svg%3E")}
+:root[data-theme="light"] .bd .bd-c{mix-blend-mode:multiply}
+:root[data-theme="light"] .bd .bd-o{background:radial-gradient(closest-side,rgba(242,77,17,.3),rgba(242,77,17,.1) 45%,transparent 72%)}
+:root[data-theme="light"] .bd .bd-o2{background:radial-gradient(closest-side,rgba(242,77,17,.18),rgba(242,77,17,.06) 45%,transparent 72%)}
+:root[data-theme="light"] .bd .bd-o3{background:radial-gradient(closest-side,rgba(242,77,17,.12),rgba(242,77,17,.04) 45%,transparent 72%)}
+:root[data-theme="light"] .bd .bd-r{background:radial-gradient(closest-side,rgba(255,60,30,.16),transparent 66%)}
+:root[data-theme="light"] .bd .bd-b{background:radial-gradient(closest-side,rgba(40,90,255,.14),transparent 66%)}
+:root[data-theme="light"] .bd-vig{background:radial-gradient(120% 100% at 50% 45%,transparent 60%,rgba(120,100,70,.16))}
+@media(max-width:700px){:root[data-theme="light"] .bd-marks{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192'%3E%3Cpath d='M88 96H104M96 88V104' stroke='%2315130f' stroke-opacity='.3' fill='none'/%3E%3C/svg%3E")}}
+:root[data-theme="light"] nav .nl .pill{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+:root[data-theme="light"] .bd .bd-r{background:radial-gradient(closest-side,rgba(242,110,50,.07),transparent 66%)}
+:root[data-theme="light"] .bd .bd-b{background:radial-gradient(closest-side,rgba(60,110,255,.07),transparent 66%)}
+:root[data-theme="light"] .bd .bd-o{background:radial-gradient(closest-side,rgba(242,77,17,.22),rgba(242,77,17,.08) 45%,transparent 72%)}
+:root[data-theme="light"] .bd .bd-o2{background:radial-gradient(closest-side,rgba(242,77,17,.13),rgba(242,77,17,.045) 45%,transparent 72%)}
+:root[data-theme="light"] .bd .bd-o3{background:radial-gradient(closest-side,rgba(242,77,17,.09),rgba(242,77,17,.03) 45%,transparent 72%)}

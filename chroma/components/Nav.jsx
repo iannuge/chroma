@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useAuth } from './AuthProvider'
+import ThemeToggle from './ThemeToggle'
 
 export default function Nav() {
   const { user, ready, signIn, signOut } = useAuth()
@@ -69,6 +70,7 @@ export default function Nav() {
       <Link href="/design-tool" className="dtlink">
         design tool
       </Link>
+      <ThemeToggle />
     </div>
   )
 }
