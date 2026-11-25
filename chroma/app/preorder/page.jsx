@@ -11,7 +11,7 @@ import { SIZES } from '../../lib/shop'
 const pad = (n) => String(n).padStart(2, '0')
 
 export default function ClaimShirt() {
-  const { drop, progress, hasOrder, myClaim, claimShirt, joinWaitlist, forfeitClaim } = useMoodboard()
+  const { drop, progress, hasOrder, myClaim, claimsReady, claimShirt, joinWaitlist, forfeitClaim } = useMoodboard()
   const { user, signIn } = useAuth()
   const [size, setSize] = useState('')
   const [msg, setMsg] = useState('')
@@ -45,6 +45,12 @@ export default function ClaimShirt() {
     action = (
       <button className="pill" disabled>
         you&apos;ve pre-ordered this drop
+      </button>
+    )
+  } else if (user && !claimsReady) {
+    action = (
+      <button className="pill" disabled>
+        checking your spot…
       </button>
     )
   } else if (!user) {
@@ -129,7 +135,7 @@ export default function ClaimShirt() {
     )
   }
 
-  const pickSize = !st && !hasOrder
+  const pickSize = !st && !hasOrder && (!user || claimsReady)
 
   return (
     <main className="w page po">

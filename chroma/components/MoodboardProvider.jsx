@@ -100,6 +100,7 @@ export default function MoodboardProvider({ children }) {
         progress: prog.data || { claimed: 0, goal: drop.goal },
         hasOrder: !!(ord.data && ord.data.length),
         myClaim: (mine && mine.data) || null,
+        claimUid: uid,
       })
       setStatus('ready')
     } catch (e) {
@@ -298,6 +299,8 @@ export default function MoodboardProvider({ children }) {
 
   const value = {
     myClaim: data.myClaim,
+    // false until my_claim has been fetched for the signed-in user, so the page never offers a claim too early
+    claimsReady: !uid || data.claimUid === uid,
     claimShirt,
     joinWaitlist,
     forfeitClaim,
